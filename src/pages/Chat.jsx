@@ -18,6 +18,13 @@ export default function Chat() {
   const disconnectedRef = useRef(false)
 
   useEffect(() => {
+    const join = () => socket.emit("join_match", "text")
+    if (socket.connected) join()
+    else socket.once("connect", join)
+    return () => socket.emit("leave_match")
+  }, [])
+
+  useEffect(() => {
     const onWaiting = () => setStatus("Waiting for stranger...")
     const onMatched = () => {
       setStatus("Connected to stranger")

@@ -7,6 +7,7 @@ import GoogleAd from "../components/GoogleAd"
 import { socket } from "../lib/socket"
 import CyberButton from "../components/CyberButton"
 import ToastBanner from "../components/ToastBanner"
+import { DEFAULT_ICE_SERVERS } from "../lib/webrtc"
 
 export default function Video() {
   const navigate = useNavigate()
@@ -18,6 +19,19 @@ export default function Video() {
 
   const peerRef = useRef(null)
   const disconnectedRef = useRef(false)
+  const localStreamRef = useRef(null)
+  const pendingMatchRef = useRef(null)
+  const pendingSignalsRef = useRef([])
+  const setupPeerRef = useRef(() => {})
+
+  useEffect(() => {
+    localStreamRef.current = localStream
+    if (localStream && pendingMatchRef.current) {
+      const { initiator } = pendingMatchRef.current
+      pendingMatchRef.current = null
+      setupPeerRef.current(initiator)
+    }
+  }, [localStream])
 
   useEffect(() => {
     let mounted = true
@@ -39,36 +53,78 @@ export default function Video() {
   }, [])
 
   useEffect(() => {
-    if (!localStream) return
+    const join = () => socket.emit("join_match", "video")
+    if (socket.connected) join()
+    else socket.once("connect", join)
+    return () => socket.emit("leave_match")
+  }, [])
 
+  useEffect(() => {
     const cleanupPeer = () => {
+      pendingSignalsRef.current = []
       if (peerRef.current) {
-        peerRef.current.destroy()
+        try {
+          peerRef.current.destroy()
+        } catch {
+          /* ignore */
+        }
         peerRef.current = null
       }
       setRemoteStream(null)
     }
 
-    const onWaiting = () => setStatus("Waiting for stranger...")
-    const onMatched = ({ initiator }) => {
+    const setupPeer = (initiator) => {
+      const stream = localStreamRef.current
+      if (!stream) {
+        pendingMatchRef.current = { initiator }
+        return
+      }
+
       cleanupPeer()
       setStatus("Connected to stranger")
 
       const peer = new Peer({
         initiator: Boolean(initiator),
-        trickle: false,
-        stream: localStream
+        trickle: true,
+        stream,
+        config: { iceServers: DEFAULT_ICE_SERVERS }
       })
 
       peer.on("signal", (data) => socket.emit("signal", data))
-      peer.on("stream", (stream) => setRemoteStream(stream))
+      peer.on("stream", (s) => setRemoteStream(s))
       peer.on("close", () => setRemoteStream(null))
-      peer.on("error", () => setStatus("Connection interrupted. Finding new stranger..."))
+      peer.on("error", (err) => {
+        console.error("[webrtc]", err)
+        setStatus("Connection error — try Next Stranger")
+      })
       peerRef.current = peer
+
+      const buffered = pendingSignalsRef.current.splice(0)
+      buffered.forEach((data) => {
+        try {
+          peer.signal(data)
+        } catch {
+          /* ignore */
+        }
+      })
+    }
+
+    setupPeerRef.current = setupPeer
+
+    const onWaiting = () => setStatus("Waiting for stranger...")
+    const onMatched = ({ initiator }) => {
+      setupPeer(initiator)
     }
     const onSignal = (data) => {
-      if (peerRef.current && data) {
-        peerRef.current.signal(data)
+      if (!data) return
+      if (peerRef.current) {
+        try {
+          peerRef.current.signal(data)
+        } catch {
+          /* ignore */
+        }
+      } else {
+        pendingSignalsRef.current.push(data)
       }
     }
     const onStrangerDisconnected = () => {
@@ -122,7 +178,7 @@ export default function Video() {
       manager?.off("reconnect_attempt", onReconnectAttempt)
       cleanupPeer()
     }
-  }, [localStream])
+  }, [])
 
   useEffect(() => {
     if (!toast.message) return
@@ -140,8 +196,14 @@ export default function Video() {
 
   const nextStranger = () => {
     setStatus("Finding next stranger...")
+    pendingMatchRef.current = null
+    pendingSignalsRef.current = []
     if (peerRef.current) {
-      peerRef.current.destroy()
+      try {
+        peerRef.current.destroy()
+      } catch {
+        /* ignore */
+      }
       peerRef.current = null
     }
     setRemoteStream(null)
