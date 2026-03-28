@@ -22,11 +22,7 @@ export default defineConfig({
             return "motion-vendor"
           }
 
-          if (
-            id.includes("simple-peer") ||
-            id.includes("socket.io-client") ||
-            id.includes("styled-components")
-          ) {
+          if (id.includes("socket.io-client") || id.includes("styled-components")) {
             return "rtc-vendor"
           }
         }

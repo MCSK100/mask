@@ -5,6 +5,9 @@ import { AnimatePresence, motion } from "framer-motion"
 const Home = lazy(() => import("./pages/Home"))
 const Chat = lazy(() => import("./pages/Chat"))
 const Video = lazy(() => import("./pages/Video"))
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"))
+const Terms = lazy(() => import("./pages/Terms"))
+const AboutContact = lazy(() => import("./pages/AboutContact"))
 
 function AnimatedRoutes(){
 
@@ -28,6 +31,9 @@ return(
   <Route path="/" element={<Home/>}/>
   <Route path="/chat" element={<Chat/>}/>
   <Route path="/video" element={<Video/>}/>
+  <Route path="/privacy" element={<PrivacyPolicy/>}/>
+  <Route path="/terms" element={<Terms/>}/>
+  <Route path="/about" element={<AboutContact/>}/>
 
   </Routes>
 

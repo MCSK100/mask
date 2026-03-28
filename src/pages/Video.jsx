@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import Peer from "simple-peer"
 import VideoGrid from "../components/VideoGrid"
-import OnlineCounter from "../components/OnlineCounter"
 import GoogleAd from "../components/GoogleAd"
 import { socket } from "../lib/socket"
-import CyberButton from "../components/CyberButton"
 import ToastBanner from "../components/ToastBanner"
-import { DEFAULT_ICE_SERVERS } from "../lib/webrtc"
+import { getIceServers } from "../lib/webrtc"
+import { createMaskVideoPeer } from "../lib/maskWebRTC"
+import NeonAmbientBg from "../components/neon/NeonAmbientBg"
+import NeonRoomNav from "../components/neon/NeonRoomNav"
 
 export default function Video() {
   const navigate = useNavigate()
@@ -83,26 +83,29 @@ export default function Video() {
       cleanupPeer()
       setStatus("Connected to stranger")
 
-      const peer = new Peer({
-        initiator: Boolean(initiator),
-        trickle: true,
-        stream,
-        config: { iceServers: DEFAULT_ICE_SERVERS }
-      })
-
-      peer.on("signal", (data) => socket.emit("signal", data))
-      peer.on("stream", (s) => setRemoteStream(s))
-      peer.on("close", () => setRemoteStream(null))
-      peer.on("error", (err) => {
-        console.error("[webrtc]", err)
-        setStatus("Connection error — try Next Stranger")
-      })
-      peerRef.current = peer
+      try {
+        const peer = createMaskVideoPeer({
+          initiator: Boolean(initiator),
+          localStream: stream,
+          iceServers: getIceServers(),
+          onSignal: (payload) => socket.emit("signal", payload),
+          onRemoteStream: (s) => setRemoteStream(s),
+          onError: (err) => {
+            console.error("[webrtc]", err)
+            setStatus("Connection error — try Next Stranger")
+          }
+        })
+        peerRef.current = peer
+      } catch (err) {
+        console.error("[webrtc] create peer", err)
+        setStatus("WebRTC failed to start — try refresh or another browser")
+        return
+      }
 
       const buffered = pendingSignalsRef.current.splice(0)
       buffered.forEach((data) => {
         try {
-          peer.signal(data)
+          void peerRef.current?.handleRemoteSignal(data)
         } catch {
           /* ignore */
         }
@@ -119,7 +122,7 @@ export default function Video() {
       if (!data) return
       if (peerRef.current) {
         try {
-          peerRef.current.signal(data)
+          void peerRef.current.handleRemoteSignal(data)
         } catch {
           /* ignore */
         }
@@ -211,25 +214,42 @@ export default function Video() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-b from-slate-950 via-slate-950 to-black p-3 text-white md:p-6">
-      <ToastBanner message={toast.message} type={toast.type} />
-      <div className="mx-auto grid h-[calc(100vh-1.5rem)] w-full max-w-6xl grid-rows-[auto_1fr_auto] gap-2 sm:gap-3 md:h-[calc(100vh-3rem)] md:gap-4">
-        <header className="grid grid-cols-2 gap-2 rounded-2xl border border-white/10 bg-slate-900/70 p-2.5 backdrop-blur sm:gap-3 sm:p-4 md:grid-cols-[auto_1fr_auto_auto] md:gap-4 md:items-center">
-          <CyberButton type="button" onClick={() => navigate("/")} className="cyber-btn--sm">
-            Back
-          </CyberButton>
-          <h2 className="col-span-2 truncate text-center text-[11px] font-medium text-violet-300 sm:text-xs md:col-span-1 md:text-left md:text-base">
-            {status}
-          </h2>
-          <OnlineCounter count={onlineCount} />
-          <CyberButton type="button" onClick={nextStranger} className="cyber-btn--sm">
-            Next Stranger
-          </CyberButton>
-        </header>
-        <div className="rounded-2xl border border-white/10 bg-slate-900/50 p-4 backdrop-blur">
-          <VideoGrid localStream={localStream} remoteStream={remoteStream} loading={status !== "Connected to stranger"} />
+    <div className="relative min-h-dvh text-white">
+      <NeonAmbientBg />
+
+      <div className="relative z-10 flex min-h-dvh flex-col">
+        <ToastBanner message={toast.message} type={toast.type} />
+
+        <NeonRoomNav
+          status={status}
+          onlineCount={onlineCount}
+          onBack={() => navigate("/")}
+          onNext={nextStranger}
+        />
+
+        <div className="flex min-h-0 flex-1 flex-col px-3 pb-4 pt-1 md:px-6 md:pb-6">
+          <div className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col gap-4">
+            <div className="relative min-h-0 flex-1 rounded-[1.35rem] p-[1.5px] shadow-[0_0_50px_rgba(168,85,247,0.12)]">
+              <div
+                className="h-full min-h-[280px] rounded-[1.25rem] p-[1px] md:min-h-[320px]"
+                style={{
+                  background:
+                    "linear-gradient(145deg, rgba(236,72,153,0.4), rgba(139,92,246,0.3), rgba(34,211,238,0.4))"
+                }}
+              >
+                <div className="flex h-full min-h-0 flex-col rounded-[1.15rem] bg-black/35 p-3 backdrop-blur-xl sm:p-4">
+                  <VideoGrid
+                    localStream={localStream}
+                    remoteStream={remoteStream}
+                    loading={status !== "Connected to stranger"}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <GoogleAd slot={import.meta.env.VITE_GOOGLE_AD_SLOT_VIDEO} className="min-h-20" />
+          </div>
         </div>
-        <GoogleAd slot={import.meta.env.VITE_GOOGLE_AD_SLOT_VIDEO} className="min-h-20" />
       </div>
     </div>
   )

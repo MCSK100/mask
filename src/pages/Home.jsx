@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar"
 import Hero from "../components/Hero"
 import ParticlesBG from "../components/ParticlesBG"
+import SiteFooter from "../components/SiteFooter"
 
 export default function Home(){
 
@@ -68,6 +69,8 @@ Peer-to-peer WebRTC connection ensures privacy.
 
 </div>
 </section>
+
+<SiteFooter />
 </div>
 </>
 )
