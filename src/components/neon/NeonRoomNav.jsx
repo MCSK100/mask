@@ -13,21 +13,21 @@ export default function NeonRoomNav({
 }) {
   return (
     <header className="sticky top-0 z-30 border-b border-white/10 bg-black/35 shadow-[0_4px_30px_rgba(0,0,0,0.4)] backdrop-blur-2xl safe-pt">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-3 gap-y-2 px-3 py-3 sm:px-4 md:px-6">
-        <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-4 md:flex-none">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-2 py-2 xs:px-3 xs:py-3 sm:px-4 sm:py-3 md:px-6 md:py-3">
+        <div className="flex min-w-0 flex-1 items-center gap-1.5 xs:gap-2 sm:gap-4 md:flex-none">
           <Link
             to="/"
-            className="group flex shrink-0 items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400/50 rounded-lg"
+            className="group flex shrink-0 items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400/50 rounded-lg"
           >
             <span
-              className="relative flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-fuchsia-500 via-purple-600 to-cyan-400 p-[2px] shadow-neon-magenta sm:h-10 sm:w-10"
+              className="relative flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-fuchsia-500 via-purple-600 to-cyan-400 p-[1.5px] shadow-neon-magenta xs:h-9 xs:w-9 sm:h-10 sm:w-10"
               aria-hidden
             >
-              <span className="flex h-full w-full items-center justify-center rounded-full bg-black/80 text-lg">
+              <span className="flex h-full w-full items-center justify-center rounded-full bg-black/80 text-lg xs:text-xl">
                 🎭
               </span>
             </span>
-            <span className="bg-gradient-to-r from-fuchsia-300 via-cyan-200 to-violet-300 bg-clip-text text-xl font-bold tracking-tight text-transparent drop-shadow-[0_0_12px_rgba(232,121,249,0.5)] sm:text-2xl">
+            <span className="bg-gradient-to-r from-fuchsia-300 via-cyan-200 to-violet-300 bg-clip-text text-base font-bold tracking-tight text-transparent drop-shadow-[0_0_12px_rgba(232,121,249,0.5)] xs:text-lg sm:text-xl md:text-2xl [text-size-adjust:none]">
               mask
             </span>
           </Link>
@@ -35,50 +35,29 @@ export default function NeonRoomNav({
           <button
             type="button"
             onClick={onBack}
-            className="shrink-0 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-slate-300 backdrop-blur-sm transition hover:border-cyan-400/40 hover:bg-cyan-950/30 hover:text-cyan-200 sm:text-xs"
+            className="shrink-0 rounded-xl border border-white/15 bg-white/5 px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-slate-300 backdrop-blur-sm transition hover:border-cyan-400/40 hover:bg-cyan-950/30 hover:text-cyan-200 xs:text-xs xs:px-3 xs:py-2 sm:text-sm"
           >
             ← Back
           </button>
         </div>
 
-        <nav
-          aria-label="Site"
-          className="order-last flex w-full justify-center gap-4 border-t border-white/5 pt-2 sm:order-none sm:w-auto sm:border-0 sm:pt-0 md:justify-center md:gap-6"
-        >
-          <Link to="/about" className={navLink}>
-            About
-          </Link>
-          <Link to="/terms" className={navLink}>
-            Terms
-          </Link>
-          <Link to="/privacy" className={navLink}>
-            Privacy
-          </Link>
-        </nav>
-
-        <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
+        <div className="flex flex-wrap items-center justify-end gap-1.5 sm:gap-3">
           <OnlineCounter
             count={onlineCount}
-            className="border-cyan-500/25 bg-slate-950/50 text-xs text-cyan-100/90 shadow-[0_0_20px_rgba(34,211,238,0.12)] backdrop-blur-md sm:text-sm"
+            className="border-cyan-500/25 bg-slate-950/50 text-xs text-cyan-100/90 shadow-[0_0_20px_rgba(34,211,238,0.12)] backdrop-blur-md xs:text-sm sm:text-base"
           />
-          <Link
-            to="/about"
-            className="inline-flex rounded-full bg-gradient-to-r from-fuchsia-600/90 to-violet-600/90 px-3 py-1.5 text-[10px] font-semibold text-white shadow-neon-magenta transition hover:brightness-110 sm:px-4 sm:py-2 sm:text-xs"
-          >
-            Contact
-          </Link>
           <button
             type="button"
             onClick={onNext}
-            className="rounded-xl border border-fuchsia-500/40 bg-fuchsia-950/40 px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-fuchsia-100 shadow-[0_0_20px_rgba(217,70,239,0.25)] transition hover:border-fuchsia-400/60 hover:bg-fuchsia-900/50 sm:px-4 sm:text-xs"
+            className="rounded-xl border border-fuchsia-500/40 bg-fuchsia-950/40 px-2 py-1.5 text-[10px] font-bold uppercase tracking-wide text-fuchsia-100 shadow-[0_0_20px_rgba(217,70,239,0.25)] transition hover:border-fuchsia-400/60 hover:bg-fuchsia-900/50 xs:text-xs xs:px-3 xs:py-2 sm:text-sm sm:px-4"
           >
             {nextLabel}
           </button>
         </div>
       </div>
 
-      <p className="border-t border-white/5 px-3 py-2 text-center text-[11px] leading-snug text-cyan-200/85 sm:px-6 sm:text-left sm:text-xs md:text-sm">
-        <span className="inline-block max-w-full truncate sm:whitespace-normal">{status}</span>
+      <p className="border-t border-white/5 px-2 py-1.5 text-center text-xs leading-snug text-cyan-200/85 xs:px-3 xs:text-sm sm:px-6 sm:text-sm md:text-base flex items-center justify-center h-10 xs:h-12">
+        <span className="truncate max-w-[280px]">{status}</span>
       </p>
     </header>
   )

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import LegalPageShell from "../components/LegalPageShell"
 
-const contactEmail = import.meta.env.VITE_CONTACT_EMAIL || "contact@yourdomain.com"
+const contactEmail = "contact.maskchat@gmail.com"
 
 export default function AboutContact() {
   return (

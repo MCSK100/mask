@@ -74,6 +74,16 @@ export default function Chat() {
   const emojiWrapRef = useRef(null)
 
   useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') {
+        navigate('/')
+      }
+    }
+    document.addEventListener('keydown', handleEsc)
+    return () => document.removeEventListener('keydown', handleEsc)
+  }, [navigate])
+
+  useEffect(() => {
     const join = () => socket.emit("join_match", "text")
     if (socket.connected) join()
     else socket.once("connect", join)
@@ -281,15 +291,6 @@ export default function Chat() {
                     maxLength={500}
                     autoComplete="off"
                   />
-                  <button
-                    type="button"
-                    title="Voice note (coming soon)"
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-cyan-400/35 text-cyan-200/90 opacity-70 shadow-[0_0_16px_rgba(34,211,238,0.15)] transition hover:border-cyan-300/50 hover:bg-cyan-950/40"
-                    aria-label="Microphone"
-                    disabled
-                  >
-                    <IconMic />
-                  </button>
                 </div>
 
                 <button
@@ -302,6 +303,8 @@ export default function Chat() {
                 </button>
               </form>
             </div>
+
+            <p className="text-center text-xs text-slate-500 pt-2">Press ESC to leave chat</p>
           </div>
         </div>
       </div>
