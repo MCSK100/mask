@@ -9,6 +9,13 @@ export default function AboutContact() {
       title="About & Contact"
       description="About Mask — anonymous stranger text and video chat. Contact and site information."
     >
+      <h1 className="text-2xl font-semibold text-white sm:text-3xl">About Mask</h1>
+      <p className="text-sm text-slate-400 mb-8">Mask — anonymous stranger chat</p>
+      <p className="text-lg text-slate-300 leading-relaxed mb-8">
+        Mask is a next-generation random video chat platform designed to connect people globally. 
+        Our goal is to provide a safe, fast, and modern alternative to traditional chat platforms like Omegle.
+      </p>
+
       <h1 className="text-2xl font-semibold text-white sm:text-3xl">About / Contact</h1>
       <p className="text-sm text-slate-400">Mask — anonymous stranger chat</p>
 
@@ -22,7 +29,7 @@ export default function AboutContact() {
         <h2 className="pt-2 text-lg font-semibold text-white">Safety</h2>
         <p>
           Treat others respectfully. Do not share personal data you are not comfortable exposing to strangers. If
-          someone makes you uncomfortable, use &quot;Next Stranger&quot; and leave the chat. Parents and guardians
+          someone makes you uncomfortable, use "Next Stranger" and leave the chat. Parents and guardians
           should know Mask is intended for adults 18+.
         </p>
 
@@ -40,10 +47,7 @@ export default function AboutContact() {
           </a>
           .
         </p>
-        <p className="text-xs text-slate-500">
-          Set <code className="rounded bg-slate-800 px-1 py-0.5 text-slate-400">VITE_CONTACT_EMAIL</code> in your env
-          for production.
-        </p>
+
 
         <h2 className="pt-2 text-lg font-semibold text-white">Legal</h2>
         <p className="flex flex-wrap gap-x-4 gap-y-2">

@@ -14,28 +14,11 @@ export default function NeonRoomNav({
   return (
     <header className="sticky top-0 z-30 border-b border-white/10 bg-black/35 shadow-[0_4px_30px_rgba(0,0,0,0.4)] backdrop-blur-2xl safe-pt">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-2 py-2 xs:px-3 xs:py-3 sm:px-4 sm:py-3 md:px-6 md:py-3">
-        <div className="flex min-w-0 flex-1 items-center gap-1.5 xs:gap-2 sm:gap-4 md:flex-none">
-          <Link
-            to="/"
-            className="group flex shrink-0 items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400/50 rounded-lg"
-          >
-            <span
-              className="relative flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-fuchsia-500 via-purple-600 to-cyan-400 p-[1.5px] shadow-neon-magenta xs:h-9 xs:w-9 sm:h-10 sm:w-10"
-              aria-hidden
-            >
-              <span className="flex h-full w-full items-center justify-center rounded-full bg-black/80 text-lg xs:text-xl">
-                🎭
-              </span>
-            </span>
-            <span className="bg-gradient-to-r from-fuchsia-300 via-cyan-200 to-violet-300 bg-clip-text text-base font-bold tracking-tight text-transparent drop-shadow-[0_0_12px_rgba(232,121,249,0.5)] xs:text-lg sm:text-xl md:text-2xl [text-size-adjust:none]">
-              mask
-            </span>
-          </Link>
-
+        <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={onBack}
-            className="shrink-0 rounded-xl border border-white/15 bg-white/5 px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-slate-300 backdrop-blur-sm transition hover:border-cyan-400/40 hover:bg-cyan-950/30 hover:text-cyan-200 xs:text-xs xs:px-3 xs:py-2 sm:text-sm"
+            className="shrink-0 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm font-semibold uppercase tracking-wider text-slate-300 backdrop-blur-sm transition hover:border-cyan-400/40 hover:bg-cyan-950/30 hover:text-cyan-200"
           >
             ← Back
           </button>

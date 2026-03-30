@@ -23,20 +23,6 @@ function IconSend(props) {
   )
 }
 
-function IconMic() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden>
-      <path
-        d="M12 14a3 3 0 003-3V5a3 3 0 10-6 0v6a3 3 0 003 3zM19 10v1a7 7 0 01-14 0v-1M12 19v3M8 22h8"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
 function IconSmile() {
   return (
     <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden>
@@ -210,7 +196,7 @@ export default function Chat() {
   const connected = status === "Connected to stranger"
 
   return (
-    <div className="fixed inset-0 z-0 flex h-[100dvh] max-h-[100dvh] flex-col overflow-hidden text-white">
+    <div className="fixed inset-0 z-0 flex h-[100dvh] max-h-[100dvh] flex-col overflow-hidden text-white" style={{background: 'linear-gradient(to right, #000000, #152331)'}}>
       <NeonAmbientBg />
 
       <div className="relative z-10 flex min-h-0 flex-1 flex-col">
@@ -229,8 +215,7 @@ export default function Chat() {
               <div
                 className="h-full min-h-0 rounded-[1.25rem] p-[1px]"
                 style={{
-                  background:
-                    "linear-gradient(145deg, rgba(236,72,153,0.45), rgba(139,92,246,0.35), rgba(34,211,238,0.45))"
+                  background: 'linear-gradient(to right, #000000, #152331)'
                 }}
               >
                 <section
@@ -248,7 +233,7 @@ export default function Chat() {
           </div>
         </div>
 
-        <div className="shrink-0 border-t border-cyan-500/10 bg-black/50 shadow-[0_-12px_40px_rgba(0,0,0,0.5)] backdrop-blur-2xl pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] pt-3">
+        <div className="shrink-0 pt-3" >
           <div className="mx-auto w-full max-w-6xl space-y-3 px-3 md:px-6">
             <GoogleAd slot={import.meta.env.VITE_GOOGLE_AD_SLOT_CHAT} className="min-h-16" />
 
@@ -274,11 +259,11 @@ export default function Chat() {
               )}
 
               <form onSubmit={sendMessage} className="flex flex-wrap items-stretch gap-2 sm:flex-nowrap sm:items-center sm:gap-3">
-                <div className="flex min-w-0 flex-1 items-center gap-1.5 rounded-full border border-cyan-400/30 bg-black/55 px-2 py-2 shadow-[inset_0_0_24px_rgba(56,189,248,0.08),0_0_24px_rgba(56,189,248,0.08)] backdrop-blur-md sm:gap-2 sm:px-3">
+                <div className="flex min-w-0 flex-1 items-center gap-1.5 rounded-full border border-slate-600 bg-slate-900 px-3 py-3 shadow-inner backdrop-blur-md">
                   <button
                     type="button"
                     onClick={() => setEmojiOpen((o) => !o)}
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-fuchsia-500/30 text-fuchsia-200/90 shadow-[0_0_16px_rgba(217,70,239,0.2)] transition hover:border-fuchsia-400/50 hover:bg-fuchsia-950/40"
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-slate-600/50 text-slate-400 hover:text-slate-200 transition"
                     aria-label="Emoji"
                   >
                     <IconSmile />
@@ -286,7 +271,7 @@ export default function Chat() {
                   <input
                     value={message}
                     onChange={(e) => onInputChange(e.target.value)}
-                    className="min-w-0 flex-1 border-0 bg-transparent py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-0 sm:text-base"
+                    className="min-w-0 flex-1 border-0 bg-transparent py-1 text-sm text-white placeholder:text-slate-500 focus:outline-none sm:text-base"
                     placeholder="Type a message..."
                     maxLength={500}
                     autoComplete="off"
@@ -296,7 +281,7 @@ export default function Chat() {
                 <button
                   type="submit"
                   disabled={!message.trim()}
-                  className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full border border-fuchsia-400/40 bg-gradient-to-br from-fuchsia-600 via-purple-600 to-violet-700 text-white shadow-neon-magenta transition enabled:hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full border border-slate-600 bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition disabled:opacity-50"
                   aria-label="Send message"
                 >
                   <IconSend />
@@ -304,10 +289,11 @@ export default function Chat() {
               </form>
             </div>
 
-            <p className="text-center text-xs text-slate-500 pt-2">Press ESC to leave chat</p>
+            <p className="hidden sm:block text-center text-xs text-slate-500 pt-2 pb-2">Press ESC to leave chat</p>
           </div>
         </div>
       </div>
     </div>
   )
 }
+

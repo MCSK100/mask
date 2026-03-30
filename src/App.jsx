@@ -8,6 +8,7 @@ const Video = lazy(() => import("./pages/Video"))
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"))
 const Terms = lazy(() => import("./pages/Terms"))
 const AboutContact = lazy(() => import("./pages/AboutContact"))
+const Blog = lazy(() => import("./pages/Blog"))
 
 function AnimatedRoutes(){
 
@@ -30,7 +31,8 @@ return(
 
   <Route path="/" element={<Home/>}/>
   <Route path="/chat" element={<Chat/>}/>
-  <Route path="/video" element={<Video/>}/>
+<Route path="/video" element={<Video/>}/>
+  <Route path="/blog" element={<Blog/>}/>
   <Route path="/privacy" element={<PrivacyPolicy/>}/>
   <Route path="/terms" element={<Terms/>}/>
   <Route path="/about" element={<AboutContact/>}/>

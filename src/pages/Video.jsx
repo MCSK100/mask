@@ -61,6 +61,7 @@ export default function Video() {
   const [messages, setMessages] = useState([])
   const [isStrangerTyping, setIsStrangerTyping] = useState(false)
   const [emojiOpen, setEmojiOpen] = useState(false)
+  const [isChatOpen, setIsChatOpen] = useState(false)
   const emojiWrapRef = useRef(null)
 
   const peerRef = useRef(null)
@@ -93,7 +94,7 @@ export default function Video() {
     let mounted = true
 
     navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
+      .getUserMedia({ video: { facingMode: 'user' }, audio: true })
       .then((stream) => {
         if (!mounted) return
         setLocalStream(stream)
@@ -323,17 +324,17 @@ export default function Video() {
           onNext={nextStranger}
         />
 
-        <div className="flex min-h-0 flex-1 flex-col px-3 pt-1 md:px-6">
-          <div className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col">
-            <div className="relative min-h-0 flex-1 rounded-[1.35rem] p-[1.5px] shadow-[0_0_50px_rgba(168,85,247,0.12)]">
+        <div className="flex flex-1 flex-col px-3 pt-1 md:px-6 overflow-hidden">
+          <div className="flex flex-1 flex-col mx-auto w-full max-w-6xl">
+            <div className="flex flex-1 rounded-[1.35rem] p-[1.5px] shadow-[0_0_50px_rgba(168,85,247,0.12)]">
               <div
-                className="h-full min-h-[280px] rounded-[1.25rem] p-[1px] md:min-h-[320px]"
+                className="flex flex-1 rounded-[1.25rem] p-[1px]"
                 style={{
                   background:
                     "linear-gradient(145deg, rgba(236,72,153,0.4), rgba(139,92,246,0.3), rgba(34,211,238,0.4))"
                 }}
               >
-                <div className="flex h-full min-h-0 flex-col rounded-[1.15rem] bg-black/35 p-3 backdrop-blur-xl sm:p-4">
+                <div className="flex flex-1 flex-col rounded-[1.15rem] bg-slate-900 p-3 backdrop-blur-xl sm:p-4">
                   <VideoGrid
                     localStream={localStream}
                     remoteStream={remoteStream}
@@ -344,86 +345,90 @@ export default function Video() {
             </div>
 
             <GoogleAd slot={import.meta.env.VITE_GOOGLE_AD_SLOT_VIDEO} className="min-h-20 mx-auto max-w-6xl" />
-          </div>
 
-          <div className="relative z-20 mx-auto w-full max-w-6xl shrink-0 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] pt-3 border-t border-cyan-500/10 bg-black/50 shadow-[0_-12px_40px_rgba(0,0,0,0.5)] backdrop-blur-2xl">
-            <div className="relative min-h-[250px] rounded-[1.35rem] p-[1.5px] shadow-[0_0_50px_rgba(168,85,247,0.12)] mb-3">
-              <div
-                className="h-full rounded-[1.25rem] p-[1px]"
-                style={{
-                  background:
-                    "linear-gradient(145deg, rgba(236,72,153,0.45), rgba(139,92,246,0.35), rgba(34,211,238,0.45))"
-                }}
+            {/* Collapsible Chat */}
+            <div className="relative z-20 mx-auto w-full max-w-6xl shrink-0 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] pt-3">
+              <button 
+                onClick={() => setIsChatOpen(!isChatOpen)}
+                className="w-full mb-3 p-4 rounded-xl border border-slate-600 bg-slate-800 text-white text-lg font-semibold hover:bg-slate-700 transition-all backdrop-blur-xl flex items-center justify-center gap-3"
               >
-                <section
-                  className="chat-scrollbar-neon flex h-[250px] flex-col overflow-y-auto overscroll-contain rounded-[1.15rem] bg-black/40 px-4 py-4 backdrop-blur-xl sm:px-5 sm:py-5 md:px-6 md:py-6"
-                  aria-label="Text chat messages"
-                >
-                  <ChatBox
-                    messages={messages}
-                    loading={!connected}
-                    strangerTyping={connected && isStrangerTyping}
-                  />
-                </section>
-              </div>
-            </div>
-
-            <div ref={emojiWrapRef} className="relative">
-              {emojiOpen && (
-                <div className="absolute bottom-full left-0 right-0 z-20 mb-2 rounded-2xl border border-fuchsia-500/25 bg-slate-950/95 p-3 shadow-neon-magenta backdrop-blur-xl">
-                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-fuchsia-300/80">
-                    Quick emoji
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {QUICK_EMOJI.map((ch) => (
-                      <button
-                        key={ch}
-                        type="button"
-                        onClick={() => appendEmoji(ch)}
-                        className="rounded-xl border border-white/10 bg-white/5 px-2 py-1.5 text-xl transition hover:border-fuchsia-400/40 hover:bg-fuchsia-950/40"
-                      >
-                        {ch}
-                      </button>
-                    ))}
+                <svg className={`w-6 h-6 transition-transform ${isChatOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                <span>{isChatOpen ? "Hide Chat" : "Show Chat"}</span>
+              </button>
+              {isChatOpen && (
+                <>
+                  <div className="relative h-[300px] rounded-xl border border-slate-700 bg-slate-900 mb-3 p-6">
+                    <section
+                      className="h-full overflow-y-auto"
+                      aria-label="Text chat messages"
+                    >
+                      <ChatBox
+                        messages={messages}
+                        loading={!connected}
+                        strangerTyping={connected && isStrangerTyping}
+                      />
+                    </section>
                   </div>
-                </div>
+
+                  <div ref={emojiWrapRef} className="relative mb-2">
+                    {emojiOpen && (
+                      <div className="absolute bottom-full left-0 right-0 z-20 mb-2 rounded-xl border border-slate-600 bg-slate-950 p-3">
+                        <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-300">
+                          Quick emoji
+                        </p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {QUICK_EMOJI.map((ch) => (
+                            <button
+                              key={ch}
+                              type="button"
+                              onClick={() => appendEmoji(ch)}
+                              className="rounded-lg border border-slate-600 bg-slate-800 hover:bg-slate-700 p-1.5 text-xl transition"
+                            >
+                              {ch}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <form onSubmit={sendMessage} className="flex items-center gap-2 bg-slate-800 p-3 rounded-xl border border-slate-700">
+                      <button
+                        type="button"
+                        onClick={() => setEmojiOpen((o) => !o)}
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-slate-600 text-slate-400 hover:text-slate-200 hover:bg-slate-700 transition"
+                        aria-label="Emoji"
+                      >
+                        <IconSmile />
+                      </button>
+                      <input
+                        value={message}
+                        onChange={(e) => onInputChange(e.target.value)}
+                        className="flex-1 border-0 bg-transparent py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none rounded"
+                        placeholder="Type a message..."
+                        maxLength={500}
+                        autoComplete="off"
+                      />
+                      <button
+                        type="submit"
+                        disabled={!message.trim()}
+                        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-slate-600 bg-slate-700 text-slate-300 hover:bg-slate-600 hover:text-white transition disabled:opacity-50"
+                        aria-label="Send message"
+                      >
+                        <IconSend />
+                      </button>
+                    </form>
+                  </div>
+
+                  <p className="hidden sm:block text-center text-xs text-slate-500 pt-3">Press ESC to leave chat</p>
+                </>
               )}
-
-              <form onSubmit={sendMessage} className="flex flex-wrap items-stretch gap-2 sm:flex-nowrap sm:items-center sm:gap-3">
-                <div className="flex min-w-0 flex-1 items-center gap-1.5 rounded-full border border-cyan-400/30 bg-black/55 px-2 py-2 shadow-[inset_0_0_24px_rgba(56,189,248,0.08),0_0_24px_rgba(56,189,248,0.08)] backdrop-blur-md sm:gap-2 sm:px-3">
-                  <button
-                    type="button"
-                    onClick={() => setEmojiOpen((o) => !o)}
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-fuchsia-500/30 text-fuchsia-200/90 shadow-[0_0_16px_rgba(217,70,239,0.2)] transition hover:border-fuchsia-400/50 hover:bg-fuchsia-950/40"
-                    aria-label="Emoji"
-                  >
-                    <IconSmile />
-                  </button>
-                  <input
-                    value={message}
-                    onChange={(e) => onInputChange(e.target.value)}
-                    className="min-w-0 flex-1 border-0 bg-transparent py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-0 sm:text-base"
-                    placeholder="Type a message..."
-                    maxLength={500}
-                    autoComplete="off"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={!message.trim()}
-                  className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full border border-fuchsia-400/40 bg-gradient-to-br from-fuchsia-600 via-purple-600 to-violet-700 text-white shadow-neon-magenta transition enabled:hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40"
-                  aria-label="Send message"
-                >
-                  <IconSend />
-                </button>
-              </form>
             </div>
-
-            <p className="text-center text-xs text-slate-500 pt-2">Press ESC to leave chat</p>
           </div>
         </div>
       </div>
     </div>
   )
 }
+

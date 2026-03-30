@@ -16,6 +16,9 @@ export default function SiteFooter({ className = "" }) {
           <Link to="/about" className={linkClass}>
             About / Contact
           </Link>
+          <Link to="/blog" className={linkClass}>
+            Blog
+          </Link>
           <Link to="/privacy" className={linkClass}>
             Privacy
           </Link>
