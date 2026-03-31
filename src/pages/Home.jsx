@@ -6,8 +6,8 @@ import SiteFooter from "../components/SiteFooter"
 
 const faqs = [
   {
-    question: "Is Mask free to use?",
-    answer: "Yes, Mask is completely free for random video chat and text chat."
+    question: "Is Shadowchaty free to use?",
+    answer: "Yes, Shadowchaty is completely free for random video chat and text chat."
   },
   {
     question: "Do I need to sign up?",
@@ -15,7 +15,7 @@ const faqs = [
   },
   {
     question: "Is this similar to Omegle?",
-    answer: "Yes, Mask works as an Omegle alternative with better UI and performance."
+    answer: "Yes, Shadowchaty works as an Omegle alternative with better UI and performance."
   },
   {
     question: "Can I chat with people worldwide?",
@@ -93,11 +93,11 @@ export default function Home(){
   </div>
   </section>
 
-  {/* What is Mask Chat? */}
+  {/* What is Shadowchaty Chat? */}
   <section className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-    <h2 className="text-2xl font-semibold text-white sm:text-3xl mb-6">What is Mask Chat?</h2>
+    <h2 className="text-2xl font-semibold text-white sm:text-3xl mb-6">What is Shadowchaty Chat?</h2>
     <p className="text-lg text-slate-300 leading-relaxed">
-      Mask is a free random video chat platform where you can talk to strangers worldwide.
+      Shadowchaty is a free random video chat platform where you can talk to strangers worldwide.
       It works similar to Omegle but with a modern interface and better experience.
     </p>
   </section>
@@ -106,16 +106,16 @@ export default function Home(){
   <section className="mx-auto max-w-3xl px-4 py-12 sm:px-6 space-y-6">
     <h2 className="text-2xl font-semibold text-white sm:text-3xl">Free Random Video Chat with Strangers</h2>
     <p className="text-lg text-slate-300 leading-relaxed">
-      Mask is a free random video chat platform that lets you connect with strangers from around the world instantly. 
-      If you are looking for an Omegle alternative, Mask provides a modern and smooth experience for chatting and video calling.
+      Shadowchaty is a free random video chat platform that lets you connect with strangers from around the world instantly. 
+      If you are looking for an Omegle alternative, Shadowchaty provides a modern and smooth experience for chatting and video calling.
     </p>
     <p className="text-lg text-slate-300 leading-relaxed">
       You can start chatting without any registration. Just open the website and get connected with a random person. 
-      Whether you want to make new friends, have fun conversations, or simply pass time, Mask makes it easy.
+      Whether you want to make new friends, have fun conversations, or simply pass time, Shadowchaty makes it easy.
     </p>
     <p className="text-lg text-slate-300 leading-relaxed">
       Our platform supports both text chat and video chat, giving you flexibility to communicate the way you prefer. 
-      With a clean interface and fast connection, Mask ensures a better experience compared to traditional chat platforms.
+      With a clean interface and fast connection, Shadowchaty ensures a better experience compared to traditional chat platforms.
     </p>
   </section>
 

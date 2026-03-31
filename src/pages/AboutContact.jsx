@@ -1,28 +1,28 @@
 import { Link } from "react-router-dom"
 import LegalPageShell from "../components/LegalPageShell"
 
-const contactEmail = "contact.maskchat@gmail.com"
+const contactEmail = "contact.shadowchaty@gmail.com"
 
 export default function AboutContact() {
   return (
     <LegalPageShell
       title="About & Contact"
-      description="About Mask — anonymous stranger text and video chat. Contact and site information."
+      description="About Shadowchaty — anonymous stranger text and video chat. Contact and site information."
     >
-      <h1 className="text-2xl font-semibold text-white sm:text-3xl">About Mask</h1>
-      <p className="text-sm text-slate-400 mb-8">Mask — anonymous stranger chat</p>
+      <h1 className="text-2xl font-semibold text-white sm:text-3xl">About Shadowchaty</h1>
+      <p className="text-sm text-slate-400 mb-8">Shadowchaty — anonymous stranger chat</p>
       <p className="text-lg text-slate-300 leading-relaxed mb-8">
-        Mask is a next-generation random video chat platform designed to connect people globally. 
+        Shadowchaty is a next-generation random video chat platform designed to connect people globally. 
         Our goal is to provide a safe, fast, and modern alternative to traditional chat platforms like Omegle.
       </p>
 
       <h1 className="text-2xl font-semibold text-white sm:text-3xl">About / Contact</h1>
-      <p className="text-sm text-slate-400">Mask — anonymous stranger chat</p>
+      <p className="text-sm text-slate-400">Shadowchaty — anonymous stranger chat</p>
 
       <section className="space-y-4 text-sm leading-relaxed text-slate-300 sm:text-base">
-        <h2 className="text-lg font-semibold text-white">What is Mask?</h2>
+        <h2 className="text-lg font-semibold text-white">What is Shadowchaty?</h2>
         <p>
-          Mask is a lightweight way to meet strangers for text or video conversations without creating an account.
+          Shadowchaty is a lightweight way to meet strangers for text or video conversations without creating an account.
           Matches are random; you can skip to the next person when you want a new chat.
         </p>
 
@@ -30,7 +30,7 @@ export default function AboutContact() {
         <p>
           Treat others respectfully. Do not share personal data you are not comfortable exposing to strangers. If
           someone makes you uncomfortable, use "Next Stranger" and leave the chat. Parents and guardians
-          should know Mask is intended for adults 18+.
+          should know Shadowchaty is intended for adults 18+.
         </p>
 
         <h2 className="pt-2 text-lg font-semibold text-white">Technology</h2>
@@ -55,7 +55,7 @@ export default function AboutContact() {
             Privacy Policy
           </Link>
           <Link to="/terms" className="text-violet-400 underline hover:text-violet-300">
-            Terms &amp; Conditions
+            Terms & Conditions
           </Link>
         </p>
       </section>

@@ -5,7 +5,7 @@ export default function Terms() {
   return (
     <LegalPageShell
       title="Terms & Conditions"
-      description="Terms and conditions for using Mask anonymous stranger chat and video."
+      description="Terms and conditions for using Shadowchaty anonymous stranger chat and video."
     >
       <h1 className="text-2xl font-semibold text-white sm:text-3xl">Terms &amp; Conditions</h1>
       <p className="text-sm text-slate-400">Last updated: March 28, 2026</p>
@@ -13,12 +13,12 @@ export default function Terms() {
       <section className="space-y-3 text-sm leading-relaxed text-slate-300 sm:text-base">
         <h2 className="text-lg font-semibold text-white">1. Agreement</h2>
         <p>
-          These Terms govern your use of Mask (the &quot;Service&quot;). By accessing or using the Service, you agree
+          These Terms govern your use of Shadowchaty (the "Service"). By accessing or using the Service, you agree
           to these Terms. If you do not agree, do not use the Service.
         </p>
 
         <h2 className="pt-2 text-lg font-semibold text-white">2. Eligibility</h2>
-        <p>You must be at least 18 years old to use the Service. By using Mask, you represent that you meet this age requirement.</p>
+        <p>You must be at least 18 years old to use the Service. By using Shadowchaty, you represent that you meet this age requirement.</p>
 
         <h2 className="pt-2 text-lg font-semibold text-white">3. Anonymous use</h2>
         <p>
@@ -44,14 +44,14 @@ export default function Terms() {
 
         <h2 className="pt-2 text-lg font-semibold text-white">6. Disclaimers</h2>
         <p>
-          THE SERVICE IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; WITHOUT WARRANTIES OF ANY KIND,
+          THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND,
           WHETHER EXPRESS OR IMPLIED. WE DO NOT WARRANT UNINTERRUPTED OR ERROR-FREE OPERATION. Stranger-to-stranger chat
           involves risk; you interact at your own discretion.
         </p>
 
         <h2 className="pt-2 text-lg font-semibold text-white">7. Limitation of liability</h2>
         <p>
-          TO THE MAXIMUM EXTENT PERMITTED BY LAW, MASK AND ITS OPERATORS WILL NOT BE LIABLE FOR ANY INDIRECT,
+          TO THE MAXIMUM EXTENT PERMITTED BY LAW, SHADOWCHATY AND ITS OPERATORS WILL NOT BE LIABLE FOR ANY INDIRECT,
           INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF DATA, PROFITS, OR GOODWILL, ARISING
           FROM YOUR USE OF THE SERVICE.
         </p>
@@ -64,7 +64,7 @@ export default function Terms() {
 
         <h2 className="pt-2 text-lg font-semibold text-white">9. Changes</h2>
         <p>
-          We may modify these Terms. Material changes may be indicated by updating the &quot;Last updated&quot; date.
+          We may modify these Terms. Material changes may be indicated by updating the "Last updated" date.
           Continued use constitutes acceptance of the revised Terms.
         </p>
 

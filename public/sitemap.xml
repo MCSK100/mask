@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mask-six.vercel.app/</loc>
+    <loc>https://shadowchaty.vercel.app/</loc>
     <changefreq>weekly</changefreq>
     <priority>1</priority>
   </url>
   <url>
-    <loc>https://mask-six.vercel.app/chat</loc>
+    <loc>https://shadowchaty.vercel.app/chat</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mask-six.vercel.app/video</loc>
+    <loc>https://shadowchaty.vercel.app/video</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mask-six.vercel.app/about</loc>
+    <loc>https://shadowchaty.vercel.app/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mask-six.vercel.app/privacy</loc>
+    <loc>https://shadowchaty.vercel.app/privacy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mask-six.vercel.app/terms</loc>
+    <loc>https://shadowchaty.vercel.app/terms</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

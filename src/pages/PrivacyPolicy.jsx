@@ -5,7 +5,7 @@ export default function PrivacyPolicy() {
   return (
     <LegalPageShell
       title="Privacy Policy"
-      description="How Mask handles data for anonymous stranger text and video chat — privacy policy."
+      description="How Shadowchaty handles data for anonymous stranger text and video chat — privacy policy."
     >
       <h1 className="text-2xl font-semibold text-white sm:text-3xl">Privacy Policy</h1>
       <p className="text-sm text-slate-400">Last updated: March 28, 2026</p>
@@ -13,14 +13,14 @@ export default function PrivacyPolicy() {
       <section className="space-y-3 text-sm leading-relaxed text-slate-300 sm:text-base">
         <h2 className="text-lg font-semibold text-white">1. Overview</h2>
         <p>
-          Mask (&quot;we&quot;, &quot;us&quot;) provides anonymous text and video chat between strangers. This policy
+          Shadowchaty ("we", "us") provides anonymous text and video chat between strangers. This policy
           describes what information may be processed when you use our website and realtime service, and your
-          choices. By using Mask, you agree to this policy.
+          choices. By using Shadowchaty, you agree to this policy.
         </p>
 
         <h2 className="pt-2 text-lg font-semibold text-white">2. No accounts</h2>
         <p>
-          Mask does not require registration. We do not ask for your name, email, or phone number to use basic chat
+          Shadowchaty does not require registration. We do not ask for your name, email, or phone number to use basic chat
           features.
         </p>
 
@@ -57,7 +57,7 @@ export default function PrivacyPolicy() {
 
         <h2 className="pt-2 text-lg font-semibold text-white">7. Children</h2>
         <p>
-          Mask is not intended for users under 18. If you believe a minor has used the service, contact us using the
+          Shadowchaty is not intended for users under 18. If you believe a minor has used the service, contact us using the
           details on the About page.
         </p>
 
@@ -75,7 +75,7 @@ export default function PrivacyPolicy() {
 
         <h2 className="pt-2 text-lg font-semibold text-white">10. Changes</h2>
         <p>
-          We may update this policy from time to time. The &quot;Last updated&quot; date will change when revisions are
+          We may update this policy from time to time. The "Last updated" date will change when revisions are
           posted. Continued use after changes means you accept the updated policy.
         </p>
 

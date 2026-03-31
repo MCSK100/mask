@@ -13,13 +13,13 @@ export default function Navbar() {
   }, [])
 
   return (
-    <nav className="flex flex-wrap items-center justify-between gap-2 p-3 backdrop-blur-md sm:gap-3 sm:p-6">
+    <nav className="flex flex-wrap items-center justify-between gap-2 px-6 backdrop-blur-md sm:gap-3">
       <Link to="/" className="flex min-w-0 items-center gap-2">
         <img
-          src="/mask-logo.png"
-          alt="Mask — anonymous chat"
-          className="h-9 w-auto max-w-[min(200px,55vw)] object-contain sm:h-11"
-          width={200}
+src="/shadowchaty-logo.png"
+alt="Shadowchaty — anonymous chat"
+className=""
+width={120}
           height={44}
           loading="eager"
         />

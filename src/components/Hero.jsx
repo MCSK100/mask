@@ -11,13 +11,9 @@ return(
 <section className="relative flex min-h-[70vh] flex-col items-center justify-center text-center px-4 py-10 sm:px-6">
 
 {/* Floating Mask Emojis */}
-<div className="absolute left-5 top-16 hidden text-5xl opacity-25 animate-float sm:block sm:left-10 sm:top-20 sm:text-6xl sm:opacity-30">
-🎭
-</div>
 
-<div className="absolute bottom-16 right-5 hidden text-5xl opacity-25 animate-float delay-200 sm:block sm:bottom-20 sm:right-10 sm:text-6xl sm:opacity-30">
-🎭
-</div>
+
+
 
 {/* Heading */}
 <motion.h1
@@ -26,9 +22,9 @@ animate={{opacity:1,y:0}}
 transition={{duration:0.8}}
 className="mb-6 text-3xl font-bold leading-tight sm:text-5xl md:text-7xl"
 >
-Chat <span className="text-purple-500">Anonymously</span>
+Talk to Strangers
 <br/>
-Behind The Mask
+Welcome to <span className="text-purple-500">Shadowchaty</span>
 </motion.h1>
 
 {/* Subtitle */}

@@ -10,7 +10,7 @@ export default function SiteFooter({ className = "" }) {
     >
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 sm:flex-row sm:justify-between sm:gap-6">
         <p className="text-center text-xs text-slate-500 sm:text-left">
-          © {new Date().getFullYear()} Mask. Anonymous stranger chat for adults. Use responsibly.
+© {new Date().getFullYear()} Shadowchaty. Anonymous stranger chat for adults. Use responsibly.
         </p>
         <nav aria-label="Legal and contact" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 sm:justify-end">
           <Link to="/about" className={linkClass}>
