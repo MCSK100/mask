@@ -2,11 +2,15 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import OnlineCounter from "./OnlineCounter"
 import { socket } from "../lib/socket"
+import { useFakePresence } from "../hooks/useFakePresence"
+
 
 export default function Navbar() {
   const [onlineCount, setOnlineCount] = useState(0)
+  const { count: fakeOnlineCount } = useFakePresence({ realCount: onlineCount })
 
   useEffect(() => {
+
     const handleOnline = (count) => setOnlineCount(Number(count) || 0)
     socket.on("online_count", handleOnline)
     return () => socket.off("online_count", handleOnline)
@@ -25,7 +29,8 @@ width={120}
         />
       </Link>
 
-      <OnlineCounter count={onlineCount} />
+      <OnlineCounter count={onlineCount} fakeCount={fakeOnlineCount} />
+
     </nav>
   )
 }

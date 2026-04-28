@@ -7,6 +7,7 @@ const navLink =
 export default function NeonRoomNav({
   status,
   onlineCount,
+  fakeOnlineCount,
   onBack,
   onNext,
   nextLabel = "Next Stranger"
@@ -27,6 +28,7 @@ export default function NeonRoomNav({
         <div className="flex flex-wrap items-center justify-end gap-1.5 sm:gap-3">
           <OnlineCounter
             count={onlineCount}
+            fakeCount={fakeOnlineCount}
             className="border-cyan-500/25 bg-slate-950/50 text-xs text-cyan-100/90 shadow-[0_0_20px_rgba(34,211,238,0.12)] backdrop-blur-md xs:text-sm sm:text-base"
           />
           <button

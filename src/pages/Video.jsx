@@ -9,6 +9,8 @@ import { getIceServers } from "../lib/webrtc"
 import { createMaskVideoPeer } from "../lib/maskWebRTC"
 import NeonAmbientBg from "../components/neon/NeonAmbientBg"
 import NeonRoomNav from "../components/neon/NeonRoomNav"
+import { useFakePresence } from "../hooks/useFakePresence"
+
 
 const QUICK_EMOJI = ["😀", "😂", "❤️", "🔥", "👍", "🎉", "😮", "🙏", "✨", "💬"]
 
@@ -56,7 +58,9 @@ export default function Video() {
   const [localStream, setLocalStream] = useState(null)
   const [remoteStream, setRemoteStream] = useState(null)
   const [onlineCount, setOnlineCount] = useState(0)
+  const { count: fakeOnlineCount } = useFakePresence({ realCount: onlineCount })
   const [toast, setToast] = useState({ message: "", type: "info" })
+
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState([])
   const [isStrangerTyping, setIsStrangerTyping] = useState(false)
@@ -320,9 +324,11 @@ export default function Video() {
         <NeonRoomNav
           status={status}
           onlineCount={onlineCount}
+          fakeOnlineCount={fakeOnlineCount}
           onBack={() => navigate("/")}
           onNext={nextStranger}
         />
+
 
         <div className="flex flex-1 flex-col px-3 pt-1 md:px-6 overflow-hidden">
           <div className="flex flex-1 flex-col mx-auto w-full max-w-6xl">
@@ -431,4 +437,3 @@ export default function Video() {
     </div>
   )
 }
-
