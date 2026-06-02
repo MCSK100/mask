@@ -1,6 +1,5 @@
 import { motion } from "framer-motion"
 import { useNavigate } from "react-router-dom"
-import CyberButton from "./CyberButton"
 
 export default function Hero() {
   const navigate = useNavigate()
@@ -82,13 +81,23 @@ export default function Hero() {
         transition={{ duration: 0.6, delay: 0.65 }}
         className="grid w-full max-w-xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5"
       >
-        <CyberButton onClick={() => navigate("/chat")} fullWidth>
-          💬 Text Chat
-        </CyberButton>
+        <button
+          type="button"
+          onClick={() => navigate("/chat")}
+          className="cta-btn"
+        >
+          <span>💬 Text Chat</span>
+          <span className="cta-arrow">→</span>
+        </button>
 
-        <CyberButton onClick={() => navigate("/video")} fullWidth>
-          🎥 Video Chat
-        </CyberButton>
+        <button
+          type="button"
+          onClick={() => navigate("/video")}
+          className="cta-btn"
+        >
+          <span>🎥 Video Chat</span>
+          <span className="cta-arrow">→</span>
+        </button>
       </motion.div>
 
       <motion.span
