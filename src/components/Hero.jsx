@@ -1,6 +1,10 @@
 import { motion } from "framer-motion"
+import { useNavigate } from "react-router-dom"
+import CyberButton from "./CyberButton"
 
 export default function Hero() {
+  const navigate = useNavigate()
+
   return (
     <section className="relative flex min-h-[70vh] flex-col items-center justify-center text-center px-4 py-10 sm:px-6">
 
@@ -20,36 +24,35 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.15 }}
-        className="mb-4 max-w-xl text-sm text-gray-400 sm:text-base"
+        className="mb-3 max-w-xl text-sm text-gray-400 sm:text-base"
       >
-        Every night at 12. People from everywhere come online
-        to talk with random strangers anonymously.
+        Every night at 12, strangers come online to chat anonymously.
       </motion.p>
 
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.25 }}
-        className="mb-6 max-w-xl text-sm text-gray-400 sm:text-base"
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="mb-8 max-w-xl text-sm text-gray-400 sm:text-base"
       >
-        No login. No identity. Just real late-night conversations.
+        No login. Just real late-night conversations.
       </motion.p>
 
       {/* Hook */}
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.35 }}
-        className="mb-2 max-w-xl text-sm italic text-slate-300 sm:text-base"
+        transition={{ duration: 0.6, delay: 0.3 }}
+        className="mb-6 max-w-xl text-lg font-bold italic text-white sm:text-2xl"
       >
-        Feeling bored? Can't sleep? Need someone to talk to?
+        Feeling bored? Can&rsquo;t sleep? Need someone to talk to?
       </motion.p>
 
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.45 }}
-        className="mb-8 max-w-xl text-sm font-medium text-purple-400 sm:text-base"
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="mb-8 max-w-xl text-base font-semibold text-purple-400 sm:text-lg"
       >
         Join the midnight chat now.
       </motion.p>
@@ -77,23 +80,25 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.65 }}
-        className="flex w-full max-w-lg flex-col items-center gap-3"
+        className="grid w-full max-w-xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5"
       >
-        <a
-          href="https://shadowchaty.vercel.app"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="neon-cta group inline-flex items-center gap-3 rounded-xl px-8 py-4 font-black uppercase tracking-[0.25em] text-base sm:px-12 sm:py-5 sm:text-2xl"
-        >
-          <span>Enter ShadowChat</span>
-          <span className="inline-block transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-110">
-            →
-          </span>
-        </a>
-        <span className="text-xs font-medium tracking-widest text-cyan-400/70 uppercase sm:text-sm">
-          shadowchaty.vercel.app
-        </span>
+        <CyberButton onClick={() => navigate("/chat")} fullWidth>
+          💬 Text Chat
+        </CyberButton>
+
+        <CyberButton onClick={() => navigate("/video")} fullWidth>
+          🎥 Video Chat
+        </CyberButton>
       </motion.div>
+
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.8 }}
+        className="mt-2 text-xs font-medium tracking-widest text-slate-500 uppercase sm:text-sm"
+      >
+        shadowchaty.vercel.app
+      </motion.span>
 
     </section>
 
