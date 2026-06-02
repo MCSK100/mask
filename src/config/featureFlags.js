@@ -8,7 +8,7 @@ export const FEATURE_FLAGS = {
   ENABLE_FAKE_COUNT: true,
 
   /** Enable AI fallback when no peer connects within timeout */
-  ENABLE_AI_FALLBACK: true,
+  ENABLE_AI_FALLBACK: false,
 
   /** Enable interest tags filter UI */
   ENABLE_FILTERS: true,

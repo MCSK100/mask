@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import OnlineCounter from "./OnlineCounter"
+import InstallPWA from "./InstallPWA"
 import { socket } from "../lib/socket"
 import { useFakePresence } from "../hooks/useFakePresence"
 
@@ -20,16 +21,19 @@ export default function Navbar() {
     <nav className="flex flex-wrap items-center justify-between gap-2 px-6 backdrop-blur-md sm:gap-3">
       <Link to="/" className="flex min-w-0 items-center gap-2">
         <img
-src="/shadowchaty-logo.png"
-alt="Shadowchaty — anonymous chat"
-className=""
-width={120}
+ src="/shadowchaty-logo.png"
+ alt="Shadowchaty — anonymous chat"
+ className=""
+ width={120}
           height={44}
           loading="eager"
         />
       </Link>
 
-      <OnlineCounter count={onlineCount} fakeCount={fakeOnlineCount} />
+      <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
+        <InstallPWA />
+        <OnlineCounter count={onlineCount} fakeCount={fakeOnlineCount} />
+      </div>
 
     </nav>
   )

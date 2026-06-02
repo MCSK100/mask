@@ -18,10 +18,35 @@ export default function ChatBox({ messages, loading = false, strangerTyping = fa
       aria-relevant="additions"
     >
       {loading && !messages.length && (
-        <div className="grid gap-4">
-          <div className="h-11 w-2/3 max-w-md animate-pulse rounded-2xl bg-cyan-950/50 shadow-[0_0_20px_rgba(56,189,248,0.08)]" />
-          <div className="ml-auto h-11 w-1/2 max-w-xs animate-pulse rounded-2xl bg-fuchsia-950/40 shadow-[0_0_20px_rgba(217,70,239,0.12)]" />
-          <div className="h-11 w-3/4 max-w-md animate-pulse rounded-2xl bg-cyan-950/50" />
+        <div className="grid place-items-center gap-5 rounded-2xl border border-dashed border-cyan-500/25 bg-slate-950/40 p-10 text-center backdrop-blur-sm">
+          <div className="relative flex h-16 w-16 items-center justify-center">
+            <span className="absolute inset-0 animate-ping rounded-full bg-cyan-500/15" />
+            <span className="absolute inset-2 animate-pulse rounded-full bg-cyan-500/20" />
+            <span className="relative grid h-10 w-10 place-items-center rounded-full border border-cyan-400/40 bg-cyan-950/60 text-cyan-200 shadow-[0_0_20px_rgba(56,189,248,0.35)]">
+              <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden>
+                <path
+                  d="M21 12a8.5 8.5 0 11-3.2-6.6M21 4v5h-5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          </div>
+          <div>
+            <p className="text-base font-semibold text-cyan-100 sm:text-lg">
+              Wait for the stranger to chat with you
+            </p>
+            <p className="mt-1 text-xs text-slate-400 sm:text-sm">
+              We are searching for someone nearby…
+            </p>
+          </div>
+          <span className="flex items-center gap-1.5 text-[11px] text-cyan-200/70">
+            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-cyan-300 [animation-delay:0ms]" />
+            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-cyan-300 [animation-delay:150ms]" />
+            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-cyan-300 [animation-delay:300ms]" />
+          </span>
         </div>
       )}
 

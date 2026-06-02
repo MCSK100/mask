@@ -1,0 +1,61 @@
+{
+  "name": "Shadowchaty — Anonymous Stranger Chat",
+  "short_name": "Shadowchaty",
+  "description": "Free random video & text chat with strangers. No signup. Talk to people worldwide instantly.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "lang": "en-US",
+  "dir": "ltr",
+  "categories": ["social", "lifestyle", "communication"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/shadowchaty-favicon.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "/shadowchaty-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/shadowchaty-favicon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Start Text Chat",
+      "short_name": "Text Chat",
+      "url": "/chat",
+      "icons": [
+        {
+          "src": "/shadowchaty-favicon.jpg",
+          "sizes": "96x96",
+          "type": "image/jpeg"
+        }
+      ]
+    },
+    {
+      "name": "Start Video Chat",
+      "short_name": "Video Chat",
+      "url": "/video",
+      "icons": [
+        {
+          "src": "/shadowchaty-favicon.jpg",
+          "sizes": "96x96",
+          "type": "image/jpeg"
+        }
+      ]
+    }
+  ]
+}

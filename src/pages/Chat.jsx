@@ -8,18 +8,8 @@ import NeonAmbientBg from "../components/neon/NeonAmbientBg"
 import NeonRoomNav from "../components/neon/NeonRoomNav"
 import ChatFilters from "../components/ChatFilters"
 import { useFakePresence } from "../hooks/useFakePresence"
-import { startAiFallback, stopAiFallback } from "../features/aiFallback"
-import { isEnabled } from "../config/featureFlags"
 
 const QUICK_EMOJI = ["😀", "😂", "❤️", "🔥", "👍", "🎉", "😮", "🙏", "✨", "💬"]
-
-const STATUS_HINTS = [
-  "Connecting you with people nearby...",
-  "Perfect for late night chats 🌙",
-  "Someone nearby is waiting to talk...",
-  "Finding someone interesting...",
-  "Looking for a match... 🔍"
-]
 
 function IconSend(props) {
   return (
@@ -70,13 +60,9 @@ export default function Chat() {
   const [emojiOpen, setEmojiOpen] = useState(false)
   const disconnectedRef = useRef(false)
   const emojiWrapRef = useRef(null)
-  const aiTimeoutRef = useRef(null)
-  const statusHintRef = useRef(null)
 
   // Growth features
   const { count: fakeOnlineCount } = useFakePresence({ realCount: onlineCount })
-  const enableAiFallback = isEnabled('ENABLE_AI_FALLBACK')
-  const enableStatusHints = isEnabled('ENABLE_STATUS_HINTS')
 
   useEffect(() => {
     const handleEsc = (e) => {
@@ -94,8 +80,6 @@ export default function Chat() {
     else socket.once("connect", join)
     return () => {
       socket.emit("leave_match")
-      stopAiFallback()
-      if (aiTimeoutRef.current) clearTimeout(aiTimeoutRef.current)
     }
   }, [])
 
@@ -109,40 +93,14 @@ export default function Chat() {
 
   useEffect(() => {
     const onWaiting = () => {
-      setStatus("Waiting for stranger...")
+      setStatus("Wait for the stranger to chat with you...")
       setMessages([])
-
-      // AI fallback: if no match within timeout, start AI mode
-      if (enableAiFallback) {
-        if (aiTimeoutRef.current) clearTimeout(aiTimeoutRef.current)
-        aiTimeoutRef.current = setTimeout(() => {
-          startAiFallback({
-            onMessage: (msg) => setMessages((prev) => [...prev, msg]),
-            onTyping: (typing) => setIsStrangerTyping(typing),
-            onStatus: (hint) => setStatus(hint)
-          })
-        }, 3500)
-      }
-
-      // Rotate status hints
-      if (enableStatusHints) {
-        let hintIndex = 0
-        if (statusHintRef.current) clearInterval(statusHintRef.current)
-        statusHintRef.current = setInterval(() => {
-          setStatus(STATUS_HINTS[hintIndex % STATUS_HINTS.length])
-          hintIndex++
-        }, 4000)
-      }
     }
 
     const onMatched = () => {
       setStatus("Connected to stranger")
       setMessages([])
       setIsStrangerTyping(false)
-      // Stop AI fallback immediately when real user connects
-      stopAiFallback()
-      if (aiTimeoutRef.current) clearTimeout(aiTimeoutRef.current)
-      if (statusHintRef.current) clearInterval(statusHintRef.current)
     }
 
     const onMessage = (msg) => {
@@ -154,9 +112,6 @@ export default function Chat() {
       setStatus("Stranger disconnected. Reconnecting...")
       setMessages([])
       setIsStrangerTyping(false)
-      stopAiFallback()
-      if (aiTimeoutRef.current) clearTimeout(aiTimeoutRef.current)
-      if (statusHintRef.current) clearInterval(statusHintRef.current)
     }
 
     const onOnlineCount = (count) => setOnlineCount(Number(count) || 0)
@@ -180,8 +135,6 @@ export default function Chat() {
     const onServerDisconnect = () => {
       disconnectedRef.current = true
       setToast({ message: "Connection lost. Reconnecting...", type: "error" })
-      stopAiFallback()
-      if (aiTimeoutRef.current) clearTimeout(aiTimeoutRef.current)
     }
 
     const onRateLimited = ({ reason }) => {
@@ -218,11 +171,8 @@ export default function Chat() {
       socket.off("stop_typing", onStopTyping)
       socket.off("rate_limited", onRateLimited)
       manager?.off("reconnect_attempt", onReconnectAttempt)
-      stopAiFallback()
-      if (aiTimeoutRef.current) clearTimeout(aiTimeoutRef.current)
-      if (statusHintRef.current) clearInterval(statusHintRef.current)
     }
-  }, [enableAiFallback, enableStatusHints])
+  }, [])
 
   useEffect(() => {
     if (!toast.message) return
@@ -247,9 +197,6 @@ export default function Chat() {
     setStatus("Finding next stranger...")
     setMessages([])
     setIsStrangerTyping(false)
-    stopAiFallback()
-    if (aiTimeoutRef.current) clearTimeout(aiTimeoutRef.current)
-    if (statusHintRef.current) clearInterval(statusHintRef.current)
     socket.emit("next_stranger")
   }
 

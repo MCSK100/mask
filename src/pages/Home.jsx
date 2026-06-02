@@ -86,7 +86,7 @@ export default function Home(){
         <div className="rounded-2xl border border-slate-700/50 bg-slate-900/40 p-6 backdrop-blur-sm">
           <div className="mb-3 text-3xl">🚀</div>
           <h3 className="font-semibold text-white mb-2">Zero Setup</h3>
-          <p className="text-sm text-slate-400">No downloads, no signup. Open and chat immediately.</p>
+          <p className="text-sm text-slate-400">Install as an app or open in browser. No signup. Chat immediately.</p>
         </div>
         <div className="rounded-2xl border border-slate-700/50 bg-slate-900/40 p-6 backdrop-blur-sm">
           <div className="mb-3 text-3xl">💬</div>
