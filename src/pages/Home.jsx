@@ -138,21 +138,6 @@ export default function Home(){
         <p className="text-sm text-slate-400">Desktop, tablet, or mobile. Fully responsive design.</p>
       </div>
     </div>
-
-    <div className="mt-12 text-center">
-      <p className="text-slate-400 mb-6 max-w-xl mx-auto">
-        Whether you want to make new friends, have fun conversations, or simply pass time, 
-        Shadowchaty makes it easy. Start chatting without any registration.
-      </p>
-      <div className="flex flex-wrap justify-center gap-5">
-        <CyberButton onClick={() => navigate("/chat")}>
-          Start Chatting Now
-        </CyberButton>
-        <CyberButton onClick={() => navigate("/video")}>
-          Video Chat
-        </CyberButton>
-      </div>
-    </div>
   </section>
 
   <SiteFooter />
