@@ -14,8 +14,7 @@ export default function Hero() {
         transition={{ duration: 0.8 }}
         className="mb-6 text-3xl font-bold leading-tight sm:text-5xl md:text-7xl"
       >
-        <span className="mr-2">🌙</span>
-        12 PM Night Chat
+        Connect. Chat. Stay Anonymous.
       </motion.h1>
 
       {/* Subtitle */}
@@ -25,7 +24,7 @@ export default function Hero() {
         transition={{ duration: 0.6, delay: 0.15 }}
         className="mb-3 max-w-xl text-sm text-gray-400 sm:text-base"
       >
-        Every night at 12, strangers come online to chat anonymously.
+        Where Meaningful Conversations Begin.
       </motion.p>
 
       <motion.p
@@ -34,68 +33,22 @@ export default function Hero() {
         transition={{ duration: 0.6, delay: 0.2 }}
         className="mb-8 max-w-xl text-sm text-gray-400 sm:text-base"
       >
-        No login. Just real late-night conversations.
+        ShadowChat is a modern anonymous chat platform designed for people who value privacy and authentic connections. Join instantly, chat freely, and meet new people without revealing your identity.
       </motion.p>
-
-      {/* Hook */}
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-        className="mb-6 max-w-xl text-lg font-bold italic text-white sm:text-2xl"
-      >
-        Feeling bored? Can&rsquo;t sleep? Need someone to talk to?
-      </motion.p>
-
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="mb-8 max-w-xl text-base font-semibold text-purple-400 sm:text-lg"
-      >
-        Join the midnight chat now.
-      </motion.p>
-
-      {/* Micro Hooks */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.55 }}
-        className="mb-6 flex flex-wrap items-center justify-center gap-3 text-xs text-slate-400 sm:text-sm"
-      >
-        <span className="inline-flex items-center gap-1 rounded-full border border-cyan-500/20 bg-cyan-950/30 px-3 py-1">
-          💬 Talk with strangers online
-        </span>
-        <span className="inline-flex items-center gap-1 rounded-full border border-fuchsia-500/20 bg-fuchsia-950/30 px-3 py-1">
-          🌍 Meet people worldwide
-        </span>
-        <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-950/30 px-3 py-1">
-          🔒 Stay anonymous
-        </span>
-      </motion.div>
 
       {/* CTA */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.65 }}
-        className="grid w-full max-w-xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5"
+        className="w-full max-w-xl"
       >
         <button
           type="button"
           onClick={() => navigate("/chat")}
           className="cta-btn"
         >
-          <span>💬 Text Chat</span>
-          <span className="cta-arrow">→</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => navigate("/video")}
-          className="cta-btn"
-        >
-          <span>🎥 Video Chat</span>
+          <span>Start Chat</span>
           <span className="cta-arrow">→</span>
         </button>
       </motion.div>
