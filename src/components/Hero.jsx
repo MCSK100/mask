@@ -41,14 +41,22 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.65 }}
-        className="w-full max-w-xl"
+        className="w-full max-w-xl flex flex-col sm:flex-row gap-4 justify-center"
       >
         <button
           type="button"
-          onClick={() => navigate("/chat")}
+          onClick={() => navigate("/video-chat")}
           className="cta-btn"
         >
-          <span>Start Chat</span>
+          <span>Video Chat</span>
+          <span className="cta-arrow">→</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate("/chat")}
+          className="cta-btn cta-btn-secondary"
+        >
+          <span>Text Chat</span>
           <span className="cta-arrow">→</span>
         </button>
       </motion.div>
