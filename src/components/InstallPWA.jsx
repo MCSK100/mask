@@ -86,11 +86,7 @@ export default function InstallPWA({ className = "" }) {
   // If truly standalone & installed, hide the widget entirely.
   if (IS_STANDALONE || (installed && wasInstalledBefore)) return null
 
-  // Show the header install button reliably (beforeinstallprompt, iOS, or already installed -> hide).
-  const shouldRenderButton = Boolean(deferredPrompt) || IS_IOS
-  if (!open && !updateAvailable && !shouldRenderButton) return null
-
-  // Toolbar "Install" button (always visible when installable)
+// Toolbar "Install" button — always visible (permanent static install button)
   if (!open && !updateAvailable) {
     return (
       <button
@@ -116,14 +112,20 @@ export default function InstallPWA({ className = "" }) {
     )
   }
 
-  // Update available banner
+// Update available banner — centered overlay with backdrop
   if (updateAvailable && !open) {
     return (
       <div
         role="dialog"
         aria-label="Update available"
-        className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-md rounded-2xl border border-cyan-400/30 bg-slate-950/95 p-4 text-sm text-slate-100 shadow-[0_0_40px_rgba(34,211,238,0.25)] backdrop-blur-xl sm:bottom-6 sm:p-5"
+        aria-modal="true"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+        onClick={() => setUpdateAvailable(false)}
       >
+        <div
+          className="relative w-full max-w-md rounded-2xl border border-cyan-400/30 bg-slate-950/95 p-4 text-sm text-slate-100 shadow-[0_0_40px_rgba(34,211,238,0.25)] backdrop-blur-xl sm:p-5"
+          onClick={(e) => e.stopPropagation()}
+        >
         <div className="flex items-start gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cyan-500/15 text-xl">
             🔄
@@ -158,7 +160,7 @@ export default function InstallPWA({ className = "" }) {
           >
             Later
           </button>
-          <button
+<button
             type="button"
             onClick={handleUpdate}
             className="rounded-full border border-cyan-400/50 bg-cyan-500/20 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-cyan-100 shadow-[0_0_20px_rgba(34,211,238,0.35)] transition hover:bg-cyan-500/30"
@@ -167,16 +169,26 @@ export default function InstallPWA({ className = "" }) {
           </button>
         </div>
       </div>
+      </div>
     )
   }
 
-  // Install dialog
+// Install dialog — centered overlay with backdrop
   return (
     <div
       role="dialog"
       aria-label="Install Shadowchaty"
-      className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-md rounded-2xl border border-emerald-400/30 bg-slate-950/95 p-4 text-sm text-slate-100 shadow-[0_0_40px_rgba(16,185,129,0.25)] backdrop-blur-xl sm:bottom-6 sm:p-5"
+      aria-modal="true"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+      onClick={() => {
+        markDismissed()
+        setOpen(false)
+      }}
     >
+      <div
+        className="relative w-full max-w-md rounded-2xl border border-emerald-400/30 bg-slate-950/95 p-4 text-sm text-slate-100 shadow-[0_0_40px_rgba(16,185,129,0.25)] backdrop-blur-xl sm:p-5"
+        onClick={(e) => e.stopPropagation()}
+      >
       <div className="flex items-start gap-3">
         <img
           src="/shadowchaty-favicon.jpg"
@@ -268,10 +280,11 @@ export default function InstallPWA({ className = "" }) {
           </svg>
           {checking ? "Checking…" : "Check for updates"}
         </button>
-        {updateAvailable ? (
+{updateAvailable ? (
           <span className="ml-2 text-xs font-medium text-cyan-300">✓ New version ready</span>
         ) : null}
       </div>
+    </div>
     </div>
   )
 }
