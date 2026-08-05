@@ -4,6 +4,7 @@ import Hero from "../components/Hero"
 import ParticlesBG from "../components/ParticlesBG"
 import SiteFooter from "../components/SiteFooter"
 import CyberButton from "../components/CyberButton"
+import { CircularCarousel } from "../components/ui/circular-carousel"
 
 export default function Home(){
   const navigate = useNavigate()
@@ -99,38 +100,36 @@ export default function Home(){
         </div>
       </div>
       
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="group relative rounded-2xl border border-slate-700/50 bg-gradient-to-br from-slate-900/80 to-slate-900/40 p-6 backdrop-blur-xl transition-all duration-300 hover:border-purple-500/40 hover:shadow-lg hover:shadow-purple-500/10 hover:-translate-y-1">
-          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10 text-2xl transition-transform group-hover:scale-110">
-            🌍
-          </div>
-          <h3 className="font-semibold text-white mb-2 text-lg">Global Connections</h3>
-          <p className="text-sm text-slate-400 leading-relaxed">Meet people from every corner of the world instantly.</p>
-        </div>
-        
-        <div className="group relative rounded-2xl border border-slate-700/50 bg-gradient-to-br from-slate-900/80 to-slate-900/40 p-6 backdrop-blur-xl transition-all duration-300 hover:border-pink-500/40 hover:shadow-lg hover:shadow-pink-500/10 hover:-translate-y-1">
-          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-pink-500/10 text-2xl transition-transform group-hover:scale-110">
-            🚀
-          </div>
-          <h3 className="font-semibold text-white mb-2 text-lg">Zero Setup</h3>
-          <p className="text-sm text-slate-400 leading-relaxed">Install as an app or open in browser. No signup. Chat immediately.</p>
-        </div>
-        
-        <div className="group relative rounded-2xl border border-slate-700/50 bg-gradient-to-br from-slate-900/80 to-slate-900/40 p-6 backdrop-blur-xl transition-all duration-300 hover:border-indigo-500/40 hover:shadow-lg hover:shadow-indigo-500/10 hover:-translate-y-1">
-          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/10 text-2xl transition-transform group-hover:scale-110">
-            💬
-          </div>
-          <h3 className="font-semibold text-white mb-2 text-lg">Text & Video</h3>
-          <p className="text-sm text-slate-400 leading-relaxed">Switch between text chat and video chat anytime.</p>
-        </div>
-        
-        <div className="group relative rounded-2xl border border-slate-700/50 bg-gradient-to-br from-slate-900/80 to-slate-900/40 p-6 backdrop-blur-xl transition-all duration-300 hover:border-cyan-500/40 hover:shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-1">
-          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-500/10 text-2xl transition-transform group-hover:scale-110">
-            🛡️
-          </div>
-          <h3 className="font-semibold text-white mb-2 text-lg">Private & Safe</h3>
-          <p className="text-sm text-slate-400 leading-relaxed">End-to-end encrypted connections. No logs kept.</p>
-        </div>
+<div className="flex items-center justify-center">
+        <CircularCarousel
+          items={[
+            {
+              id: "global",
+              title: "Global Connections",
+              description: "Meet people from every corner of the world instantly.",
+              tag: "Worldwide",
+            },
+            {
+              id: "zero",
+              title: "Zero Setup",
+              description: "Install as an app or open in browser. No signup. Chat immediately.",
+              tag: "Instant",
+            },
+            {
+              id: "text-video",
+              title: "Text & Video",
+              description: "Switch between text chat and video chat anytime.",
+              tag: "Omnichannel",
+            },
+            {
+              id: "private",
+              title: "Private & Safe",
+              description: "End-to-end encrypted connections. No logs kept.",
+              tag: "Encrypted",
+            },
+          ]}
+          autoPlay
+        />
       </div>
     </div>
   </section>
