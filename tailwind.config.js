@@ -1,8 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
-  theme: {
+theme: {
     extend: {
+      fontFamily: {
+        display: ["Sora", "sans-serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
+      },
       boxShadow: {
         "neon-pink": "0 0 20px rgba(236, 72, 153, 0.45), 0 0 40px rgba(236, 72, 153, 0.2), inset 0 0 30px rgba(236, 72, 153, 0.08)",
         "neon-blue": "0 0 20px rgba(56, 189, 248, 0.45), 0 0 40px rgba(56, 189, 248, 0.2), inset 0 0 30px rgba(56, 189, 248, 0.08)",
