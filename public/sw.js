@@ -3,7 +3,7 @@
  * Enables PWA install + lightweight offline caching.
  */
 
-const CACHE_VERSION = "shadowchaty-v1"
+const CACHE_VERSION = "shadowchaty-v2"
 const STATIC_CACHE = `${CACHE_VERSION}-static`
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`
 
@@ -34,6 +34,10 @@ self.addEventListener("activate", (event) => {
           .map((key) => caches.delete(key))
       )
       await self.clients.claim()
+
+      // Notify all controlled clients that a new version is active
+      const clients = await self.clients.matchAll({ type: "window" })
+      clients.forEach((client) => client.postMessage({ type: "NEW_VERSION" }))
     })()
   )
 })
