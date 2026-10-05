@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import { KeyRound, User, Lock, ArrowRight, LogIn } from "lucide-react"
 import { normalizeCode } from "../utils/meetingCode"
-import { roomsApi } from "../services/api"
+import { roomsApi, meetingsApi } from "../services/api"
 import { AuroraShell, AuroraBadge, SectionTab } from "../components/aurora/AuroraChrome"
 
 export default function JoinMeeting() {
@@ -22,7 +22,16 @@ export default function JoinMeeting() {
     if (!name.trim()) { setErr("Enter your display name."); return }
     setBusy(true)
     try {
-      await roomsApi.validate(c, password)
+      // Primary: LiveKit meetings metadata; fallback: legacy mesh validation.
+      try {
+        await meetingsApi.get(c)
+      } catch (e) {
+        if (e?.status === 404) await roomsApi.validate(c, password)
+        else if (e?.status === 410 || e?.status === 403 || e?.status === 401) throw e
+        else {
+          try { await roomsApi.validate(c, password) } catch { throw e }
+        }
+      }
       try { sessionStorage.setItem("sm_name", name.trim()) } catch {}
       navigate(`/meet/${c}?name=${encodeURIComponent(name.trim())}${password ? `&pwd=${encodeURIComponent(password)}` : ""}`)
     } catch (e2) {

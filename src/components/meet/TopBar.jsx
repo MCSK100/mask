@@ -1,26 +1,61 @@
-import { Video, Users, Clock, Radio, UserPlus, CircleDot } from "lucide-react"
+import {
+  Video, LayoutGrid, MonitorUp, PenTool, FolderOpen, BarChart3,
+  Users, Clock, MessageSquare, Radio
+} from "lucide-react"
 
-export function TopBar({ title, code, count, timer, conn, recording, live, onInvite }) {
+export function TopBar({
+  title, code, count, timer, recording,
+  activeTab, onTab,
+}) {
+  const tabs = [
+    { id: "stage", label: "Video Stage", Icon: LayoutGrid },
+    { id: "share", label: "Screen Share", Icon: MonitorUp },
+    { id: "board", label: "Whiteboard", Icon: PenTool },
+    { id: "docs", label: "Documents", Icon: FolderOpen },
+    { id: "polls", label: "Polls", Icon: BarChart3 },
+    { id: "breakout", label: "Breakout", Icon: Users },
+  ]
   return (
-    <header className="meet-topbar flex items-center justify-between gap-3 px-3 py-2 sm:px-5">
-      <div className="flex min-w-0 items-center gap-3">
-        <div className="grid h-9 w-9 place-items-center rounded-[10px] bg-[#F0531C] text-white">
-          <Video size={17} />
+    <header className="flex items-center gap-3 px-3 py-2.5 sm:px-4" style={{ background: "#fff", borderBottom: "1px solid rgba(30,70,140,.1)" }}>
+      <div className="flex min-w-0 items-center gap-2.5">
+        <div className="grid h-8 w-8 flex-none place-items-center rounded-[10px] bg-[#0D99FF] text-white">
+          <Video size={16} />
         </div>
-        <div className="min-w-0">
-          <h1 className="truncate font-display text-[15px] font-bold text-[#14202B] sm:text-base">{title || "ShadowMeet"}</h1>
-          <p className="flex items-center gap-2 text-[11px] font-semibold text-[#4A6173]">
-            <span className="rounded-md bg-[#F1F6FA] border border-[#14202b22] px-1.5 py-0.5 font-mono tracking-widest text-[#14202B]">{code}</span>
-            <span className="flex items-center gap-1"><CircleDot size={11} color={conn === "Good" ? "#27c06b" : "#8AA6B8"} /> {conn}</span>
-            <span className="flex items-center gap-1 tabular-nums"><Clock size={11} /> {timer}</span>
-          </p>
-        </div>
+        <h1 className="truncate text-[14px] font-bold text-[#16283A]">{title || "Algebra 101"}</h1>
+        <span className="hidden font-mono text-[11px] tracking-widest text-[#8AA6B8] sm:block">{code}</span>
+        <span className="flex flex-none items-center gap-1 rounded-md bg-[#E8382F] px-2 py-0.5 text-[10px] font-bold tracking-wide text-white">
+          <Radio size={10} /> LIVE
+        </span>
+        {recording && (
+          <span className="flex flex-none items-center gap-1 rounded-md bg-[#16283A] px-2 py-0.5 text-[10px] font-bold text-white">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-red-500" /> REC
+          </span>
+        )}
       </div>
-      <div className="flex items-center gap-2 text-xs">
-        {recording && <span className="flex items-center gap-1.5 rounded-full bg-[#F0531C] px-2.5 py-1 font-bold text-white"><span className="h-2 w-2 animate-pulse rounded-full bg-white" /> REC</span>}
-        {live && <span className="rounded-full bg-[#F0531C] px-2.5 py-1 font-bold text-white">LIVE</span>}
-        <span className="flex items-center gap-1 rounded-full bg-[#14202B] px-2.5 py-1 font-bold text-white"><Users size={12} /> {count} Here</span>
-        <button onClick={onInvite} className="aurora-btn-white hidden !py-1.5 sm:flex items-center gap-1.5"><UserPlus size={13} /> Invite</button>
+
+      <nav className="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto" aria-label="Stage">
+        {tabs.map(({ id, label, Icon }) => (
+          <button
+            key={id}
+            onClick={() => onTab(id)}
+            className={`classroom-tab ${activeTab === id ? "active" : ""}`}
+            title={label}
+          >
+            <Icon size={14} /> {label}
+          </button>
+        ))}
+      </nav>
+
+      <div className="flex flex-none items-center gap-2 text-[12px] font-semibold text-[#5B7290]">
+        <span className="hidden items-center gap-1.5 tabular-nums md:flex">
+          <Clock size={13} /> {timer}
+        </span>
+        <span className="hidden items-center gap-1 rounded-full bg-[#F1F6FA] px-2.5 py-1 lg:flex">
+          <Users size={12} /> {count}
+        </span>
+        <button onClick={() => onTab("chat")} aria-label="Chat" className="classroom-rail-btn" style={{ width: "32px", height: "32px" }}>
+          <MessageSquare size={15} />
+        </button>
       </div>
     </header>
   )

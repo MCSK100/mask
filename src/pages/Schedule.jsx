@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { Copy, Video, CalendarPlus, Download, Link2 } from "lucide-react"
-import { roomsApi } from "../services/api"
+import { roomsApi, meetingsApi } from "../services/api"
 import { googleCalendarUrl, icsContent, downloadIcs } from "../utils/calendar"
 import { AuroraShell, AuroraBadge, SectionTab } from "../components/aurora/AuroraChrome"
 
@@ -13,7 +13,17 @@ export default function Schedule() {
   const [err, setErr] = useState(null)
 
   useEffect(() => {
-    roomsApi.get(code).then((d) => setRoom(d.room)).catch((e) => setErr(e.message))
+    let alive = true
+    meetingsApi.get(code)
+      .then((d) => {
+        if (!alive) return
+        const m = d.meeting
+        setRoom({ code: m.meetingCode, title: m.title, roomType: m.roomType || "meeting", status: m.status, scheduledAt: m.scheduledAt, durationMin: 60 })
+      })
+      .catch(() => {
+        roomsApi.get(code).then((d) => { if (alive) setRoom(d.room) }).catch((e) => { if (alive) setErr(e.message) })
+      })
+    return () => { alive = false }
   }, [code])
 
   const link = typeof window !== "undefined" ? `${window.location.origin}/meet/${code}` : `/meet/${code}`

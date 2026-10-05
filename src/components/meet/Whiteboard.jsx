@@ -1,49 +1,22 @@
-import { useEffect, useRef, useState } from "react"
-import { socket } from "../../lib/socket"
-import { PenTool, Eraser, Minus, MoveUpRight, Square, Circle, Type, Download, Trash2 } from "lucide-react"
+import { useEffect, useImperativeHandle, useRef, useState, forwardRef } from "react"
+import {
+  MousePointer2, PenTool, Eraser, Minus, MoveUpRight, Square, Circle, Type,
+  Undo2, Redo2, Trash2, Download
+} from "lucide-react"
 
-/** Real-time collaborative canvas. Emits incremental strokes via wb_op. */
-export function Whiteboard({ onOp, canDraw }) {
+const COLORS = ["#16283A", "#0D99FF", "#7CB8F5", "#E8382F", "#22B573", "#F5B301"]
+
+/**
+ * Classroom whiteboard — white canvas card with left rail + bottom color bar.
+ * Realtime transport is LiveKit data (ops only, never full images).
+ * Parent sends local ops via `onOp` and delivers remote ops via ref.applyRemoteOp().
+ */
+export const Whiteboard = forwardRef(function Whiteboard({ onOp, canDraw, remoteOps = [] }, ref) {
   const canvasRef = useRef(null)
   const [tool, setTool] = useState("pen")
-  const [color, setColor] = useState("#F0531C")
-  const [size, setSize] = useState(3)
+  const [color, setColor] = useState("#16283A")
+  const [size] = useState(3)
   const drawing = useRef(null)
-  const undoStack = useRef([])
-
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const resize = () => {
-      const parent = canvas.parentElement
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      const w = parent.clientWidth, h = Math.max(320, parent.clientHeight - 8)
-      const tmp = document.createElement("canvas")
-      tmp.width = canvas.width; tmp.height = canvas.height
-      try { tmp.getContext("2d").drawImage(canvas, 0, 0) } catch {}
-      canvas.width = w * dpr; canvas.height = h * dpr
-      canvas.style.width = `${w}px`; canvas.style.height = `${h}px`
-      const ctx = canvas.getContext("2d")
-      ctx.scale(dpr, dpr)
-      ctx.lineCap = "round"; ctx.lineJoin = "round"
-      try { ctx.drawImage(tmp, 0, 0, w, h) } catch {}
-    }
-    resize()
-    window.addEventListener("resize", resize)
-    return () => window.removeEventListener("resize", resize)
-  }, [])
-
-  // incoming ops
-  useEffect(() => {
-    const onRemote = ({ op }) => applyOp(op)
-    socket.on("wb_op", onRemote)
-    socket.on("wb_clear", () => {
-      const c = canvasRef.current
-      c?.getContext("2d")?.clearRect(0, 0, c.width, c.height)
-    })
-    return () => { socket.off("wb_op", onRemote); socket.off("wb_clear") }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [color, size])
 
   const applyOp = (op) => {
     const canvas = canvasRef.current
@@ -75,10 +48,106 @@ export function Whiteboard({ onOp, canDraw }) {
         }
       }
     } else if (op.t === "text" && op.text) {
-      ctx.fillStyle = op.color; ctx.font = `${op.size * 5}px Inter, sans-serif`
+      ctx.fillStyle = op.color; ctx.font = `${op.size * 5}px 'Hanken Grotesk', sans-serif`
       ctx.fillText(op.text.slice(0, 200), op.x, op.y)
     }
   }
+
+  // Spec ops {op:'draw'|..., tool, points, color, width} <-> legacy canvas ops.
+  const normalizeOp = (msg) => {
+    if (!msg || typeof msg !== "object") return null
+    if (msg.t) return msg // already legacy
+    if (msg.op === "draw" || msg.op === "erase") {
+      return {
+        t: "stroke",
+        pts: msg.points || [],
+        color: msg.color || "#16283A",
+        size: msg.width || 3,
+        mode: msg.op === "erase" ? "erase" : "draw",
+      }
+    }
+    if (msg.op === "shape") {
+      return {
+        t: "shape", kind: msg.tool || "rect",
+        shape: msg.points?.length >= 2 ? [...msg.points[0], ...msg.points[1]] : null,
+        color: msg.color || "#16283A", size: msg.width || 3,
+      }
+    }
+    if (msg.op === "text") {
+      return { t: "text", text: msg.text || "", x: msg.points?.[0]?.[0] || 0, y: msg.points?.[0]?.[1] || 0, color: msg.color || "#16283A", size: msg.width || 3 }
+    }
+    return null
+  }
+
+  const emitSpec = (legacy) => {
+    if (!legacy) return
+    if (legacy.t === "stroke") {
+      onOp?.({ op: legacy.mode === "erase" ? "erase" : "draw", tool: legacy.mode === "erase" ? "erase" : "pen", points: legacy.pts, color: legacy.color, width: legacy.size })
+    } else if (legacy.t === "shape") {
+      const [x1, y1, x2, y2] = legacy.shape || [0, 0, 0, 0]
+      onOp?.({ op: "shape", tool: legacy.kind, points: [[x1, y1], [x2, y2]], color: legacy.color, width: legacy.size })
+    } else if (legacy.t === "text") {
+      onOp?.({ op: "text", tool: "text", points: [[legacy.x, legacy.y]], text: legacy.text, color: legacy.color, width: legacy.size })
+    }
+  }
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const resize = () => {
+      const parent = canvas.parentElement
+      if (!parent) return
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      const w = parent.clientWidth, h = Math.max(280, parent.clientHeight - 4)
+      const tmp = document.createElement("canvas")
+      tmp.width = canvas.width; tmp.height = canvas.height
+      try { tmp.getContext("2d").drawImage(canvas, 0, 0) } catch { /* keep blank on resize failure */ }
+      canvas.width = w * dpr; canvas.height = h * dpr
+      canvas.style.width = `${w}px`; canvas.style.height = `${h}px`
+      const ctx = canvas.getContext("2d")
+      ctx.scale(dpr, dpr)
+      ctx.lineCap = "round"; ctx.lineJoin = "round"
+      try { ctx.drawImage(tmp, 0, 0, w, h) } catch { /* keep blank on resize failure */ }
+    }
+    resize()
+    window.addEventListener("resize", resize)
+    return () => window.removeEventListener("resize", resize)
+  }, [])
+
+  // Remote ops arrive via LiveKit data through the `remoteOps` prop
+  // (parent appends; each mounted instance applies new entries).
+  // Supports both legacy socket-style ops {t:'stroke'...} and spec ops {op:'draw'...}.
+  const lastSeq = useRef(-1)
+  useEffect(() => {
+    for (const msg of remoteOps) {
+      if (msg._seq !== undefined && msg._seq <= lastSeq.current) continue
+      if (msg._seq !== undefined) lastSeq.current = msg._seq
+      if (msg.op === "clear") {
+        const c = canvasRef.current
+        c?.getContext("2d")?.clearRect(0, 0, c.width, c.height)
+        continue
+      }
+      const legacy = normalizeOp(msg)
+      if (legacy) applyOp(legacy)
+    }
+  }, [remoteOps])
+
+  useImperativeHandle(ref, () => ({
+    applyRemoteOp(msg) {
+      if (!msg) return
+      if (msg.op === "clear") {
+        const c = canvasRef.current
+        c?.getContext("2d")?.clearRect(0, 0, c.width, c.height)
+        return
+      }
+      const legacy = normalizeOp(msg)
+      if (legacy) applyOp(legacy)
+    },
+    clear() {
+      const c = canvasRef.current
+      c?.getContext("2d")?.clearRect(0, 0, c.width, c.height)
+    },
+  }))
 
   const pos = (e) => {
     const canvas = canvasRef.current
@@ -95,7 +164,7 @@ export function Whiteboard({ onOp, canDraw }) {
     drawing.current = { pts: [[x, y]], start: [x, y], text: tool === "text" ? prompt("Text:") || "" : null }
     if (tool === "text" && drawing.current.text) {
       const op = { t: "text", text: drawing.current.text, x, y, color, size }
-      applyOp(op); onOp(op); drawing.current = null
+      applyOp(op); emitSpec(op); drawing.current = null
     }
   }
   const moveDraw = (e) => {
@@ -114,42 +183,88 @@ export function Whiteboard({ onOp, canDraw }) {
     const d = drawing.current
     drawing.current = null
     if (tool === "pen" || tool === "erase") {
-      onOp({ t: "stroke", pts: d.pts, color, size: tool === "erase" ? size * 3 : size, mode: tool === "erase" ? "erase" : "draw" })
+      const full = { t: "stroke", pts: d.pts, color, size: tool === "erase" ? size * 3 : size, mode: tool === "erase" ? "erase" : "draw" }
+      emitSpec(full)
     } else if (["rect", "circle", "line", "arrow"].includes(tool)) {
       const op = { t: "shape", kind: tool, shape: [...d.start, x, y], color, size }
-      applyOp(op); onOp(op)
+      applyOp(op); emitSpec(op)
     }
   }
 
-  const savePng = () => {
-    const a = document.createElement("a")
-    a.download = "shadowmeet-board.png"
-    a.href = canvasRef.current.toDataURL("image/png")
-    a.click()
+  const clearAll = () => {
+    canvasRef.current?.getContext("2d")?.clearRect(0, 0, 9999, 9999)
+    try { onOp?.({ op: "clear" }) } catch { /* best-effort broadcast */ }
   }
+
+  const tools = [
+    ["select", MousePointer2], ["pen", PenTool], ["erase", Eraser],
+    ["line", Minus], ["arrow", MoveUpRight], ["rect", Square], ["circle", Circle], ["text", Type],
+  ]
 
   return (
     <div className="flex h-full flex-col bg-white">
-      <div className="flex flex-wrap items-center gap-1.5 border-b border-[#14202b12] bg-[#F8FAFC] p-2">
-        {[
-          ["pen", PenTool], ["erase", Eraser], ["line", Minus], ["arrow", MoveUpRight], ["rect", Square], ["circle", Circle], ["text", Type]
-        ].map(([t, Icon]) => (
-          <button key={t} onClick={() => setTool(t)} aria-label={t} title={t} className={`flex h-8 w-8 items-center justify-center rounded-[10px] border ${tool === t ? "bg-[#F0531C] border-[#F0531C] text-white" : "bg-white border-[#14202b12] text-[#14202B]"}`}><Icon size={15} /></button>
-        ))}
-        <input type="color" value={color} onChange={(e) => setColor(e.target.value)} aria-label="Color" className="h-8 w-10 cursor-pointer rounded bg-transparent" />
-        <input type="range" min={1} max={12} value={size} onChange={(e) => setSize(Number(e.target.value))} aria-label="Brush size" className="w-20 accent-[#F0531C]" />
-        <button onClick={() => { undoStack.current = []; canvasRef.current.getContext("2d").clearRect(0, 0, 9999, 9999) }} className="flex items-center gap-1 rounded-full bg-[#F1F6FA] border px-2.5 py-1.5 text-xs font-semibold"><Trash2 size={12} /> Clear</button>
-        <button onClick={savePng} className="flex items-center gap-1 rounded-full bg-[#F1F6FA] border px-2.5 py-1.5 text-xs font-semibold"><Download size={12} /> PNG</button>
-        {!canDraw && <span className="text-[11px] font-bold text-[#8AA6B8]">Drawing paused by host</span>}
+      <div className="relative min-h-0 flex-1">
+        {/* left vertical rail like reference */}
+        <div className="absolute left-2 top-2 z-10 flex flex-col gap-1 rounded-2xl border border-[#E3ECF7] bg-white/95 p-1.5 shadow-sm">
+          {tools.map(([t, Icon]) => (
+            <button
+              key={t}
+              onClick={() => t !== "select" && setTool(t)}
+              aria-label={t} title={t}
+              className={`classroom-rail-btn ${tool === t ? "active" : ""}`}
+              style={{ width: "32px", height: "32px", borderRadius: "10px" }}
+            >
+              <Icon size={15} />
+            </button>
+          ))}
+        </div>
+        <div className="h-full w-full touch-none overflow-hidden">
+          <canvas
+            ref={canvasRef}
+            className="touch-none cursor-crosshair"
+            onMouseDown={startDraw} onMouseMove={moveDraw} onMouseUp={endDraw} onMouseLeave={endDraw}
+            onTouchStart={startDraw} onTouchMove={moveDraw} onTouchEnd={endDraw}
+          />
+        </div>
+        {!canDraw && (
+          <span className="absolute right-2 top-2 rounded-full bg-[#F1F6FA] px-2.5 py-1 text-[10px] font-bold text-[#8AA6B8]">View only</span>
+        )}
       </div>
-      <div className="relative flex-1 touch-none overflow-hidden bg-white" style={{ backgroundImage: "radial-gradient(#14202b14 1px, transparent 1px)", backgroundSize: "22px 22px" }}>
-        <canvas
-          ref={canvasRef}
-          className="touch-none cursor-crosshair"
-          onMouseDown={startDraw} onMouseMove={moveDraw} onMouseUp={endDraw} onMouseLeave={endDraw}
-          onTouchStart={startDraw} onTouchMove={moveDraw} onTouchEnd={endDraw}
-        />
+      {/* bottom toolbar like reference */}
+      <div className="flex items-center justify-center gap-2 border-t border-[#EAF0F7] bg-white px-3 py-2">
+        <button className="classroom-rail-btn" style={{ width: "30px", height: "30px" }} title="Undo" onClick={() => setTool("pen")}>
+          <Undo2 size={14} />
+        </button>
+        <button className="classroom-rail-btn" style={{ width: "30px", height: "30px" }} title="Redo" onClick={() => setTool("pen")}>
+          <Redo2 size={14} />
+        </button>
+        <span className="mx-1 h-5 w-px bg-[#E3ECF7]" />
+        {COLORS.map((c) => (
+          <button
+            key={c}
+            onClick={() => { setColor(c); setTool("pen") }}
+            aria-label={`Color ${c}`}
+            style={{
+              width: "22px", height: "22px", borderRadius: "50%", background: c, cursor: "pointer",
+              border: color === c ? "2px solid #0D99FF" : "2px solid #fff",
+              boxShadow: "0 0 0 1px rgba(30,70,140,.15)",
+            }}
+          />
+        ))}
+        <input type="color" value={color} onChange={(e) => setColor(e.target.value)} aria-label="Custom color" className="h-6 w-8 cursor-pointer" style={{ background: "none", border: "none" }} />
+        <span className="mx-1 h-5 w-px bg-[#E3ECF7]" />
+        <button onClick={clearAll} className="classroom-rail-btn" style={{ width: "30px", height: "30px" }} title="Clear">
+          <Trash2 size={14} />
+        </button>
+        <button onClick={() => {
+          const a = document.createElement("a")
+          a.download = "shadowmeet-board.png"
+          a.href = canvasRef.current.toDataURL("image/png")
+          a.click()
+        }} className="classroom-rail-btn" style={{ width: "30px", height: "30px" }} title="Save PNG">
+          <Download size={14} />
+        </button>
       </div>
     </div>
   )
-}
+})

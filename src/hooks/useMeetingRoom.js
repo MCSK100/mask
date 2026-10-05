@@ -5,8 +5,10 @@ import { getParticipantId } from "../utils/identity"
 import { sanitizeChat } from "../utils/validation"
 
 /**
- * Central meeting-room hook: signaling + mesh WebRTC + chat/polls/yt/wb relay.
- * Media capture itself lives in useMediaDevices; this hook wires tracks to peers.
+ * RETIRED — custom mesh WebRTC hook (Socket.IO + peer-to-peer mesh).
+ * LiveKit is now the realtime media infrastructure (see hooks/useLiveKitRoom.js).
+ * This file is kept for reference only and is NOT used by Meeting.jsx.
+ * Do NOT build new features on it.
  */
 export function useMeetingRoom({ code, name, password, hostToken, localStreamRef }) {
   const [status, setStatus] = useState("connecting")

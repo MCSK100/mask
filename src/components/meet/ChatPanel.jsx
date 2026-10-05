@@ -1,7 +1,18 @@
 import { useState } from "react"
 import { Send } from "lucide-react"
 
-export function ChatPanel({ messages, system, me, isHost, onSend }) {
+function Avatar({ name }) {
+  const ch = (name || "?").slice(0, 1).toUpperCase()
+  const hues = { S: "#7C5CFF", D: "#0D99FF", A: "#22B573", M: "#F0531C", E: "#E8389F", R: "#0EA5A5" }
+  const bg = hues[ch] || "#3D5A80"
+  return (
+    <span className="grid h-8 w-8 flex-none place-items-center rounded-full text-[12px] font-bold text-white" style={{ background: bg }}>
+      {ch}
+    </span>
+  )
+}
+
+export function ChatPanel({ messages, system, onSend }) {
   const [text, setText] = useState("")
   const submit = (e) => {
     e?.preventDefault()
@@ -14,31 +25,43 @@ export function ChatPanel({ messages, system, me, isHost, onSend }) {
     onSend(text.trim())
     setText("")
   }
+  const time = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
   return (
     <div className="flex h-full flex-col bg-white">
-      <div className="flex-1 space-y-2 overflow-y-auto p-3">
+      <div className="min-h-0 flex-1 space-y-3 overflow-y-auto p-3">
         {system.map((s, i) => (
           <p key={`s${i}`} className="text-center text-[11px] font-medium text-[#8AA6B8]">{s.text}</p>
         ))}
-        {messages.length === 0 && <p className="text-center text-sm text-[#8AA6B8]">No messages yet. Say hello.</p>}
+        {messages.length === 0 && (
+          <div className="rounded-xl bg-[#F4F8FF] p-3 text-center text-[13px] text-[#5B7290]">
+            Chat is live. Say hello to the class.
+          </div>
+        )}
         {messages.map((m) => (
-          <div key={m.id} className={`max-w-[90%] rounded-2xl px-3 py-2 text-sm ${m.from === me ? "ml-auto bg-[#F0531C] text-white" : "bg-[#F1F6FA] text-[#14202B] border border-[#14202b12]"}`}>
-            <p className="mb-0.5 text-[11px] font-semibold opacity-80">{m.name} {m.isHost && <span className="font-bold">· HOST</span>}</p>
-            <p className="break-words">{m.text}</p>
+          <div key={m.id} className="flex items-start gap-2">
+            <Avatar name={m.name} />
+            <div className="min-w-0">
+              <p className="text-[12px] font-bold text-[#16283A]">
+                {m.name} <span className="ml-1 font-medium text-[#8AA6B8]">{time}</span>
+                {m.isHost && <span className="ml-1 rounded bg-[#E8F3FF] px-1 text-[10px] font-bold text-[#0B5ED7]">HOST</span>}
+              </p>
+              <p className="break-words text-[13px] leading-snug text-[#33475F]">{m.text}</p>
+            </div>
           </div>
         ))}
       </div>
-      <form onSubmit={submit} className="flex gap-2 border-t border-[#14202b12] p-2">
+      <form onSubmit={submit} className="flex items-center gap-2 border-t border-[#EAF0F7] p-2">
         <input
           value={text}
           onChange={(e) => setText(e.target.value.slice(0, 500))}
-          placeholder="Message… (/help)"
+          placeholder="Type a message..."
           aria-label="Chat message"
-          className="meet-input min-w-0 flex-1"
+          className="min-w-0 flex-1 rounded-xl border border-[#E3ECF7] bg-[#F7FAFF] px-3 py-2.5 text-[13px] text-[#16283A] placeholder:text-[#8AA6B8] focus:border-[#0D99FF] focus:outline-none"
         />
-        <button className="flex items-center gap-1.5 rounded-full bg-[#F0531C] px-4 text-sm font-bold text-white hover:bg-[#D2410E]" aria-label="Send"><Send size={14} /> Send</button>
+        <button className="grid h-10 w-10 flex-none place-items-center rounded-xl bg-[#0D99FF] text-white hover:bg-[#0B7ED7]" aria-label="Send">
+          <Send size={16} />
+        </button>
       </form>
-      <p className="px-3 pb-2 text-[11px] text-[#8AA6B8]">Commands: /help · /clear (host) · /play &lt;youtube-url&gt; (host)</p>
     </div>
   )
 }

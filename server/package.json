@@ -12,9 +12,10 @@
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
-    "express-rate-limit": "^8.1.0",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.1.0",
     "helmet": "^8.1.0",
+    "livekit-server-sdk": "^2.19.1",
     "socket.io": "^4.8.3"
   },
   "devDependencies": {

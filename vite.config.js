@@ -34,6 +34,10 @@ export default defineConfig({
           if (id.includes("socket.io-client") || id.includes("styled-components")) {
             return "rtc-vendor"
           }
+
+          if (id.includes("livekit-client")) {
+            return "livekit-vendor"
+          }
         }
       }
     }

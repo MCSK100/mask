@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Video, Users, MonitorUp, GraduationCap, Presentation, BookOpen, Play, ArrowRight, Link2, Copy, CalendarPlus, RotateCcw, Clock } from "lucide-react"
-import { roomsApi } from "../services/api"
+import { roomsApi, meetingsApi } from "../services/api"
 import { setHostToken } from "../utils/identity"
 import { googleCalendarUrl, icsContent, downloadIcs } from "../utils/calendar"
 import { AuroraShell, AuroraBadge, SectionTab } from "../components/aurora/AuroraChrome"
@@ -31,14 +31,30 @@ export default function CreateMeeting() {
     if (!form.hostName.trim()) { setErr("Enter your display name."); return }
     setBusy(true)
     try {
-      const data = await roomsApi.create({
-        title: form.title.trim(),
-        hostName: form.hostName.trim(),
-        scheduledAt: scheduledAt && !isNaN(scheduledAt) ? scheduledAt.toISOString() : null,
-        durationMin: Number(form.duration) || 60,
-        password: form.password.trim() || null,
-        roomType: form.roomType
-      })
+      // Primary: LiveKit-backed meetings API (server owns metadata + tokens).
+      let data
+      try {
+        data = await meetingsApi.create({
+          title: form.title.trim(),
+          hostName: form.hostName.trim(),
+          scheduledAt: scheduledAt && !isNaN(scheduledAt) ? scheduledAt.toISOString() : null,
+          durationMin: Number(form.duration) || 60,
+          password: form.password.trim() || null,
+          roomType: form.roomType
+        })
+        data = { ...data, code: data.meetingCode || data.code }
+      } catch (e) {
+        // Backward compat: legacy mesh backend (404 = routes not mounted).
+        if (e?.status !== 404) throw e
+        data = await roomsApi.create({
+          title: form.title.trim(),
+          hostName: form.hostName.trim(),
+          scheduledAt: scheduledAt && !isNaN(scheduledAt) ? scheduledAt.toISOString() : null,
+          durationMin: Number(form.duration) || 60,
+          password: form.password.trim() || null,
+          roomType: form.roomType
+        })
+      }
       setHostToken(data.code, data.hostToken)
       const payload = { ...data, title: form.title.trim(), hostName: form.hostName.trim(), scheduledAt: scheduledAt?.toISOString() || null, duration: Number(form.duration) || 60 }
       setResult(payload)
