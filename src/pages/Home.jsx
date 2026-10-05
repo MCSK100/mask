@@ -1,63 +1,53 @@
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
-import ParticlesBG from "../components/ParticlesBG"
-import { useState } from "react"
 import { normalizeCode } from "../utils/meetingCode"
+import AuroraNavbar from "../components/aurora/AuroraNavbar"
+import { AuroraBadge, AuroraFooter, AuroraSocials } from "../components/aurora/AuroraChrome"
 
 function MockRoom() {
   const tiles = [
-    { n: "Aarav · Teacher", host: true, c: "from-indigo-500/40 to-fuchsia-500/30" },
-    { n: "Mia", c: "from-sky-500/40 to-indigo-500/30" },
-    { n: "Leo", c: "from-emerald-500/40 to-teal-500/30" },
-    { n: "Zara", c: "from-amber-500/40 to-pink-500/30" }
+    { n: "Aarav · Host", host: true },
+    { n: "Mia" },
+    { n: "Leo" },
+    { n: "Zara" }
   ]
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950/70 p-3 shadow-2xl backdrop-blur-xl">
-      <div className="mb-2 flex items-center justify-between px-1 text-[11px] text-slate-400">
-        <span className="flex items-center gap-2"><span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" /> React Beginners · RX82KP · 04:12</span>
-        <span>👥 12</span>
+    <div className="aurora-card" style={{ overflow: "hidden", padding: "12px", boxShadow: "0 24px 80px rgba(0,0,0,0.5)" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 4px 8px", fontSize: "11px", color: "rgba(255,255,255,0.6)" }}>
+        <span style={{ display: "flex", alignItems: "center", gap: "8px" }}><span style={{ width: "8px", height: "8px", borderRadius: "999px", background: "#10b981", display: "inline-block" }} /> React Beginners · RX82KP · 04:12</span>
+        <span>4 here</span>
       </div>
-      <div className="grid grid-cols-2 gap-2">
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
         {tiles.map((t) => (
-          <motion.div key={t.n} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className={`relative h-28 overflow-hidden rounded-2xl bg-gradient-to-br sm:h-36 ${t.c}`}>
-            <div className="absolute inset-0 grid place-items-center text-2xl font-bold text-white/80">{t.n.slice(0, 1)}</div>
-            <div className="absolute bottom-1.5 left-1.5 rounded-md bg-black/60 px-1.5 py-0.5 text-[10px] text-white">{t.n}{t.host && " · HOST"}</div>
-            <div className="absolute right-1.5 top-1.5 text-[10px]">🎙️</div>
-          </motion.div>
+          <div key={t.n} style={{ position: "relative", height: "112px", borderRadius: "14px", overflow: "hidden", background: "linear-gradient(135deg, rgba(16,185,129,0.22), rgba(4,120,87,0.12))", border: "1px solid rgba(255,255,255,0.1)" }}>
+            <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", fontSize: "22px", fontWeight: 700, color: "rgba(255,255,255,0.85)", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{t.n.slice(0, 1)}</div>
+            <div style={{ position: "absolute", bottom: "6px", left: "6px", borderRadius: "8px", background: "rgba(0,0,0,0.6)", padding: "2px 6px", fontSize: "10px", color: "#fff" }}>{t.n}</div>
+          </div>
         ))}
       </div>
-      <div className="mt-2 grid grid-cols-[1fr_120px] gap-2">
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-2">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-indigo-300">Whiteboard · live</p>
-          <svg viewBox="0 0 200 60" className="mt-1 h-12 w-full"><path d="M5 50 Q 40 5 70 30 T 130 25 T 195 40" stroke="#a78bfa" strokeWidth="3" fill="none" strokeLinecap="round" /><circle cx="150" cy="18" r="8" stroke="#34d399" fill="none" strokeWidth="3" /></svg>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 120px", gap: "8px", marginTop: "8px" }}>
+        <div style={{ borderRadius: "14px", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.03)", padding: "8px" }}>
+          <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.08em", color: "rgba(255,255,255,0.6)" }}>WHITEBOARD · LIVE</p>
+          <svg viewBox="0 0 200 60" style={{ marginTop: "4px", height: "48px", width: "100%" }}><path d="M5 50 Q 40 5 70 30 T 130 25 T 195 40" stroke="#10b981" strokeWidth="3" fill="none" strokeLinecap="round" /><circle cx="150" cy="18" r="8" stroke="#10b981" fill="none" strokeWidth="3" opacity="0.6" /></svg>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-2 text-[10px] text-slate-300">
-          <p className="font-bold text-slate-200">💬 Chat</p>
-          <p className="mt-1 truncate">Mia: this is clear ✨</p>
-          <p className="truncate text-slate-500">Leo: +1</p>
-          <p className="mt-1 rounded bg-red-500/20 px-1 text-red-200">▶ Now: intro.mp4</p>
+        <div style={{ borderRadius: "14px", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.03)", padding: "8px", fontSize: "10px", color: "rgba(255,255,255,0.7)" }}>
+          <p style={{ fontWeight: 700, color: "#fff" }}>Chat</p>
+          <p style={{ marginTop: "4px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>Mia: this is clear</p>
+          <p style={{ color: "rgba(255,255,255,0.5)" }}>Leo: +1</p>
         </div>
-      </div>
-      <div className="mx-auto mt-3 flex w-fit items-center gap-2 rounded-full border border-white/10 bg-black/50 px-3 py-1.5 text-sm">
-        <span>🎙️</span><span>📹</span><span className="rounded-full bg-indigo-500 px-2 text-xs font-bold text-white">Present</span><span>✏️</span><span>💬</span><span className="rounded-full bg-red-600 px-2 text-xs font-bold">Leave</span>
       </div>
     </div>
   )
 }
 
 const FEATURES = [
-  ["🎥", "Live Video", "Adaptive grid for 1–16+ people with active-speaker glow."],
-  ["🎙️", "Voice", "Crystal WebRTC audio with mute controls and reconnection."],
-  ["🖥️", "Screen Share", "Present tab, window or full screen in one click."],
-  ["🧑‍🏫", "Classroom", "Teacher stage, student badges, hand-raise and polls."],
-  ["✏️", "Whiteboard", "Real-time canvas with shapes, text and PNG export."],
-  ["💬", "Chat", "Room chat with replies, system events and /commands."],
-  ["▶️", "YouTube Together", "Host-synced watch parties with queue-ready state."],
-  ["🎵", "Music Room", "Share audio links and stay in sync (rights-respecting)."],
-  ["📊", "Polls", "Live polls with instant results for classes and teams."],
-  ["✋", "Raise Hand", "Orderly Q&A without interrupting the speaker."],
-  ["📡", "Live Ready", "Architecture prepared for RTMP/YouTube/Twitch."],
-  ["🔒", "Private by design", "Codes, passwords, locks, waiting room, host tokens."]
+  ["Live Video", "Adaptive grid for 1 to 16+ people with speaker glow."],
+  ["Screen Share", "Present a tab, window, or full screen in one click."],
+  ["Whiteboard", "Draw together in real time, export as PNG."],
+  ["Watch Together", "Host-synced YouTube parties with shared control."],
+  ["Polls", "Live questions with instant results for classes."],
+  ["Private by Design", "Codes, passwords, locks, and host controls."]
 ]
 
 export default function Home() {
@@ -70,97 +60,102 @@ export default function Home() {
   }
 
   return (
-    <div className="relative min-h-screen text-white">
-      <ParticlesBG />
-      <nav className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6">
-        <button onClick={() => navigate("/")} className="flex items-center gap-2.5" aria-label="ShadowMeet home">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 via-fuchsia-500 to-cyan-400 font-display text-sm font-bold">SM</span>
-          <span className="font-display text-lg font-bold tracking-tight">ShadowMeet</span>
-        </button>
-        <div className="flex items-center gap-2">
-          <button onClick={() => navigate("/join")} className="rounded-xl px-4 py-2 text-sm font-semibold text-slate-300 hover:text-white">Join</button>
-          <button onClick={() => navigate("/create")} className="rounded-xl bg-white px-4 py-2 text-sm font-bold text-slate-900 hover:bg-slate-200">Create meeting</button>
-        </div>
-      </nav>
+    <div style={{ position: "relative", width: "100%", minHeight: "100svh", background: "#000", color: "#fff", overflow: "hidden" }}>
+      <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.10)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(0,0,0,0.13) 0%, transparent 22%, transparent 60%, rgba(0,0,0,0.19) 100%)", pointerEvents: "none" }} />
+      <div className="aurora-glow" style={{ position: "absolute", top: "-14%", left: "50%", transform: "translateX(-50%)", width: "1000px", maxWidth: "120vw", height: "720px", pointerEvents: "none" }} />
+      <AuroraNavbar />
 
-      <main className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
-        <section className="grid items-center gap-10 py-10 lg:grid-cols-2 lg:py-16">
+      {/* Hero — left-anchored, 24vh / 64px */}
+      <section style={{ position: "relative", width: "100%", minHeight: "100svh", overflow: "hidden" }}>
+        <div style={{ position: "relative", zIndex: 10, display: "grid", gap: "40px", minHeight: "100svh", paddingTop: "24vh", paddingLeft: "64px", paddingRight: "24px", paddingBottom: "90px", maxWidth: "1400px" }} className="lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
           <div>
-            <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" /> No account · No downloads · Free to start
-            </motion.p>
-            <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl">
-              Your Meeting Room.<br />
-              <span className="bg-gradient-to-r from-indigo-300 via-fuchsia-300 to-cyan-300 bg-clip-text text-transparent">Your Classroom.</span><br />
-              Your Space.
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6 }} className="mt-5 max-w-xl text-base text-slate-400 sm:text-lg">
-              Meet, teach, collaborate and have fun — directly from your browser. Share your screen, draw together, watch YouTube and connect. No account. No downloads.
-            </motion.p>
-            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mt-7 flex flex-wrap gap-3">
-              <button onClick={() => navigate("/create")} className="rounded-2xl bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-7 py-3.5 font-bold shadow-lg shadow-fuchsia-500/25 transition hover:scale-[1.02]">Create Meeting</button>
-              <button onClick={() => navigate("/join")} className="rounded-2xl border border-white/15 bg-white/5 px-7 py-3.5 font-bold backdrop-blur transition hover:bg-white/10">Join Meeting</button>
-              <a href="#features" className="rounded-2xl px-5 py-3.5 text-sm font-semibold text-slate-300 hover:text-white">Explore Features ↓</a>
+            <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}>
+              <AuroraBadge prefix="No signup" strong="free to start" />
             </motion.div>
-            <form onSubmit={quickJoin} className="mt-5 flex max-w-md gap-2">
-              <input value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="Enter code (e.g. AB7K92)" aria-label="Meeting code" className="min-w-0 flex-1 rounded-xl border border-white/10 bg-white/5 px-4 py-3 font-mono tracking-[0.2em] placeholder:tracking-normal placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-400" maxLength={10} />
-              <button className="rounded-xl bg-white/10 px-5 font-bold hover:bg-white/15">Join →</button>
+            <motion.h1
+              initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.25, ease: "easeOut" }}
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: "clamp(2.4rem, 4.6vw, 4.1rem)", lineHeight: 1.08, letterSpacing: "-0.02em", color: "#fff", marginTop: "22px", maxWidth: "560px" }}
+            >
+              Your Meeting Room.<br />Your Classroom.<br />Your Space.
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.42, ease: "easeOut" }}
+              style={{ marginTop: "16px", fontSize: "15px", lineHeight: 1.6, color: "rgba(255,255,255,0.6)", fontFamily: "'Inter', sans-serif", maxWidth: "340px" }}
+            >
+              Meet, teach, and watch together — no account, no downloads.
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.58, ease: "easeOut" }}
+              style={{ display: "flex", alignItems: "center", gap: "14px", marginTop: "30px" }}
+            >
+              <motion.button
+                onClick={() => navigate("/create")}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="aurora-btn-dark"
+              >
+                Get Started
+              </motion.button>
+              <motion.button
+                onClick={() => navigate("/join")}
+                aria-label="Join a meeting"
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.93 }}
+                style={{ width: "44px", height: "44px", borderRadius: "999px", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)", cursor: "pointer" }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z" /></svg>
+              </motion.button>
+            </motion.div>
+            <form onSubmit={quickJoin} style={{ marginTop: "22px", display: "flex", gap: "8px", maxWidth: "340px" }}>
+              <input value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="Enter code" aria-label="Meeting code" maxLength={10} className="aurora-input" style={{ fontFamily: "monospace", letterSpacing: "0.2em", textAlign: "center" }} />
+              <button className="aurora-btn-dark" style={{ padding: "12px 20px", whiteSpace: "nowrap" }}>Join</button>
             </form>
-            <p className="mt-3 text-xs text-slate-500">Start a meeting in seconds. Click → Create → Share → Meet.</p>
           </div>
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.7 }}>
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.7 }} style={{ maxWidth: "560px", width: "100%" }}>
             <MockRoom />
-            <div className="mt-3 flex flex-wrap justify-center gap-1.5 text-[11px] text-slate-400">
-              {["LIVE", "HD", "P2P", "Encrypted", "No signup"].map((t) => (
-                <span key={t} className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1">{t}</span>
-              ))}
-            </div>
           </motion.div>
-        </section>
+        </div>
+        <div style={{ position: "absolute", bottom: "34px", left: "64px", zIndex: 10 }} className="hidden sm:block">
+          <AuroraSocials />
+        </div>
+      </section>
 
-        <section id="features" className="py-10">
-          <h2 className="text-center font-display text-2xl font-bold sm:text-3xl">Everything you need to meet, teach and play</h2>
-          <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-slate-400">One link for meetings, classes, study rooms and watch parties. Built for small rooms first, with a clean path to SFU for scale.</p>
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {FEATURES.map(([icon, title, desc]) => (
-              <div key={title} className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur transition hover:border-fuchsia-400/30 hover:bg-white/[0.05]">
-                <div className="text-2xl">{icon}</div>
-                <h3 className="mt-2 font-semibold text-white">{title}</h3>
-                <p className="mt-1 text-sm text-slate-400">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+      {/* Features — bento rhythm, single accent */}
+      <section id="features" style={{ position: "relative", zIndex: 10, padding: "40px 64px 20px", maxWidth: "1400px" }} className="max-sm:!px-6">
+        <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "28px", fontWeight: 600, letterSpacing: "-0.02em" }}>Everything for meet, teach, play</h2>
+        <div style={{ display: "grid", gap: "12px", marginTop: "20px", gridTemplateColumns: "1.2fr 1fr 1fr" }} className="max-lg:!grid-cols-1 max-xl:!grid-cols-2">
+          {FEATURES.map(([title, desc], i) => (
+            <motion.div
+              key={title}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, delay: (i % 3) * 0.06, ease: [0.16, 1, 0.3, 1] }}
+              className="aurora-card"
+              style={{ padding: i === 0 ? "28px" : "22px", background: i === 0 ? "linear-gradient(135deg, rgba(16,185,129,0.16), rgba(255,255,255,0.03))" : undefined }}
+            >
+              <div style={{ width: "34px", height: "34px", borderRadius: "999px", background: "linear-gradient(135deg, #10b981, #047857)", display: "grid", placeItems: "center", fontSize: "15px", color: "#fff" }}>{String(i + 1).padStart(2, "0")}</div>
+              <h3 style={{ marginTop: "12px", fontSize: "16px", fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{title}</h3>
+              <p style={{ marginTop: "6px", fontSize: "14px", lineHeight: 1.6, color: "rgba(255,255,255,0.6)" }}>{desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
 
-        <section className="py-10">
-          <div className="grid gap-4 md:grid-cols-3">
-            {[["Meeting", "Daily standups and team syncs.", "/create"], ["Classroom", "Teach with board, polls and hands.", "/create"], ["Watch Party", "YouTube together, perfectly synced.", "/create"]].map(([t, d]) => (
-              <button key={t} onClick={() => navigate("/create")} className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-transparent p-6 text-left transition hover:border-indigo-400/40">
-                <p className="font-display text-lg font-bold">{t}</p>
-                <p className="mt-1 text-sm text-slate-400">{d}</p>
-                <p className="mt-3 text-sm font-bold text-indigo-300">Start →</p>
-              </button>
-            ))}
+      <section style={{ position: "relative", zIndex: 10, padding: "40px 64px 70px", maxWidth: "1400px" }} className="max-sm:!px-6">
+        <div className="aurora-card" style={{ padding: "40px", textAlign: "left", display: "grid", gap: "20px" }}>
+          <div>
+            <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "clamp(1.6rem, 3vw, 2.4rem)", fontWeight: 500, letterSpacing: "-0.02em" }}>Start a meeting in seconds.</h2>
+            <p style={{ marginTop: "10px", fontSize: "15px", color: "rgba(255,255,255,0.6)", maxWidth: "420px" }}>One link for meetings, classes, and watch parties. Free-first, P2P for small rooms.</p>
           </div>
-        </section>
-
-        <section className="pb-16 pt-4 text-center">
-          <div className="mx-auto max-w-3xl rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-500/15 via-fuchsia-500/10 to-cyan-500/10 p-8 sm:p-12">
-            <h2 className="font-display text-2xl font-bold sm:text-4xl">Start a meeting in seconds.</h2>
-            <p className="mt-2 text-slate-400">Free-first. P2P for small rooms. No signup, ever.</p>
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <button onClick={() => navigate("/create")} className="rounded-2xl bg-white px-7 py-3 font-bold text-slate-900">Create Meeting</button>
-              <button onClick={() => navigate("/join")} className="rounded-2xl border border-white/15 px-7 py-3 font-bold">Join with code</button>
-            </div>
+          <div style={{ display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap" }}>
+            <button onClick={() => navigate("/create")} className="aurora-btn-white">Create Meeting</button>
+            <button onClick={() => navigate("/join")} className="aurora-btn-dark">Join with code</button>
           </div>
-          <footer className="mt-10 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-500">
-            <span>© 2026 ShadowMeet</span>
-            <button onClick={() => navigate("/privacy")}>Privacy</button>
-            <button onClick={() => navigate("/terms")}>Terms</button>
-            <button onClick={() => navigate("/about")}>About</button>
-          </footer>
-        </section>
-      </main>
+        </div>
+      </section>
+      <AuroraFooter />
     </div>
   )
 }

@@ -4,8 +4,16 @@ export default {
 theme: {
     extend: {
       fontFamily: {
-        display: ["Sora", "sans-serif"],
+        display: ["Plus Jakarta Sans", "Inter", "sans-serif"],
         sans: ["Inter", "system-ui", "sans-serif"],
+      },
+      colors: {
+        aurora: {
+          emerald: "#10b981",
+          pine: "#047857",
+          ink: "#0a0a0a",
+          mist: "rgba(255,255,255,0.6)",
+        },
       },
       boxShadow: {
         "neon-pink": "0 0 20px rgba(236, 72, 153, 0.45), 0 0 40px rgba(236, 72, 153, 0.2), inset 0 0 30px rgba(236, 72, 153, 0.08)",

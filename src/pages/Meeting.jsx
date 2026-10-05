@@ -219,44 +219,49 @@ export default function Meeting() {
     m.sendChat(text)
   }
 
-  // ---------- LOBBY ----------
+  // ---------- LOBBY (Aurora) ----------
   if (lobby) {
     return (
-      <div className="mx-auto grid max-w-5xl gap-6 px-4 py-8 text-white lg:grid-cols-[1fr_340px]">
-        <div>
-          <button onClick={() => navigate("/")} className="mb-3 text-sm text-slate-400 hover:text-white">← Home</button>
-          <h1 className="font-display text-2xl font-bold">{meta?.title || `Meeting ${code}`}</h1>
-          <p className="text-sm text-slate-400">Code <span className="font-mono font-bold tracking-widest text-white">{code}</span> {meta?.hasPassword && "· 🔒 password required"}</p>
-          {metaErr && <p role="alert" className="mt-3 rounded-xl bg-red-500/10 p-3 text-sm text-red-300">{metaErr}. Ask the host for a fresh link.</p>}
-          <div className="mt-4 overflow-hidden rounded-3xl border border-white/10 bg-slate-950">
-            {media.stream ? (
-              <video ref={previewRef} autoPlay playsInline muted className="aspect-video w-full bg-black object-cover" />
-            ) : (
-              <div className="grid aspect-video place-items-center text-sm text-slate-500">{media.error || "Starting camera…"}</div>
+      <div style={{ position: "relative", minHeight: "100svh", background: "#000", color: "#fff", overflow: "hidden" }}>
+        <div className="aurora-glow" style={{ position: "absolute", top: "-14%", left: "50%", transform: "translateX(-50%)", width: "1000px", maxWidth: "120vw", height: "720px", pointerEvents: "none" }} />
+        <div style={{ position: "relative", zIndex: 10, margin: "0 auto", maxWidth: "1024px", padding: "130px 64px 40px", display: "grid", gap: "24px" }} className="lg:grid-cols-[1fr_340px] max-sm:!px-6">
+          <div>
+            <div className="aurora-badge">
+              <div style={{ display: "flex" }}>{[0, 1, 2].map((i) => (<div key={i} className="aurora-avatar" style={{ marginLeft: i === 0 ? 0 : "-8px" }} />))}</div>
+              <span style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.75)" }}>Code <strong style={{ color: "#fff" }}>{code}</strong>{meta?.hasPassword ? " · locked" : " · open"}</span>
+            </div>
+            <h1 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: "clamp(1.8rem, 3.4vw, 2.6rem)", letterSpacing: "-0.02em", marginTop: "18px" }}>{meta?.title || `Meeting ${code}`}</h1>
+            {metaErr && <p role="alert" style={{ marginTop: "12px", borderRadius: "12px", background: "rgba(255,80,80,0.1)", padding: "12px", fontSize: "13px", color: "#ff9c9c" }}>{metaErr}. Ask the host for a fresh link.</p>}
+            <div className="aurora-card" style={{ marginTop: "16px", overflow: "hidden" }}>
+              {media.stream ? (
+                <video ref={previewRef} autoPlay playsInline muted style={{ aspectRatio: "16/9", width: "100%", background: "#000", objectFit: "cover" }} />
+              ) : (
+                <div style={{ aspectRatio: "16/9", display: "grid", placeItems: "center", fontSize: "14px", color: "rgba(255,255,255,0.5)" }}>{media.error || "Starting camera…"}</div>
+              )}
+            </div>
+            {media.error && <p style={{ marginTop: "8px", fontSize: "12px", color: "#ffd37a" }}>{media.error} You can still join with camera off.</p>}
+            <div style={{ marginTop: "12px", display: "flex", gap: "8px", flexWrap: "wrap" }}>
+              <button onClick={media.toggleMute} className="aurora-btn-dark" style={{ padding: "10px 20px" }}>{media.muted ? "Unmute" : "Mute"}</button>
+              <button onClick={media.toggleCamera} className="aurora-btn-dark" style={{ padding: "10px 20px" }}>{media.cameraOff ? "Camera on" : "Camera off"}</button>
+              <button onClick={() => media.start().catch(() => {})} style={{ background: "none", border: 0, color: "rgba(255,255,255,0.7)", fontSize: "14px", cursor: "pointer" }}>Retry →</button>
+            </div>
+          </div>
+          <div className="aurora-card" style={{ height: "fit-content", padding: "20px" }}>
+            <h2 style={{ fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Ready to join?</h2>
+            <label htmlFor="lname" className="aurora-label" style={{ marginTop: "16px" }}>Your name</label>
+            <input id="lname" value={name} onChange={(e) => setName(e.target.value)} placeholder="Display name" maxLength={40} className="aurora-input" />
+            {meta?.hasPassword && (
+              <>
+                <label htmlFor="lpwd" className="aurora-label" style={{ marginTop: "12px" }}>Password</label>
+                <input id="lpwd" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="aurora-input" />
+              </>
             )}
+            <button onClick={doJoin} disabled={!name.trim()} className="aurora-btn-dark" style={{ marginTop: "16px", width: "100%", opacity: name.trim() ? 1 : 0.5 }}>
+              {hostToken ? "Start meeting" : "Join now"}
+            </button>
+            <p style={{ marginTop: "8px", textAlign: "center", fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>Camera/mic stay in your browser until you join.</p>
+            {toast && <p style={{ marginTop: "8px", textAlign: "center", fontSize: "12px", color: "#ffd37a" }}>{toast}</p>}
           </div>
-          {media.error && <p className="mt-2 text-xs text-amber-300">{media.error} You can still join with camera off.</p>}
-          <div className="mt-3 flex gap-2">
-            <button onClick={media.toggleMute} className={`rounded-xl px-4 py-2 text-sm font-bold ${media.muted ? "bg-red-500/20 text-red-200" : "bg-white/10"}`}>{media.muted ? "🔇 Unmute" : "🎙️ Mute"}</button>
-            <button onClick={media.toggleCamera} className={`rounded-xl px-4 py-2 text-sm font-bold ${media.cameraOff ? "bg-red-500/20 text-red-200" : "bg-white/10"}`}>{media.cameraOff ? "📹 Camera on" : "🚫 Camera off"}</button>
-            <button onClick={() => media.start().catch(() => {})} className="rounded-xl bg-white/10 px-4 py-2 text-sm font-bold">↻ Retry</button>
-          </div>
-        </div>
-        <div className="h-fit rounded-3xl border border-white/10 bg-white/[0.03] p-5">
-          <h2 className="font-bold">Ready to join?</h2>
-          <label htmlFor="lname" className="mb-1 mt-4 block text-xs font-bold uppercase tracking-wider text-slate-400">Your name</label>
-          <input id="lname" value={name} onChange={(e) => setName(e.target.value)} placeholder="Display name" maxLength={40} className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3" />
-          {meta?.hasPassword && (
-            <>
-              <label htmlFor="lpwd" className="mb-1 mt-3 block text-xs font-bold uppercase tracking-wider text-slate-400">Password</label>
-              <input id="lpwd" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3" />
-            </>
-          )}
-          <button onClick={doJoin} disabled={!name.trim()} className="mt-4 w-full rounded-2xl bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-5 py-3.5 font-bold disabled:opacity-40">
-            {hostToken ? "Start meeting" : "Join now"}
-          </button>
-          <p className="mt-2 text-center text-[11px] text-slate-500">Camera/mic stay in your browser until you join.</p>
-          {toast && <p className="mt-2 text-center text-xs text-amber-300">{toast}</p>}
         </div>
       </div>
     )
@@ -264,17 +269,17 @@ export default function Meeting() {
 
   // ---------- ROOM ----------
   if (m.status === "waiting") {
-    return <div className="grid min-h-screen place-items-center p-6 text-center text-white"><div><h1 className="text-xl font-bold">Waiting for the host to let you in…</h1><p className="mt-2 text-sm text-slate-400">Keep this tab open.</p><button onClick={doLeave} className="mt-4 rounded-xl bg-white/10 px-5 py-2 text-sm font-bold">Leave</button></div></div>
+    return <div style={{ display: "grid", placeItems: "center", minHeight: "100svh", background: "#000", color: "#fff", padding: "24px", textAlign: "center" }}><div><h1 style={{ fontSize: "20px", fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Waiting for the host to let you in…</h1><p style={{ marginTop: "8px", fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>Keep this tab open.</p><button onClick={doLeave} className="aurora-btn-dark" style={{ marginTop: "16px" }}>Leave</button></div></div>
   }
   if (m.status === "error" || m.status === "ended") {
     return (
-      <div className="grid min-h-screen place-items-center p-6 text-center text-white">
-        <div className="max-w-md">
-          <h1 className="font-display text-2xl font-bold">{m.status === "ended" ? "Meeting ended" : "Could not join"}</h1>
-          <p className="mt-2 text-sm text-slate-400">{m.error || "Room unavailable."}</p>
-          <div className="mt-5 flex justify-center gap-2">
-            <button onClick={() => navigate("/join")} className="rounded-xl bg-white/10 px-5 py-2.5 text-sm font-bold">Try another code</button>
-            <button onClick={() => navigate("/")} className="rounded-xl bg-white px-5 py-2.5 text-sm font-bold text-slate-900">Home</button>
+      <div style={{ display: "grid", placeItems: "center", minHeight: "100svh", background: "#000", color: "#fff", padding: "24px", textAlign: "center" }}>
+        <div style={{ maxWidth: "420px" }}>
+          <h1 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "28px", fontWeight: 500 }}>{m.status === "ended" ? "Meeting ended" : "Could not join"}</h1>
+          <p style={{ marginTop: "8px", fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>{m.error || "Room unavailable."}</p>
+          <div style={{ marginTop: "20px", display: "flex", justifyContent: "center", gap: "14px" }}>
+            <button onClick={() => navigate("/join")} className="aurora-btn-dark">Try again</button>
+            <button onClick={() => navigate("/")} style={{ background: "none", border: 0, color: "rgba(255,255,255,0.7)", cursor: "pointer" }}>Home →</button>
           </div>
         </div>
       </div>
@@ -293,7 +298,7 @@ export default function Meeting() {
   const sideOpen = panel !== null
 
   return (
-    <div className="flex h-dvh flex-col bg-slate-950 text-white">
+    <div className="flex h-dvh flex-col bg-black text-white">
       <TopBar title={meta?.title || m.room?.title || "ShadowMeet"} code={code} count={allTiles.length} timer={formatTimer(elapsed)} conn={m.status === "joined" ? "Good" : m.status} recording={recording} onInvite={() => setInvite(true)} />
       {toast && <div className="bg-amber-400/10 px-4 py-1.5 text-center text-xs text-amber-200">{toast}</div>}
       {m.locked && <div className="bg-white/5 px-4 py-1 text-center text-[11px] text-slate-400">🔒 Room locked</div>}

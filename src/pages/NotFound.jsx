@@ -1,17 +1,21 @@
 import { useNavigate } from "react-router-dom"
+import { AuroraShell } from "../components/aurora/AuroraChrome"
+
 export default function NotFound() {
   const navigate = useNavigate()
   return (
-    <div className="grid min-h-screen place-items-center p-6 text-center text-white">
-      <div>
-        <p className="font-mono text-6xl font-bold text-white/20">404</p>
-        <h1 className="mt-2 font-display text-2xl font-bold">Room not found</h1>
-        <p className="mt-1 text-sm text-slate-400">The link may be expired or the code mistyped.</p>
-        <div className="mt-5 flex justify-center gap-2">
-          <button onClick={() => navigate("/join")} className="rounded-xl bg-white/10 px-5 py-2.5 text-sm font-bold">Join with code</button>
-          <button onClick={() => navigate("/")} className="rounded-xl bg-white px-5 py-2.5 text-sm font-bold text-slate-900">Home</button>
+    <AuroraShell>
+      <div style={{ minHeight: "100svh", display: "grid", placeItems: "center", padding: "24px", textAlign: "center" }}>
+        <div>
+          <p style={{ fontFamily: "monospace", fontSize: "64px", fontWeight: 700, color: "rgba(255,255,255,0.2)" }}>404</p>
+          <h1 style={{ marginTop: "8px", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "28px", fontWeight: 500 }}>Room not found</h1>
+          <p style={{ marginTop: "8px", fontSize: "15px", color: "rgba(255,255,255,0.6)" }}>The link may be expired or the code mistyped.</p>
+          <div style={{ marginTop: "24px", display: "flex", gap: "14px", justifyContent: "center", alignItems: "center" }}>
+            <button onClick={() => navigate("/join")} className="aurora-btn-dark">Get Started</button>
+            <button onClick={() => navigate("/")} style={{ background: "none", border: 0, color: "rgba(255,255,255,0.7)", cursor: "pointer", fontSize: "14px" }}>Home →</button>
+          </div>
         </div>
       </div>
-    </div>
+    </AuroraShell>
   )
 }

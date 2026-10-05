@@ -8,23 +8,115 @@
   }
 
   body{
-    background: radial-gradient(circle at top,#020617,#000);
-    color:white;
-    min-height:100vh;
-    overflow-x:hidden;
+    background: #000;
+    color: #fff;
+    min-height: 100vh;
+    min-height: 100svh;
+    overflow-x: hidden;
     font-family: "Inter", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
   ::selection {
-    background: rgba(168, 85, 247, 0.35);
+    background: rgba(16, 185, 129, 0.35);
     color: #fff;
   }
 
   h1, h2, h3, h4, h5 {
-    font-family: "Sora", sans-serif;
+    font-family: "Plus Jakarta Sans", "Inter", sans-serif;
   }
+
+  a, button, input, select, textarea {
+    font-family: "Inter", system-ui, sans-serif;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgba(16, 185, 129, 0.7);
+    outline-offset: 2px;
+  }
+}
+
+/* Aurora theme primitives — one accent (emerald), one radius rule (pill for CTAs) */
+
+.aurora-glow {
+  background: radial-gradient(ellipse at 50% 30%, rgba(6, 95, 70, 0.18) 0%, transparent 68%);
+}
+
+.aurora-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 999px;
+  padding: 6px 16px 6px 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  width: fit-content;
+}
+
+.aurora-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #10b981, #047857);
+  border: 2px solid rgba(10, 20, 16, 0.9);
+}
+
+.aurora-btn-dark {
+  padding: 14px 26px;
+  border-radius: 999px;
+  background: #0a0a0a;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.aurora-btn-dark:hover { background: #1a1a1a; }
+.aurora-btn-dark:active { transform: scale(0.97); }
+
+.aurora-btn-white {
+  padding: 11px 24px;
+  border-radius: 999px;
+  background: #fff;
+  color: #111;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease;
+}
+
+.aurora-card {
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.aurora-input {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 12px 16px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.aurora-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+.aurora-input:focus { outline: none; border-color: rgba(16, 185, 129, 0.6); box-shadow: 0 0 0 3px rgba(16,185,129,0.15); }
+
+.aurora-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* 3D perspective + transform utilities */

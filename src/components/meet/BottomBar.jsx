@@ -5,7 +5,7 @@ const Btn = ({ active, danger, onClick, label, children, title }) => (
     title={title || label}
     className={`flex h-11 w-11 items-center justify-center rounded-full border text-lg transition sm:h-12 sm:w-12 ${
       danger ? "border-red-500/40 bg-red-500/15 text-red-300 hover:bg-red-500/25"
-      : active ? "border-indigo-400/50 bg-indigo-500/25 text-white"
+      : active ? "border-emerald-400/50 bg-emerald-500/25 text-white"
       : "border-white/10 bg-white/5 text-slate-200 hover:bg-white/10"
     }`}
   >
@@ -15,7 +15,7 @@ const Btn = ({ active, danger, onClick, label, children, title }) => (
 
 export function BottomBar({ muted, cameraOff, sharing, handRaised, recording, onMute, onCamera, onShare, onChat, onPeople, onBoard, onTube, onPolls, onHand, onRecord, onMore, onLeave, chatOpen, activePanel }) {
   return (
-    <footer className="border-t border-white/10 bg-slate-950/85 px-2 py-2 backdrop-blur sm:px-4" style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}>
+    <footer className="border-t border-white/10 bg-black/85 px-2 py-2 backdrop-blur sm:px-4" style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}>
       <div className="mx-auto flex max-w-5xl items-center justify-center gap-1.5 sm:gap-2">
         <Btn onClick={onMute} label={muted ? "Unmute" : "Mute"} title="Microphone" active={!muted}>{muted ? "🔇" : "🎙️"}</Btn>
         <Btn onClick={onCamera} label="Camera" title="Camera" active={!cameraOff}>{cameraOff ? "🚫" : "📹"}</Btn>

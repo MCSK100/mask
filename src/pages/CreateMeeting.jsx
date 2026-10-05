@@ -1,10 +1,12 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { motion } from "framer-motion"
 import { roomsApi } from "../services/api"
 import { setHostToken } from "../utils/identity"
 import { googleCalendarUrl, icsContent, downloadIcs } from "../utils/calendar"
+import { AuroraShell, AuroraBadge } from "../components/aurora/AuroraChrome"
 
-const TYPES = [["meeting", "🤝 Meeting"], ["classroom", "🧑‍🏫 Classroom"], ["webinar", "📡 Webinar"], ["study", "📚 Study Room"], ["watch", "▶️ Watch Party"]]
+const TYPES = [["meeting", "Meeting"], ["classroom", "Classroom"], ["webinar", "Webinar"], ["study", "Study Room"], ["watch", "Watch Party"]]
 
 export default function CreateMeeting() {
   const navigate = useNavigate()
@@ -34,9 +36,7 @@ export default function CreateMeeting() {
       const payload = { ...data, title: form.title.trim(), hostName: form.hostName.trim(), scheduledAt: scheduledAt?.toISOString() || null, duration: Number(form.duration) || 60 }
       setResult(payload)
       try { sessionStorage.setItem("sm_last_create", JSON.stringify(payload)) } catch {}
-      if (startNow) {
-        navigate(`/meet/${data.code}?name=${encodeURIComponent(form.hostName.trim())}&host=1`)
-      }
+      if (startNow) navigate(`/meet/${data.code}?name=${encodeURIComponent(form.hostName.trim())}&host=1`)
     } catch (e) {
       setErr(e.message)
     } finally { setBusy(false) }
@@ -46,75 +46,81 @@ export default function CreateMeeting() {
   const link = result ? `${window.location.origin}/meet/${result.code}` : ""
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10 text-white">
-      <button onClick={() => navigate("/")} className="mb-4 text-sm text-slate-400 hover:text-white">← Back</button>
-      <h1 className="font-display text-3xl font-bold">Create a meeting</h1>
-      <p className="mt-1 text-sm text-slate-400">No signup. Your link is ready in seconds.</p>
+    <AuroraShell>
+      <div style={{ paddingTop: "130px", paddingLeft: "64px", paddingRight: "24px", maxWidth: "860px" }} className="max-sm:!px-6">
+        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <AuroraBadge prefix="No signup" strong="ready in seconds" />
+        </motion.div>
+        <h1 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: "clamp(2rem, 4vw, 3rem)", lineHeight: 1.1, letterSpacing: "-0.02em", marginTop: "22px" }}>Create a meeting</h1>
+        <p style={{ marginTop: "12px", fontSize: "15px", color: "rgba(255,255,255,0.6)", maxWidth: "420px" }}>One link for meetings, classes, and watch parties.</p>
 
-      {!result ? (
-        <div className="mt-6 space-y-4 rounded-3xl border border-white/10 bg-white/[0.03] p-5 sm:p-7">
-          <div>
-            <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-400" htmlFor="mtitle">Meeting title</label>
-            <input id="mtitle" value={form.title} onChange={(e) => set("title", e.target.value)} placeholder="e.g. React Beginners Class" className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fuchsia-400" maxLength={80} />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-400" htmlFor="hname">Your name (host)</label>
-            <input id="hname" value={form.hostName} onChange={(e) => set("hostName", e.target.value)} placeholder="e.g. Santhosh" className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fuchsia-400" maxLength={40} />
-          </div>
-          <div>
-            <span className="mb-2 block text-xs font-bold uppercase tracking-wider text-slate-400">Room type</span>
-            <div className="flex flex-wrap gap-2">
-              {TYPES.map(([v, label]) => (
-                <button key={v} type="button" onClick={() => set("roomType", v)} className={`rounded-xl px-3.5 py-2 text-sm font-semibold ${form.roomType === v ? "bg-indigo-500 text-white" : "bg-white/5 text-slate-300 hover:bg-white/10"}`}>{label}</button>
-              ))}
-            </div>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-3">
+        {!result ? (
+          <div className="aurora-card" style={{ marginTop: "24px", padding: "24px", display: "grid", gap: "16px" }}>
             <div>
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-400" htmlFor="mdate">Date (optional)</label>
-              <input id="mdate" type="date" value={form.date} onChange={(e) => set("date", e.target.value)} className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-white [color-scheme:dark]" />
+              <label className="aurora-label" htmlFor="mtitle">Meeting title</label>
+              <input id="mtitle" value={form.title} onChange={(e) => set("title", e.target.value)} placeholder="e.g. React Beginners Class" className="aurora-input" maxLength={80} />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-400" htmlFor="mtime">Time (optional)</label>
-              <input id="mtime" type="time" value={form.time} onChange={(e) => set("time", e.target.value)} className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 [color-scheme:dark]" />
+              <label className="aurora-label" htmlFor="hname">Your name (host)</label>
+              <input id="hname" value={form.hostName} onChange={(e) => set("hostName", e.target.value)} placeholder="e.g. Santhosh" className="aurora-input" maxLength={40} />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-400" htmlFor="mdur">Duration (min)</label>
-              <input id="mdur" type="number" min={5} max={480} value={form.duration} onChange={(e) => set("duration", e.target.value)} className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5" />
+              <span className="aurora-label">Room type</span>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                {TYPES.map(([v, label]) => (
+                  <button key={v} type="button" onClick={() => set("roomType", v)} style={{ padding: "10px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 600, background: form.roomType === v ? "#fff" : "rgba(255,255,255,0.08)", color: form.roomType === v ? "#111" : "rgba(255,255,255,0.8)", border: "1px solid rgba(255,255,255,0.15)" }}>{label}</button>
+                ))}
+              </div>
+            </div>
+            <div style={{ display: "grid", gap: "12px", gridTemplateColumns: "1fr 1fr 1fr" }} className="max-sm:!grid-cols-1">
+              <div>
+                <label className="aurora-label" htmlFor="mdate">Date (optional)</label>
+                <input id="mdate" type="date" value={form.date} onChange={(e) => set("date", e.target.value)} className="aurora-input" style={{ colorScheme: "dark" }} />
+              </div>
+              <div>
+                <label className="aurora-label" htmlFor="mtime">Time (optional)</label>
+                <input id="mtime" type="time" value={form.time} onChange={(e) => set("time", e.target.value)} className="aurora-input" style={{ colorScheme: "dark" }} />
+              </div>
+              <div>
+                <label className="aurora-label" htmlFor="mdur">Duration (min)</label>
+                <input id="mdur" type="number" min={5} max={480} value={form.duration} onChange={(e) => set("duration", e.target.value)} className="aurora-input" />
+              </div>
+            </div>
+            <div>
+              <label className="aurora-label" htmlFor="mpass">Password (optional)</label>
+              <input id="mpass" type="password" value={form.password} onChange={(e) => set("password", e.target.value)} placeholder="Leave empty for open room" className="aurora-input" maxLength={64} />
+            </div>
+            {err && <p role="alert" style={{ borderRadius: "12px", background: "rgba(255,80,80,0.1)", padding: "12px", fontSize: "13px", color: "#ff9c9c" }}>{err}</p>}
+            <div style={{ display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap" }}>
+              <motion.button disabled={busy} onClick={() => create(true)} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="aurora-btn-dark">{busy ? "Creating…" : "Get Started"}</motion.button>
+              <button disabled={busy} onClick={() => create(false)} style={{ background: "none", border: 0, color: "rgba(255,255,255,0.7)", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}>{busy ? "…" : "Create without starting →"}</button>
             </div>
           </div>
-          <div>
-            <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-400" htmlFor="mpass">Password (optional)</label>
-            <input id="mpass" type="password" value={form.password} onChange={(e) => set("password", e.target.value)} placeholder="Leave empty for open room" className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3" maxLength={64} />
-          </div>
-          {err && <p role="alert" className="rounded-xl bg-red-500/10 p-3 text-sm text-red-300">{err}</p>}
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <button disabled={busy} onClick={() => create(false)} className="flex-1 rounded-2xl border border-white/15 bg-white/5 px-5 py-3.5 font-bold hover:bg-white/10 disabled:opacity-50">{busy ? "Creating…" : "Create Meeting"}</button>
-            <button disabled={busy} onClick={() => create(true)} className="flex-1 rounded-2xl bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-5 py-3.5 font-bold disabled:opacity-50">{busy ? "Creating…" : "Create & Start Now"}</button>
-          </div>
-        </div>
-      ) : (
-        <div className="mt-6 rounded-3xl border border-white/10 bg-white/[0.03] p-6 text-center">
-          <p className="text-xs uppercase tracking-widest text-slate-500">Your meeting is ready</p>
-          <h2 className="mt-1 font-display text-2xl font-bold">{result.title}</h2>
-          <p className="mt-3 font-mono text-4xl font-bold tracking-[0.3em]">{result.code}</p>
-          <p className="mt-2 break-all text-sm text-indigo-300">{link}</p>
-          {result.scheduledAt && <p className="mt-1 text-xs text-slate-400">📅 {new Date(result.scheduledAt).toLocaleString()} · {result.duration} min</p>}
-          <div className="mt-5 grid grid-cols-2 gap-2">
-            <button onClick={() => copy(link)} className="rounded-xl bg-indigo-500 px-3 py-2.5 text-sm font-bold">Copy Link</button>
-            <button onClick={() => copy(result.code)} className="rounded-xl bg-white/10 px-3 py-2.5 text-sm font-bold">Copy Code</button>
-            <button onClick={() => navigate(`/meet/${result.code}?name=${encodeURIComponent(result.hostName)}&host=1`)} className="rounded-xl bg-emerald-500 px-3 py-2.5 text-sm font-bold">Start Now →</button>
-            <button onClick={() => navigate(`/schedule/${result.code}`)} className="rounded-xl bg-white/10 px-3 py-2.5 text-sm font-bold">Meeting Card</button>
-          </div>
-          {result.scheduledAt && (
-            <div className="mt-2 grid grid-cols-2 gap-2">
-              <a href={googleCalendarUrl({ title: result.title, details: `Join: ${link} Code: ${result.code}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000) })} target="_blank" rel="noreferrer" className="rounded-xl bg-white/10 px-3 py-2.5 text-sm font-bold">Add to Calendar</a>
-              <button onClick={() => downloadIcs(`shadowmeet-${result.code}.ics`, icsContent({ title: result.title, description: `Join: ${link}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000), code: result.code }))} className="rounded-xl bg-white/10 px-3 py-2.5 text-sm font-bold">Download .ics</button>
+        ) : (
+          <div className="aurora-card" style={{ marginTop: "24px", padding: "28px", textAlign: "center" }}>
+            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)" }}>Your meeting is ready</p>
+            <h2 style={{ marginTop: "4px", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "24px", fontWeight: 600 }}>{result.title}</h2>
+            <p style={{ marginTop: "12px", fontFamily: "monospace", fontSize: "36px", fontWeight: 700, letterSpacing: "0.3em" }}>{result.code}</p>
+            <p style={{ marginTop: "8px", fontSize: "13px", color: "rgba(255,255,255,0.65)", wordBreak: "break-all" }}>{link}</p>
+            <div style={{ marginTop: "20px", display: "flex", gap: "14px", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
+              <button onClick={() => navigate(`/meet/${result.code}?name=${encodeURIComponent(result.hostName)}&host=1`)} className="aurora-btn-dark">Get Started</button>
+              <button onClick={() => copy(link)} style={{ width: "44px", height: "44px", borderRadius: "999px", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", color: "#fff", cursor: "pointer" }} aria-label="Copy link">⧉</button>
             </div>
-          )}
-          <button onClick={() => setResult(null)} className="mt-3 text-sm text-slate-500 hover:text-white">Create another</button>
-        </div>
-      )}
-    </div>
+            <div style={{ marginTop: "12px", display: "flex", gap: "8px", justifyContent: "center", flexWrap: "wrap" }}>
+              <button onClick={() => copy(result.code)} style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", background: "none", border: 0, cursor: "pointer" }}>Copy code</button>
+              <button onClick={() => navigate(`/schedule/${result.code}`)} style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", background: "none", border: 0, cursor: "pointer" }}>Meeting card →</button>
+            </div>
+            {result.scheduledAt && (
+              <div style={{ marginTop: "8px", display: "flex", gap: "8px", justifyContent: "center", flexWrap: "wrap" }}>
+                <a href={googleCalendarUrl({ title: result.title, details: `Join: ${link} Code: ${result.code}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000) })} target="_blank" rel="noreferrer" style={{ fontSize: "13px", color: "#fff" }}>Add to Calendar</a>
+                <button onClick={() => downloadIcs(`shadowmeet-${result.code}.ics`, icsContent({ title: result.title, description: `Join: ${link}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000), code: result.code }))} style={{ fontSize: "13px", color: "#fff", background: "none", border: 0, cursor: "pointer" }}>Download .ics</button>
+              </div>
+            )}
+            <button onClick={() => setResult(null)} style={{ marginTop: "12px", fontSize: "13px", color: "rgba(255,255,255,0.45)", background: "none", border: 0, cursor: "pointer" }}>Create another</button>
+          </div>
+        )}
+        <div style={{ height: "40px" }} />
+      </div>
+    </AuroraShell>
   )
 }

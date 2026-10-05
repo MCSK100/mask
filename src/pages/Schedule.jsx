@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { roomsApi } from "../services/api"
 import { googleCalendarUrl, icsContent, downloadIcs } from "../utils/calendar"
+import { AuroraShell, AuroraBadge } from "../components/aurora/AuroraChrome"
 
 export default function Schedule() {
   const { roomId } = useParams()
@@ -18,28 +19,30 @@ export default function Schedule() {
   const copy = async (t) => { try { await navigator.clipboard.writeText(t) } catch {} }
 
   return (
-    <div className="mx-auto max-w-lg px-4 py-10 text-white">
-      <button onClick={() => navigate("/")} className="mb-4 text-sm text-slate-400 hover:text-white">← Home</button>
-      <h1 className="font-display text-2xl font-bold">Scheduled meeting</h1>
-      {err && <p className="mt-3 rounded-xl bg-red-500/10 p-3 text-sm text-red-300">{err}</p>}
-      {room && (
-        <div className="mt-5 rounded-3xl border border-white/10 bg-white/[0.03] p-6">
-          <p className="text-xs uppercase tracking-widest text-slate-500">{room.roomType} · {room.status}</p>
-          <h2 className="mt-1 font-display text-xl font-bold">{room.title}</h2>
-          <p className="mt-3 text-center font-mono text-4xl font-bold tracking-[0.3em]">{room.code}</p>
-          <p className="mt-2 break-all text-center text-sm text-indigo-300">{link}</p>
-          {room.scheduledAt && <p className="mt-1 text-center text-xs text-slate-400">📅 {new Date(room.scheduledAt).toLocaleString()}</p>}
-          <div className="mt-5 grid grid-cols-2 gap-2">
-            <button onClick={() => copy(link)} className="rounded-xl bg-indigo-500 px-3 py-2.5 text-sm font-bold">Copy Link</button>
-            <button onClick={() => copy(room.code)} className="rounded-xl bg-white/10 px-3 py-2.5 text-sm font-bold">Copy Code</button>
-            <button onClick={() => navigate(`/meet/${room.code}`)} className="rounded-xl bg-emerald-500 px-3 py-2.5 text-sm font-bold">Join →</button>
-            <button onClick={() => { if (room.scheduledAt) downloadIcs(`shadowmeet-${room.code}.ics`, icsContent({ title: room.title, description: `Join: ${link}`, start: room.scheduledAt, end: new Date(new Date(room.scheduledAt).getTime() + (room.durationMin || 60) * 60000), code: room.code })) }} className="rounded-xl bg-white/10 px-3 py-2.5 text-sm font-bold">.ics</button>
+    <AuroraShell>
+      <div style={{ paddingTop: "24vh", paddingLeft: "64px", paddingRight: "24px", maxWidth: "640px" }} className="max-sm:!px-6">
+        <AuroraBadge prefix="Scheduled" strong={code} />
+        <h1 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: "clamp(2rem, 4vw, 3rem)", letterSpacing: "-0.02em", marginTop: "22px" }}>Meeting card</h1>
+        {err && <p style={{ marginTop: "12px", borderRadius: "12px", background: "rgba(255,80,80,0.1)", padding: "12px", fontSize: "13px", color: "#ff9c9c" }}>{err}</p>}
+        {room && (
+          <div className="aurora-card" style={{ marginTop: "24px", padding: "28px", textAlign: "center" }}>
+            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)" }}>{room.roomType} · {room.status}</p>
+            <h2 style={{ marginTop: "4px", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "22px", fontWeight: 600 }}>{room.title}</h2>
+            <p style={{ marginTop: "12px", fontFamily: "monospace", fontSize: "36px", fontWeight: 700, letterSpacing: "0.3em" }}>{room.code}</p>
+            <p style={{ marginTop: "8px", fontSize: "13px", color: "rgba(255,255,255,0.65)", wordBreak: "break-all" }}>{link}</p>
+            <div style={{ marginTop: "20px", display: "flex", gap: "14px", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
+              <button onClick={() => navigate(`/meet/${room.code}`)} className="aurora-btn-dark">Get Started</button>
+              <button onClick={() => copy(link)} style={{ width: "44px", height: "44px", borderRadius: "999px", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", color: "#fff", cursor: "pointer" }} aria-label="Copy link">⧉</button>
+            </div>
+            <div style={{ marginTop: "12px", display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap", fontSize: "13px" }}>
+              <button onClick={() => copy(room.code)} style={{ background: "none", border: 0, color: "rgba(255,255,255,0.7)", cursor: "pointer" }}>Copy code</button>
+              {room.scheduledAt && <button onClick={() => downloadIcs(`shadowmeet-${room.code}.ics`, icsContent({ title: room.title, description: `Join: ${link}`, start: room.scheduledAt, end: new Date(new Date(room.scheduledAt).getTime() + (room.durationMin || 60) * 60000), code: room.code }))} style={{ background: "none", border: 0, color: "rgba(255,255,255,0.7)", cursor: "pointer" }}>.ics</button>}
+              {room.scheduledAt && <a style={{ color: "#fff" }} target="_blank" rel="noreferrer" href={googleCalendarUrl({ title: room.title, details: `Join: ${link}`, start: room.scheduledAt, end: new Date(new Date(room.scheduledAt).getTime() + (room.durationMin || 60) * 60000) })}>Google Calendar</a>}
+            </div>
           </div>
-          {room.scheduledAt && (
-            <a className="mt-2 block rounded-xl bg-white/10 px-3 py-2.5 text-center text-sm font-bold" target="_blank" rel="noreferrer" href={googleCalendarUrl({ title: room.title, details: `Join: ${link}`, start: room.scheduledAt, end: new Date(new Date(room.scheduledAt).getTime() + (room.durationMin || 60) * 60000) })}>Add to Google Calendar</a>
-          )}
-        </div>
-      )}
-    </div>
+        )}
+        <div style={{ height: "60px" }} />
+      </div>
+    </AuroraShell>
   )
 }

@@ -1,15 +1,11 @@
 import { useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import SiteFooter from "./SiteFooter"
-import CyberButton from "./CyberButton"
+import { AuroraShell, AuroraBadge } from "./aurora/AuroraChrome"
 
-const defaultTitle = "Shadowchaty — Anonymous stranger chat & video"
+const defaultTitle = "ShadowMeet — Meet. Teach. Share. Play. Together."
 
 export default function LegalPageShell({ title, description, children }) {
-  const navigate = useNavigate()
-
   useEffect(() => {
-document.title = `${title} | Shadowchaty`
+    document.title = `${title} | ShadowMeet`
     const meta = document.querySelector('meta[name="description"]')
     const prev = meta?.getAttribute("content")
     if (meta && description) meta.setAttribute("content", description)
@@ -20,23 +16,13 @@ document.title = `${title} | Shadowchaty`
   }, [title, description])
 
   return (
-    <div className="min-h-dvh bg-gradient-to-b from-slate-950 via-slate-950 to-black text-slate-200">
-      <header className="sticky top-0 z-10 border-b border-white/10 bg-slate-950/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <Link to="/" className="truncate text-sm font-medium text-violet-300 hover:text-violet-200">
-← Shadowchaty home
-          </Link>
-          <CyberButton type="button" onClick={() => navigate("/chat")} className="cyber-btn--sm shrink-0">
-            Start chat
-          </CyberButton>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
-        <article className="space-y-4">{children}</article>
+    <AuroraShell>
+      <main style={{ paddingTop: "130px", paddingLeft: "64px", paddingRight: "24px", maxWidth: "820px" }} className="max-sm:!px-6">
+        <AuroraBadge prefix="ShadowMeet" strong="no signup" />
+        <h1 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: "clamp(1.8rem, 3.4vw, 2.6rem)", letterSpacing: "-0.02em", marginTop: "18px" }}>{title}</h1>
+        <article style={{ marginTop: "20px", display: "grid", gap: "14px", fontSize: "15px", lineHeight: 1.7, color: "rgba(255,255,255,0.7)" }}>{children}</article>
+        <div style={{ height: "40px" }} />
       </main>
-
-      <SiteFooter />
-    </div>
+    </AuroraShell>
   )
 }
