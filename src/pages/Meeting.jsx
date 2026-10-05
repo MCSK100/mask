@@ -6,7 +6,7 @@ import { roomsApi, meetingsApi } from "../services/api"
 import { getHostToken, getParticipantId } from "../utils/identity"
 import { FEATURES } from "../config/featureFlags"
 import { extractYouTubeId } from "../utils/youtube"
-import { TOPICS, decodeData, sanitizeMessage, getLivekitUrl } from "../lib/livekit"
+import { TOPICS, decodeData, sanitizeMessage, getLivekitUrl, friendlyMediaError } from "../lib/livekit"
 import {
   chatMessage, reactionMessage, handMessage, whiteboardOp,
   pollCreated, pollVote as pollVoteMsg, youtubeState, hostCommand, REACTIONS
@@ -70,11 +70,22 @@ export default function Meeting() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // media-server health snapshot so misconfiguration shows in the lobby
+  // before the user tries to join (token/signal failures are env issues).
+  useEffect(() => {
+    let alive = true
+    meetingsApi.livekitHealth()
+      .then((d) => { if (alive) setMediaHealth(d) })
+      .catch(() => { if (alive) setMediaHealth({ configured: false, unreachable: true }) })
+    return () => { alive = false }
+  }, [])
+
   // ---------- LiveKit session state ----------
   const [joined, setJoined] = useState(false)
   const [joining, setJoining] = useState(false)
   const [waiting, setWaiting] = useState(false)
   const [creds, setCreds] = useState(null) // { token, serverUrl, roomId, role, participantId }
+  const [mediaHealth, setMediaHealth] = useState(null) // /api/livekit/health snapshot
   const [role, setRole] = useState("participant")
   const [joinErr, setJoinErr] = useState(null)
 
@@ -564,6 +575,13 @@ export default function Meeting() {
           <h1 className="wz-title">{meta?.title || `Meeting ${code}`}</h1>
           <p className="wz-sub">Check your camera and mic, then join. Everything stays in your browser until you join.</p>
           {metaErr && <p role="alert" className="wz-alert" style={{ marginTop: "14px" }}>{metaErr}. Ask the host for a fresh link.</p>}
+          {mediaHealth && !mediaHealth.configured && (
+            <p role="alert" className="wz-alert" style={{ marginTop: "14px" }}>
+              Live media server is not reachable or not configured
+              {mediaHealth.unreachable ? " (backend API unreachable — check VITE_API_URL)." : " (backend LIVEKIT_* env missing)."}
+              {" "}Meetings can't start until the backend sets LIVEKIT_URL, LIVEKIT_API_KEY and LIVEKIT_API_SECRET from the same LiveKit project.
+            </p>
+          )}
           <div className="wz-lobby-grid">
             <div>
               <div className="wz-stage">
@@ -619,7 +637,7 @@ export default function Meeting() {
                   <button onClick={doJoin} disabled={joining} className="wz-link" style={{ marginTop: "8px" }}>Retry now</button>
                 </div>
               )}
-              {joinErr && <p role="alert" className="wz-alert" style={{ marginTop: "8px", textAlign: "center" }}>{joinErr}</p>}
+              {joinErr && <p role="alert" className="wz-alert" style={{ marginTop: "8px", textAlign: "center" }}>{friendlyMediaError(joinErr)}</p>}
               {toast && <p style={{ marginTop: "8px", textAlign: "center", fontSize: "13px", fontWeight: 500 }}>{toast}</p>}
             </div>
           </div>
@@ -641,7 +659,7 @@ export default function Meeting() {
               <button onClick={doJoin} disabled={joining} className="wz-btn"><RotateCcw size={16} /> {joining ? "Checking…" : "Retry"}</button>
               <button onClick={() => { setWaiting(false); navigate("/") }} className="wz-chip"><PhoneOff size={14} /> Leave</button>
             </div>
-            {joinErr && <p role="alert" className="wz-alert" style={{ marginTop: "12px" }}>{joinErr}</p>}
+            {joinErr && <p role="alert" className="wz-alert" style={{ marginTop: "12px" }}>{friendlyMediaError(joinErr)}</p>}
           </div>
         </div>
       </WannaShell>
@@ -653,7 +671,7 @@ export default function Meeting() {
         <div style={{ maxWidth: "480px", margin: "40px auto", padding: "10px 0 20px" }}>
           <div className="wz-card" style={{ textAlign: "center", padding: "36px" }}>
             <h1 className="wz-title" style={{ textAlign: "center", marginTop: 0 }}>{ended ? "Meeting ended" : "Could not join"}</h1>
-            <p className="wz-sub" style={{ textAlign: "center", margin: "12px auto 0" }}>{ended || lk.error || "Room unavailable."}</p>
+            <p className="wz-sub" style={{ textAlign: "center", margin: "12px auto 0" }}>{ended || friendlyMediaError(lk.error) || "Room unavailable."}</p>
             <div style={{ marginTop: "20px", display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
               <button onClick={() => navigate("/join")} className="wz-btn">Try again</button>
               <button onClick={() => navigate("/")} className="wz-link">Home</button>
