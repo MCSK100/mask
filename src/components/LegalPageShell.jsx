@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { AuroraShell, AuroraBadge } from "./aurora/AuroraChrome"
+import { WannaShell, WannaBadge } from "./wanna/WannaChrome"
 
 const defaultTitle = "ShadowMeet — Meet. Teach. Share. Play. Together."
 
@@ -16,15 +16,14 @@ export default function LegalPageShell({ title, description, children }) {
   }, [title, description])
 
   return (
-    <AuroraShell>
-      <main style={{ paddingTop: "150px", paddingLeft: "34px", paddingRight: "34px", maxWidth: "820px", margin: "0 auto" }}>
-        <AuroraBadge prefix="ShadowMeet" strong="no signup" />
-        <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: "clamp(2rem,4vw,3rem)", letterSpacing: "-0.03em", marginTop: "18px", textTransform: "uppercase", color: "#14202B" }}>{title}</h1>
-        <div className="omd-card" style={{ marginTop: "20px", padding: "28px", borderRadius: "18px" }}>
-          <article style={{ display: "grid", gap: "14px", fontSize: "15px", lineHeight: 1.7, color: "#4A6173" }}>{children}</article>
+    <WannaShell>
+      <div style={{ maxWidth: "820px", margin: "0 auto", padding: "30px 0 20px" }}>
+        <WannaBadge prefix="ShadowMeet" strong="no signup" />
+        <h1 className="wz-title">{title}</h1>
+        <div className="wz-card" style={{ marginTop: "22px" }}>
+          <article className="wz-article" style={{ display: "grid", gap: "14px", fontSize: "15px", lineHeight: 1.7 }}>{children}</article>
         </div>
-        <div style={{ height: "40px" }} />
-      </main>
-    </AuroraShell>
+      </div>
+    </WannaShell>
   )
 }

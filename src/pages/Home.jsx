@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import {
   Video, MonitorUp, PenTool, Play, BarChart3, Lock, ArrowRight, Check,
-  Sparkles, GraduationCap, Zap, MessageSquare, Users, Clock, ShieldCheck, Star
+  Sparkles, GraduationCap, Zap, MessageSquare, Users, Clock, ShieldCheck
 } from "lucide-react"
 import { normalizeCode } from "../utils/meetingCode"
 import "./Home.css"
@@ -85,6 +85,9 @@ export default function Home() {
   const toolListRef = useRef(null)
   const slideSecRef = useRef(null)
   const slideTrackRef = useRef(null)
+  const slideBarRef = useRef(null)
+  const heroSecRef = useRef(null)
+  const heroTiltRef = useRef(null)
 
   const quickJoin = (e) => {
     e?.preventDefault()
@@ -120,10 +123,49 @@ export default function Home() {
       const total = sec.offsetHeight - window.innerHeight
       const p = Math.min(Math.max(-rect.top / total, 0), 1)
       track.style.transform = `translateX(${-p * 200}vw)`
+      if (slideBarRef.current) slideBarRef.current.style.transform = `scaleX(${p})`
     }
     window.addEventListener("scroll", onScroll, { passive: true })
     onScroll()
     return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  // cinematic hero: 3D tilt + scroll parallax + depth layers
+  useEffect(() => {
+    const sec = heroSecRef.current
+    const tilt = heroTiltRef.current
+    if (!sec || !tilt) return
+    let raf = 0
+    let tx = 0, ty = 0
+    const render = () => {
+      raf = 0
+      const y = window.scrollY
+      tilt.style.transform = `translateY(${y * 0.06}px) rotateX(${ty}deg) rotateY(${tx}deg)`
+      sec.querySelectorAll("[data-depth]").forEach((el) => {
+        const d = Number(el.dataset.depth) || 16
+        el.style.translate = `${tx * d * 0.6}px ${y * 0.02 * (d / 16) + ty * d * 0.6}px`
+      })
+      sec.querySelectorAll(".wn-orb[data-speed]").forEach((el) => {
+        el.style.translate = `0px ${y * Number(el.dataset.speed || 0.1)}px`
+      })
+    }
+    const onMove = (e) => {
+      const r = sec.getBoundingClientRect()
+      tx = (((e.clientX - r.left) / r.width) - 0.5) * 10
+      ty = -(((e.clientY - r.top) / r.height) - 0.5) * 8
+      if (!raf) raf = requestAnimationFrame(render)
+    }
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(render) }
+    const onLeave = () => { tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(render) }
+    sec.addEventListener("mousemove", onMove)
+    sec.addEventListener("mouseleave", onLeave)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => {
+      sec.removeEventListener("mousemove", onMove)
+      sec.removeEventListener("mouseleave", onLeave)
+      window.removeEventListener("scroll", onScroll)
+      cancelAnimationFrame(raf)
+    }
   }, [])
 
   const pickTool = (i) => {
@@ -149,29 +191,77 @@ export default function Home() {
         </header>
       </div></div>
 
-      {/* hero */}
+      {/* hero — centered minimal, cinematic 3D */}
       <div className="wn-pad"><div className="wn-wrap">
-        <section className="wn-hero">
-          <p className="wn-eyebrow">No-signup video meetings for teams &amp; classrooms</p>
-          <div className="wn-hero-inner">
-            <h1 className="wn-h1">Meet.</h1>
-            <span className="wn-smile s1" aria-hidden><Star size={96} color="#724aee" fill="#e4dfff" /></span>
-            <span className="wn-smile s2" aria-hidden><Sparkles size={60} color="#ff8655" /></span>
-          </div>
-          <motion.div
-            className="wn-hero-visual"
-            initial={{ opacity: 0, y: 60 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }}
+        <section className="wn-hero wn-hero-min" ref={heroSecRef}>
+          <span className="wn-orb o1" data-speed="0.12" aria-hidden />
+          <span className="wn-orb o2" data-speed="0.2" aria-hidden />
+          <span className="wn-orb o3" data-speed="0.07" aria-hidden />
+          <motion.p
+            className="wn-hero-pill"
+            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
           >
-            <HeroRoom />
-          </motion.div>
-          <div className="wn-hero-cta">
+            <span className="wn-hero-dot" /> No signup · Free to start
+          </motion.p>
+          <motion.h1
+            className="wn-hero-h1"
+            initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.08 }}
+          >
+            Meetings that start<br />in <em>seconds.</em>
+          </motion.h1>
+          <motion.p
+            className="wn-hero-sub"
+            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.16 }}
+          >
+            Video, whiteboard, polls and watch parties in one fast room — right in your browser.
+          </motion.p>
+          <motion.div
+            className="wn-hero-cta"
+            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.24 }}
+          >
             <button className="wn-btn big" onClick={() => navigate("/create")}><span>Meet Now</span><ArrowRight size={18} color="#fff" /></button>
             <button className="wn-btn big light" onClick={() => navigate("/join")}><span>Join with code</span></button>
-          </div>
-          <form className="wn-join" onSubmit={quickJoin}>
+          </motion.div>
+          <motion.form
+            className="wn-join wn-join-min"
+            onSubmit={quickJoin}
+            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.3 }}
+          >
             <input value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="ENTER CODE" aria-label="Meeting code" maxLength={10} />
             <button className="wn-btn big dark" type="submit"><span>Join</span></button>
-          </form>
+          </motion.form>
+          <motion.div
+            className="wn-hero-trust"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.38 }}
+          >
+            <span><ShieldCheck size={14} /> Private by design</span>
+            <span><Zap size={14} /> 3-second join</span>
+            <span><Clock size={14} /> No downloads</span>
+          </motion.div>
+          <motion.div
+            className="wn-hero-frame"
+            initial={{ opacity: 0, y: 48 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.32 }}
+          >
+            <div className="wn-tilt" ref={heroTiltRef}>
+              <div className="wn-chipf c1" data-depth="26" aria-hidden>
+                <p style={{ margin: 0, fontWeight: 500, fontSize: "14px" }}>Polls &amp; Quizzes</p>
+                <p style={{ margin: "8px 0 0", fontSize: "12px", background: "#e4dfff", borderRadius: "8px", padding: "6px 10px" }}>A = ½bh</p>
+                <p style={{ margin: "6px 0 0", fontSize: "12px", fontWeight: 700, color: "#7251eb" }}>78%</p>
+              </div>
+              <div className="wn-chipf c2" data-depth="16" aria-hidden>
+                <p style={{ margin: 0, fontSize: "13px" }}><strong>Sarah</strong> · That makes sense!</p>
+              </div>
+              <div className="wn-chipf c3" data-depth="34" aria-hidden>
+                <p style={{ margin: 0, fontSize: "13px", fontWeight: 500 }}>Raise Hand</p>
+                <p style={{ margin: "6px 0 0", fontSize: "12px", color: "rgba(0,0,0,.55)" }}>Daniel · Aisha</p>
+              </div>
+              <div className="wn-browser-bar" aria-hidden>
+                <span /><span /><span />
+                <em>shadowmeet · live room</em>
+              </div>
+              <HeroRoom />
+            </div>
+          </motion.div>
         </section>
       </div></div>
 
@@ -186,7 +276,15 @@ export default function Home() {
         <div className="wn-poses">
           <div className="wn-poses-l">
             <span className="wn-pose-num">0{activeTool + 1}.</span>
-            <ToolVisual tool={TOOLS[activeTool]} />
+            <motion.div
+              key={activeTool}
+              className="wn-pose-motion"
+              initial={{ opacity: 0, x: 60, rotateY: -12 }}
+              animate={{ opacity: 1, x: 0, rotateY: 0 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+            >
+              <ToolVisual tool={TOOLS[activeTool]} />
+            </motion.div>
           </div>
           <div className="wn-poses-r">
             <div className="wn-selector" aria-hidden>
@@ -307,6 +405,7 @@ export default function Home() {
                 </div>
               ))}
             </div>
+            <div className="wn-progress" aria-hidden><span ref={slideBarRef} /></div>
           </div>
         </div>
       </section>
@@ -359,7 +458,7 @@ export default function Home() {
               const bgs = ["#f5f2ff", "#FFF3E8", "#E4FAF4", "#ECE9FF"]
               return (
                 <motion.div key={t.name} className="wn-cell" style={{ background: bgs[i % 4] }}
-                  initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.4, delay: (i % 4) * 0.06 }}>
+                  initial={{ opacity: 0, scale: 0.9, rotate: i % 2 ? -2 : 2 }} whileInView={{ opacity: 1, scale: 1, rotate: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.45, delay: (i % 4) * 0.06 }}>
                   <span style={{ width: "48px", height: "48px", borderRadius: "14px", background: "#000", display: "grid", placeItems: "center", color: "#fff" }}><Icon size={22} /></span>
                   <span><p className="t">{t.name}</p><p className="d">{t.tag}</p></span>
                 </motion.div>

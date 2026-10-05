@@ -1,0 +1,106 @@
+/* Shared ShadowMeet chrome — wannathis "People" theme (wz- scope).
+   Purple #724aee · hover #5f36e0 · deep #8059f5 · border #9c80f3 ·
+   lavender #e4dfff · light #f5f2ff · teal #76d7d4 · orange #ff8655.
+   Used by every page except the live meeting room. */
+
+.wz- {
+  --wz-purple: #724aee;
+  --wz-hover: #5f36e0;
+  --wz-border: #9c80f3;
+  --wz-lavender: #e4dfff;
+  --wz-light: #f5f2ff;
+  --wz-font: "Plus Jakarta Sans", "Hanken Grotesk", system-ui, sans-serif;
+  background: #fff;
+  color: #000;
+  font-family: var(--wz-font);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+}
+.wz- ::selection { color: #000; background: #ffdfe6; }
+.wz-main { flex: 1; width: 100%; max-width: 1560px; margin: 0 auto; padding: 0 3vw; }
+
+/* header */
+.wz-header { height: 90px; display: flex; align-items: center; justify-content: space-between; }
+.wz-brand { display: flex; align-items: center; background: none; border: 0; cursor: pointer; font-family: var(--wz-font); }
+.wz-logo { font-size: 24px; font-weight: 500; line-height: 24px; color: #000; }
+.wz-by { margin: 6px 6px 0; font-size: 16px; color: #000; }
+.wz-mark { width: 34px; height: 34px; border-radius: 10px; background: var(--wz-purple); display: grid; place-items: center; color: #fff; }
+
+/* buttons */
+.wz-btn {
+  min-height: 42px; background: var(--wz-purple); border: 0; border-radius: 100px;
+  padding: 11px 25px; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  cursor: pointer; text-decoration: none; font-family: var(--wz-font);
+  color: #fff; font-size: 18px; font-weight: 500;
+}
+.wz-btn:hover { background: var(--wz-hover); }
+.wz-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.wz-btn.big { min-height: 56px; }
+.wz-btn.light { background: #fff; color: var(--wz-purple); border: 2px solid var(--wz-purple); }
+.wz-btn.light:hover { background: var(--wz-light); }
+.wz-btn.dark { background: #000; color: #fff; }
+.wz-btn.dark:hover { background: #2f2f2f; }
+.wz-btn svg { width: 18px; height: 18px; flex: none; }
+
+/* badge + titles */
+.wz-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  border: 2px solid var(--wz-purple); border-radius: 100px;
+  padding: 8px 20px; font-size: 15px; font-weight: 500; color: #000; background: #fff;
+}
+.wz-badge strong { color: var(--wz-purple); }
+.wz-title {
+  font-size: clamp(2rem, 4vw, 3rem); font-weight: 500;
+  letter-spacing: -2px; line-height: 1.02; margin: 18px 0 0; color: #000;
+}
+.wz-sub { margin-top: 12px; font-size: 17px; color: rgba(0,0,0,.6); max-width: 480px; }
+
+/* cards + forms */
+.wz-card { border: 2px solid #000; border-radius: 20px; background: #fff; padding: 26px; }
+.wz-label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #000; }
+.wz-input {
+  width: 100%; min-height: 52px; border-radius: 100px; border: 2px solid #000;
+  padding: 0 22px; font-size: 16px; font-family: var(--wz-font);
+  outline: none; background: #fff; color: #000; box-sizing: border-box;
+}
+.wz-input:focus { border-color: var(--wz-purple); }
+textarea.wz-input { border-radius: 20px; padding: 14px 20px; }
+.wz-alert {
+  border-radius: 12px; background: #ffdfe6; padding: 12px 16px;
+  font-size: 13px; font-weight: 500; color: #000;
+}
+.wz-chip {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  border: 1.5px solid #000; border-radius: 100px; padding: 9px 16px;
+  font-size: 14px; font-weight: 500; background: #fff; color: #000; font-family: var(--wz-font);
+}
+.wz-chip svg { width: 14px; height: 14px; }
+.wz-chip:hover { background: var(--wz-light); }
+.wz-chip.active { background: var(--wz-purple); border-color: var(--wz-purple); color: #fff; }
+.wz-link { background: none; border: 0; cursor: pointer; color: rgba(0,0,0,.6); font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; font-family: var(--wz-font); }
+.wz-link:hover { color: #000; }
+
+/* footer */
+.wz-footer { background: var(--wz-purple); padding: 60px 3vw 36px; color: #fff; margin-top: 40px; }
+.wz-fo { display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; max-width: 1560px; margin: 0 auto; }
+.wz-fo a, .wz-fo button.fl { color: #fff; text-decoration: none; font-size: 18px; background: none; border: 0; cursor: pointer; padding: 0; text-align: left; font-family: var(--wz-font); }
+.wz-fo .col { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+.wz-fo .t { font-size: 22px; font-weight: 500; margin-bottom: 20px; }
+.wz-copy { text-align: center; margin: 60px 0 0; font-size: 14px; color: rgba(255,255,255,.7); }
+
+/* legacy dark-utility content rendered inside white cards */
+.wz-article .text-white { color: #000 !important; }
+.wz-article .text-slate-200 { color: #000 !important; }
+.wz-article .text-slate-300 { color: rgba(0,0,0,.7) !important; }
+.wz-article .text-slate-400 { color: rgba(0,0,0,.55) !important; }
+.wz-article .text-slate-500 { color: rgba(0,0,0,.55) !important; }
+.wz-article .border-slate-700, .wz-article .border-slate-700\/50 { border-color: rgba(0,0,0,.12) !important; }
+.wz-article a { color: var(--wz-purple) !important; }
+.wz-article h1, .wz-article h2, .wz-article h3 { color: #000 !important; letter-spacing: -0.5px; }
+
+@media (max-width: 767px) {
+  .wz-fo { flex-direction: column; }
+  .wz-card { padding: 20px; }
+}
