@@ -26,7 +26,7 @@ import { WannaShell, WannaBadge } from "../components/wanna/WannaChrome"
 import {
   Mic, MicOff, Video as VideoIcon, VideoOff, LogIn, Lock, Users, UserPlus, Hand, ShieldCheck, PhoneOff, X,
   MonitorUp, RotateCcw, BarChart3, MessageSquare, CircleHelp, Send, ChevronRight,
-  ClipboardList, HandMetal, Music as MusicIcon
+  ClipboardList, HandMetal, Music as MusicIcon, Play
 } from "lucide-react"
 
 const REACTION_GLYPH = {
@@ -420,12 +420,13 @@ export default function Meeting() {
       if (!id) { setToast("Invalid YouTube URL."); return }
       if (!isHost) { setToast("Only host can start playback."); return }
       ytSet(id)
-      setActiveTab("docs"); setPanel("tube")
+      setActiveTab("watch"); setPanel("tube")
       return
     }
-    if (t === "/music" || t === "/polls" || t === "/youtube") {
-      setActiveTab(t === "/polls" ? "polls" : "docs")
-      setPanel(t === "/polls" ? "polls" : "tube")
+    if (t === "/music" || t === "/polls" || t === "/youtube" || t === "/watch") {
+      const tab = t === "/polls" ? "polls" : t === "/music" ? "music" : "watch"
+      setActiveTab(tab)
+      setPanel(t === "/polls" ? "polls" : t === "/music" ? "music" : "tube")
       return
     }
     const msg = chatMessage({ senderId: credsRef.current?.participantId, senderName: name.trim(), message: t })
@@ -711,7 +712,8 @@ export default function Meeting() {
     if (id === "stage") setPanel(null)
     else if (id === "share") { toggleShare(); setPanel(null) }
     else if (id === "board") setPanel("board")
-    else if (id === "docs") setPanel("tube")
+    else if (id === "watch" || id === "docs") { setActiveTab("watch"); setPanel("tube") }
+    else if (id === "music") { setActiveTab("music"); setPanel("music") }
     else if (id === "polls") setPanel("polls")
     else if (id === "breakout") { setPanel("people"); setRightTab("people") }
     else if (id === "chat") { setPanel("chat"); setRightTab("chat") }
@@ -733,14 +735,14 @@ export default function Meeting() {
         <div className="hidden w-[212px] flex-none flex-col gap-3 overflow-y-auto xl:flex">
           <div className="classroom-float p-3">
             <p className="flex items-center gap-2 text-[13px] font-bold text-[#16283A]">
-              <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#E8F3FF] text-[#0D99FF]"><Users size={16} /></span>
+              <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#f5f2ff] text-[#724aee]"><Users size={16} /></span>
               Breakout Rooms
             </p>
             <div className="mt-2 space-y-1.5">
               {["Room 1", "Room 2", "Room 3", "Room 4"].map((r, i) => (
                 <div key={r} className="flex items-center justify-between rounded-xl bg-[#F7FAFF] px-2.5 py-2 text-[12px]">
                   <span className="flex items-center gap-2 font-semibold text-[#33475F]">
-                    <span className="h-2 w-2 rounded-full" style={{ background: ["#0D99FF", "#22B573", "#7C5CFF", "#F5A3A3"][i] }} />
+                    <span className="h-2 w-2 rounded-full" style={{ background: ["#724aee", "#22B573", "#7C5CFF", "#F5A3A3"][i] }} />
                     {r}
                   </span>
                   <span className="text-[#8AA6B8]">{Math.max(1, Math.floor(Math.max(presentCount, 1) / 4))} students</span>
@@ -751,18 +753,18 @@ export default function Meeting() {
 
           <div className="classroom-float p-3">
             <p className="flex items-center gap-2 text-[13px] font-bold text-[#16283A]">
-              <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#E8F3FF] text-[#0D99FF]"><BarChart3 size={16} /></span>
+              <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#f5f2ff] text-[#724aee]"><BarChart3 size={16} /></span>
               Attendance
             </p>
             <p className="mt-2 text-[22px] font-bold text-[#16283A]">{presentCount} <span className="text-[13px] font-semibold text-[#8AA6B8]">present · {connLabel}</span></p>
             <div className="mt-1.5 flex items-center">
               {participants.slice(0, 3).map((t) => (
-                <span key={t.identity} className="grid h-8 w-8 place-items-center rounded-full border-2 border-white text-[11px] font-bold text-white" style={{ background: "linear-gradient(135deg,#0D99FF,#7C5CFF)", marginLeft: "-6px" }}>
+                <span key={t.identity} className="grid h-8 w-8 place-items-center rounded-full border-2 border-white text-[11px] font-bold text-white" style={{ background: "linear-gradient(135deg,#724aee,#7C5CFF)", marginLeft: "-6px" }}>
                   {(t.name || "?").slice(0, 1).toUpperCase()}
                 </span>
               ))}
               {presentCount > 3 && (
-                <span className="grid h-8 w-8 place-items-center rounded-full border-2 border-white bg-[#E8F3FF] text-[10px] font-bold text-[#0B5ED7]" style={{ marginLeft: "-6px" }}>
+                <span className="grid h-8 w-8 place-items-center rounded-full border-2 border-white bg-[#f5f2ff] text-[10px] font-bold text-[#5f36e0]" style={{ marginLeft: "-6px" }}>
                   +{presentCount - 3}
                 </span>
               )}
@@ -771,7 +773,7 @@ export default function Meeting() {
 
           <div className="classroom-float p-3">
             <p className="flex items-center gap-2 text-[13px] font-bold text-[#16283A]">
-              <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#E8F3FF] text-[#0D99FF]"><Hand size={16} /></span>
+              <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#f5f2ff] text-[#724aee]"><Hand size={16} /></span>
               Raise Hand
             </p>
             <div className="mt-2 space-y-1.5">
@@ -788,7 +790,7 @@ export default function Meeting() {
                 </div>
               ))}
             </div>
-            <button onClick={() => raiseHand(!handRaised)} className="mt-2 w-full rounded-xl bg-[#0D99FF] py-2 text-[12px] font-bold text-white hover:bg-[#0B7ED7]">
+            <button onClick={() => raiseHand(!handRaised)} className="mt-2 w-full rounded-xl bg-[#724aee] py-2 text-[12px] font-bold text-white hover:bg-[#5f36e0]">
               {handRaised ? "Lower hand" : "Raise hand"}
             </button>
           </div>
@@ -798,18 +800,18 @@ export default function Meeting() {
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <div className="hidden justify-center gap-3 lg:flex">
             <div className="classroom-float flex items-center gap-2.5 px-4 py-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#E8F3FF] text-[#0D99FF]"><MonitorUp size={18} /></span>
+              <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#f5f2ff] text-[#724aee]"><MonitorUp size={18} /></span>
               <span>
                 <span className="block text-[13px] font-bold text-[#16283A]">Screen Share</span>
                 <span className="block text-[12px] text-[#5B7290]">Share your screen with one click</span>
               </span>
-              <button onClick={toggleShare} className="ml-2 rounded-full bg-[#0D99FF] px-3 py-1.5 text-[11px] font-bold text-white">
+              <button onClick={toggleShare} className="ml-2 rounded-full bg-[#724aee] px-3 py-1.5 text-[11px] font-bold text-white">
                 {lk.screenShareEnabled ? "Stop" : "Share"}
               </button>
             </div>
             <div className="classroom-float w-[300px] px-4 py-2.5">
               <p className="flex items-center gap-2 text-[13px] font-bold text-[#16283A]">
-                <BarChart3 size={15} color="#0D99FF" /> Polls & Quizzes
+                <BarChart3 size={15} color="#724aee" /> Polls & Quizzes
               </p>
               {poll ? (
                 <div className="mt-1">
@@ -817,7 +819,7 @@ export default function Meeting() {
                   <p className="text-[11px] text-[#8AA6B8]">{pollTotal} vote(s) · {poll.open ? "open" : "closed"}</p>
                 </div>
               ) : (
-                <p className="mt-0.5 text-[12px] text-[#5B7290]">Get instant feedback <button onClick={() => handleTab("polls")} className="font-bold text-[#0D99FF]">Launch a poll</button></p>
+                <p className="mt-0.5 text-[12px] text-[#5B7290]">Get instant feedback <button onClick={() => handleTab("polls")} className="font-bold text-[#724aee]">Launch a poll</button></p>
               )}
             </div>
           </div>
@@ -856,7 +858,7 @@ export default function Meeting() {
                       </div>
                     </div>
                     <div className="flex min-w-0 flex-[1.4] flex-col overflow-hidden rounded-[14px] bg-white">
-                      {activeTab === "docs" && FEATURES.YOUTUBE ? (
+                      {activeTab === "watch" && FEATURES.YOUTUBE ? (
                         <YouTubePanel yt={youtube} isHost={isHost} onSet={ytSet} onPlay={ytPlay} onPause={ytPause} onSeek={ytSeek} />
                       ) : activeTab === "polls" && FEATURES.POLLS ? (
                         <PollsPanel poll={poll} isHost={isHost} onCreate={pollCreate} onVote={pollVote} onClose={pollClose} />
@@ -959,7 +961,7 @@ export default function Meeting() {
       {panel !== null && (
         <div className="fixed inset-y-0 right-0 z-40 flex w-[88vw] max-w-[340px] flex-col bg-white shadow-2xl lg:hidden">
           <div className="flex items-center justify-between border-b border-[#EAF0F7] px-3 py-2">
-            <p className="text-sm font-bold capitalize text-[#16283A]">{panel}</p>
+            <p className="text-sm font-bold capitalize text-[#16283A]">{{ chat: "Chat", people: "People", board: "Whiteboard", tube: "Watch", polls: "Polls", music: "Music" }[panel] || panel}</p>
             <button onClick={() => setPanel(null)} aria-label="Close panel" className="classroom-rail-btn" style={{ height: "30px", width: "30px" }}><X size={14} /></button>
           </div>
           <div className="min-h-0 flex-1">
@@ -982,7 +984,7 @@ export default function Meeting() {
           <div className="grid grid-cols-2 gap-2 text-sm text-[#16283A]">
             <button onClick={() => { setInvite(true); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-xl bg-[#F1F6FA] p-2.5 font-semibold"><UserPlus size={14} /> Invite</button>
             <button onClick={() => { setPanel("chat"); setRightTab("chat"); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-xl bg-[#F1F6FA] p-2.5 font-semibold"><MessageSquare size={14} /> Chat</button>
-            <button onClick={() => { setActiveTab("docs"); setPanel("tube"); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-xl bg-[#F1F6FA] p-2.5 font-semibold"><ClipboardList size={14} /> Documents</button>
+            <button onClick={() => { setActiveTab("watch"); setPanel("tube"); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-xl bg-[#F1F6FA] p-2.5 font-semibold"><Play size={14} /> Watch</button>
             <button onClick={() => { setActiveTab("music"); setPanel("music"); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-xl bg-[#F1F6FA] p-2.5 font-semibold"><MusicIcon size={14} /> Music</button>
             <button onClick={() => { raiseHand(!handRaised); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-xl bg-[#F1F6FA] p-2.5 font-semibold"><Hand size={14} /> {handRaised ? "Lower hand" : "Raise hand"}</button>
             {isHost && (
@@ -993,7 +995,7 @@ export default function Meeting() {
             {isHost && <button onClick={() => { hostWaiting(true); setToast("Waiting room enabled."); setMoreOpen(false) }} className="rounded-xl bg-[#F1F6FA] p-2.5 font-semibold">Waiting room</button>}
             {isHost && <button onClick={() => { hostSettings({ whiteboardEnabled: !whiteboardEnabled }, hostCommand({ action: "whiteboard", value: !whiteboardEnabled })); setMoreOpen(false) }} className="rounded-xl bg-[#F1F6FA] p-2.5 font-semibold">{whiteboardEnabled ? "Lock board" : "Unlock board"}</button>}
             {isHost && <button onClick={() => { hostEnd(); setMoreOpen(false) }} className="rounded-xl bg-[#E8382F] p-2.5 font-semibold text-white">End Meeting</button>}
-            <button onClick={() => { setInvite(true); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-xl bg-[#0D99FF] p-2.5 font-semibold text-white"><Send size={14} /> Invite link</button>
+            <button onClick={() => { setInvite(true); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-xl bg-[#724aee] p-2.5 font-semibold text-white"><Send size={14} /> Invite link</button>
           </div>
           {!FEATURES.STREAMING && <p className="mt-2 text-center text-[11px] font-semibold text-[#8AA6B8]">Live streaming is not configured yet.</p>}
         </div>

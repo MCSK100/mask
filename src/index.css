@@ -11,7 +11,7 @@
   --ink-faint: #8AA6B8;
   --brand: #F0531C;
   --brand-deep: #D2410E;
-  --tool: #0D99FF;
+  --tool: #724aee;
   --grid: #EFEEE9;
   --line: rgba(20, 32, 43, 0.07);
   --line-2: rgba(20, 32, 43, 0.13);
@@ -135,7 +135,7 @@
   padding: 12px 15px; color: var(--ink); font-size: 16px;
 }
 .sup-input::placeholder, .aurora-input::placeholder { color: var(--ink-faint); }
-.sup-input:focus, .aurora-input:focus { outline: none; border-color: var(--tool); box-shadow: 0 0 0 3px rgba(13,153,255,.15); }
+.sup-input:focus, .aurora-input:focus { outline: none; border-color: var(--tool); box-shadow: 0 0 0 3px rgba(114,74,238,.15); }
 .sup-label, .aurora-label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); font-family: var(--mono); }
 .aurora-glow { background: none; }
 
@@ -182,16 +182,16 @@
   background:
     radial-gradient(600px 320px at 12% 8%, rgba(255,255,255,.9), transparent 70%),
     radial-gradient(700px 380px at 88% 12%, rgba(255,255,255,.75), transparent 70%),
-    radial-gradient(800px 600px at 50% 110%, rgba(13,153,255,.14), transparent 60%),
-    linear-gradient(180deg, #F4F8FF 0%, #E9F1FE 45%, #DEE9FB 100%);
+    radial-gradient(800px 600px at 50% 110%, rgba(114,74,238,.16), transparent 60%),
+    linear-gradient(180deg, #F7F4FF 0%, #EFE9FF 45%, #E3D9FD 100%);
 }
 .classroom-dots {
   background-image: radial-gradient(rgba(20,60,120,.16) 1.3px, transparent 1.4px);
   background-size: 14px 14px;
 }
 .classroom-window {
-  background: #fff; border: 1px solid rgba(30,70,140,.12); border-radius: 20px;
-  box-shadow: 0 30px 80px -30px rgba(30,70,140,.35), 0 8px 24px -12px rgba(30,70,140,.2);
+  background: #fff; border: 1px solid rgba(76,45,160,.12); border-radius: 20px;
+  box-shadow: 0 30px 80px -30px rgba(76,45,160,.35), 0 8px 24px -12px rgba(76,45,160,.2);
   overflow: hidden;
 }
 .classroom-tab {
@@ -201,23 +201,23 @@
 }
 .classroom-tab svg { width: 14px; height: 14px; }
 .classroom-tab:hover { background: #F1F6FA; color: #14202B; }
-.classroom-tab.active { background: #E8F3FF; border-color: #0D99FF55; color: #0B5ED7; font-weight: 700; }
+.classroom-tab.active { background: #f5f2ff; border-color: #724aee55; color: #5f36e0; font-weight: 700; }
 .classroom-rail-btn {
   width: 38px; height: 38px; display: grid; place-items: center; border-radius: 12px;
-  background: #fff; border: 1px solid rgba(30,70,140,.1); color: #3D5A80; cursor: pointer; transition: all .15s;
+  background: #fff; border: 1px solid rgba(76,45,160,.1); color: #3D5A80; cursor: pointer; transition: all .15s;
 }
 .classroom-rail-btn svg { width: 17px; height: 17px; }
-.classroom-rail-btn:hover { border-color: #0D99FF; color: #0D99FF; }
-.classroom-rail-btn.active { background: #0D99FF; border-color: #0D99FF; color: #fff; }
+.classroom-rail-btn:hover { border-color: #724aee; color: #724aee; }
+.classroom-rail-btn.active { background: #724aee; border-color: #724aee; color: #fff; }
 .classroom-float {
   background: rgba(255,255,255,.92); backdrop-filter: blur(10px);
-  border: 1px solid rgba(30,70,140,.1); border-radius: 18px;
-  box-shadow: 0 20px 50px -20px rgba(30,70,140,.3);
+  border: 1px solid rgba(76,45,160,.1); border-radius: 18px;
+  box-shadow: 0 20px 50px -20px rgba(76,45,160,.3);
 }
 .classroom-dock {
   background: rgba(255,255,255,.95); backdrop-filter: blur(12px);
-  border: 1px solid rgba(30,70,140,.12); border-radius: 20px;
-  box-shadow: 0 20px 50px -20px rgba(30,70,140,.35);
+  border: 1px solid rgba(76,45,160,.12); border-radius: 20px;
+  box-shadow: 0 20px 50px -20px rgba(76,45,160,.35);
 }
 .classroom-dock-btn {
   display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 64px;

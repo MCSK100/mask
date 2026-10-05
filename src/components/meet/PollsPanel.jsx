@@ -21,7 +21,7 @@ export function PollsPanel({ poll, isHost, onCreate, onVote, onClose, preview })
   return (
     <div className="flex h-full flex-col bg-white p-3">
       <p className="flex items-center gap-2 text-[14px] font-bold text-[#16283A]">
-        <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#E8F3FF] text-[#0D99FF]">
+        <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#f5f2ff] text-[#724aee]">
           <BarChart3 size={16} />
         </span>
         Polls & Quizzes
@@ -46,20 +46,20 @@ export function PollsPanel({ poll, isHost, onCreate, onVote, onClose, preview })
                   key={i} disabled={!poll.open} onClick={() => onVote(i)}
                   className="w-full rounded-xl border p-2 text-left text-[13px] disabled:cursor-default"
                   style={{
-                    borderColor: lead ? "#0D99FF55" : "#E3ECF7",
-                    background: lead ? "#E8F3FF" : "#F7FAFF",
+                    borderColor: lead ? "#724aee55" : "#E3ECF7",
+                    background: lead ? "#f5f2ff" : "#F7FAFF",
                     color: "#16283A",
                   }}
                 >
                   <span className="flex items-center justify-between gap-2">
                     <span className="flex items-center gap-1.5">
-                      {lead ? <Check size={13} color="#0D99FF" /> : <span className="h-3 w-3 rounded-full border border-[#C4D3E6]" />}
+                      {lead ? <Check size={13} color="#724aee" /> : <span className="h-3 w-3 rounded-full border border-[#C4D3E6]" />}
                       {o}
                     </span>
                     <span className="font-bold text-[#5B7290]">{pct}%</span>
                   </span>
                   <span className="mt-1.5 block h-1.5 overflow-hidden rounded bg-white">
-                    <span className="block h-full rounded" style={{ width: `${pct}%`, background: "#0D99FF" }} />
+                    <span className="block h-full rounded" style={{ width: `${pct}%`, background: "#724aee" }} />
                   </span>
                 </button>
               )
@@ -81,7 +81,7 @@ export function PollsPanel({ poll, isHost, onCreate, onVote, onClose, preview })
           ))}
           <div className="flex gap-2">
             {opts.length < 6 && <button type="button" onClick={() => setOpts((p) => [...p, ""])} className="flex items-center gap-1 rounded-full bg-[#F1F6FA] px-3 py-1.5 text-xs font-semibold"><Plus size={12} /> Option</button>}
-            <button className="rounded-full bg-[#0D99FF] px-4 py-1.5 text-xs font-bold text-white">Launch</button>
+            <button className="rounded-full bg-[#724aee] px-4 py-1.5 text-xs font-bold text-white">Launch</button>
           </div>
         </form>
       )}

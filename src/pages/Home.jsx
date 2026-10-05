@@ -25,7 +25,7 @@ const SLIDES = [
 
 function HeroRoom() {
   const tiles = [
-    { n: "Aarav · Host", c: "linear-gradient(135deg,#0D99FF,#0a3d91)", you: true },
+    { n: "Aarav · Host", c: "linear-gradient(135deg,#724aee,#2a166e)", you: true },
     { n: "Mia", c: "linear-gradient(135deg,#724aee,#2a166e)" },
     { n: "Leo", c: "linear-gradient(135deg,#1c3a5a,#0a1626)" },
     { n: "Zara", c: "linear-gradient(135deg,#12b899,#0a4a40)" },

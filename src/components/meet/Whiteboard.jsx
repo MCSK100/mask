@@ -4,7 +4,7 @@ import {
   Undo2, Redo2, Trash2, Download
 } from "lucide-react"
 
-const COLORS = ["#16283A", "#0D99FF", "#7CB8F5", "#E8382F", "#22B573", "#F5B301"]
+const COLORS = ["#16283A", "#724aee", "#9c80f3", "#E8382F", "#22B573", "#F5B301"]
 
 /**
  * Classroom whiteboard — white canvas card with left rail + bottom color bar.
@@ -246,7 +246,7 @@ export const Whiteboard = forwardRef(function Whiteboard({ onOp, canDraw, remote
             aria-label={`Color ${c}`}
             style={{
               width: "22px", height: "22px", borderRadius: "50%", background: c, cursor: "pointer",
-              border: color === c ? "2px solid #0D99FF" : "2px solid #fff",
+              border: color === c ? "2px solid #724aee" : "2px solid #fff",
               boxShadow: "0 0 0 1px rgba(30,70,140,.15)",
             }}
           />

@@ -58,7 +58,7 @@ export function ParticipantTile({ info, large, onPin, pinned }) {
     info?.connectionQuality === "excellent"
       ? "#22B573"
       : info?.connectionQuality === "good"
-        ? "#0D99FF"
+        ? "#724aee"
         : info?.connectionQuality === "poor"
           ? "#F5B301"
           : "#8AA6B8"
@@ -72,7 +72,7 @@ export function ParticipantTile({ info, large, onPin, pinned }) {
         height: "100%",
         borderRadius: large ? "14px" : "12px",
         background: "#0F2233",
-        border: info?.isSpeaking ? "2px solid #0D99FF" : "1px solid rgba(255,255,255,.14)",
+        border: info?.isSpeaking ? "2px solid #724aee" : "1px solid rgba(255,255,255,.14)",
         boxShadow: info?.isSpeaking ? "0 0 0 3px rgba(13,153,255,.25)" : "none",
       }}
     >
@@ -82,7 +82,7 @@ export function ParticipantTile({ info, large, onPin, pinned }) {
         <div className="flex h-full min-h-[90px] w-full items-center justify-center" style={{ background: "linear-gradient(135deg,#2B4A6B,#16283A)" }}>
           <div
             className="flex items-center justify-center rounded-full font-bold text-white"
-            style={{ width: large ? "72px" : "44px", height: large ? "72px" : "44px", fontSize: large ? "28px" : "18px", background: "linear-gradient(135deg,#0D99FF,#7C5CFF)" }}
+            style={{ width: large ? "72px" : "44px", height: large ? "72px" : "44px", fontSize: large ? "28px" : "18px", background: "linear-gradient(135deg,#724aee,#7C5CFF)" }}
           >
             {(info?.name || "?").slice(0, 1).toUpperCase()}
           </div>
@@ -100,15 +100,15 @@ export function ParticipantTile({ info, large, onPin, pinned }) {
         </span>
       </div>
       {info?.role === "host" && (
-        <span className="absolute left-1.5 top-1.5 rounded bg-white px-1 py-px text-[9px] font-bold text-[#0B5ED7]">HOST</span>
+        <span className="absolute left-1.5 top-1.5 rounded bg-white px-1 py-px text-[9px] font-bold text-[#5f36e0]">HOST</span>
       )}
       {info?.screenShareEnabled && (
-        <span className="absolute left-1.5 bottom-1.5 flex items-center gap-1 rounded bg-[#0D99FF] px-1.5 py-px text-[9px] font-bold text-white">
+        <span className="absolute left-1.5 bottom-1.5 flex items-center gap-1 rounded bg-[#724aee] px-1.5 py-px text-[9px] font-bold text-white">
           <MonitorUp size={9} /> SHARING
         </span>
       )}
       {info?.isSpeaking && (
-        <span className="absolute left-1.5 bottom-1.5 flex items-center gap-1 rounded bg-[#0D99FF] px-1.5 py-px text-[9px] font-bold text-white">
+        <span className="absolute left-1.5 bottom-1.5 flex items-center gap-1 rounded bg-[#724aee] px-1.5 py-px text-[9px] font-bold text-white">
           <Mic size={9} /> speaking
         </span>
       )}

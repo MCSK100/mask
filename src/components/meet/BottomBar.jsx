@@ -26,7 +26,7 @@ export function BottomBar({
           {cameraOff ? <VideoOff size={19} color="#E8382F" /> : <Video size={19} color="#22B573" />}
         </DockBtn>
         <DockBtn onClick={onShare} label="Share" active={sharing}>
-          <MonitorUp size={19} color={sharing ? "#0D99FF" : "#1F3A5F"} />
+          <MonitorUp size={19} color={sharing ? "#724aee" : "#1F3A5F"} />
         </DockBtn>
         <DockBtn onClick={onRecord} label="Record" active={recording}>
           <Disc size={19} color={recording ? "#E8382F" : "#1F3A5F"} />

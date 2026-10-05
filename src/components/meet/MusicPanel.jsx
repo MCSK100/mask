@@ -36,14 +36,14 @@ export function MusicPanel({ music, isHost, onSet, onPlay, onPause, onSeek }) {
   return (
     <div className="flex h-full flex-col bg-white p-3">
       <p className="flex items-center gap-2 text-[14px] font-bold text-[#16283A]">
-        <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#E8F3FF] text-[#0D99FF]"><Music size={16} /></span>
+        <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#f5f2ff] text-[#724aee]"><Music size={16} /></span>
         Music
       </p>
       <p className="mt-0.5 pl-10 text-[12px] text-[#5B7290]">Synced playback · your own audio URLs</p>
       {isHost && (
         <form onSubmit={submit} className="mb-2 mt-3 flex gap-2">
           <input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Paste audio URL…" aria-label="Audio URL" className="meet-input min-w-0 flex-1" />
-          <button className="flex items-center gap-1 rounded-full bg-[#0D99FF] px-3 py-2 text-xs font-bold text-white"><Link2 size={12} /> Load</button>
+          <button className="flex items-center gap-1 rounded-full bg-[#724aee] px-3 py-2 text-xs font-bold text-white"><Link2 size={12} /> Load</button>
         </form>
       )}
       {!music?.track ? (
