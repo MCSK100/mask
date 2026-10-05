@@ -25,37 +25,47 @@ const SLIDES = [
 
 function HeroRoom() {
   const tiles = [
-    { n: "Aarav · Host", c: "#0D99FF" },
-    { n: "Mia", c: "#724aee" },
-    { n: "Leo", c: "#16283A" },
-    { n: "Zara", c: "#2ad7b8" },
+    { n: "Aarav · Host", c: "linear-gradient(135deg,#0D99FF,#0a3d91)", you: true },
+    { n: "Mia", c: "linear-gradient(135deg,#724aee,#2a166e)" },
+    { n: "Leo", c: "linear-gradient(135deg,#1c3a5a,#0a1626)" },
+    { n: "Zara", c: "linear-gradient(135deg,#12b899,#0a4a40)" },
   ]
   return (
-    <div style={{ background: "#fff", border: "2px solid #000", borderRadius: "24px", padding: "22px", boxShadow: "12px 12px 0 #724aee" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingBottom: "14px" }}>
-        <span style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: 500, fontSize: "15px" }}>
-          <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#2ad7b8", display: "inline-block" }} />
-          React Beginners · RX82KP
-        </span>
-        <span style={{ background: "#000", color: "#fff", borderRadius: "100px", padding: "6px 14px", fontSize: "12px", fontWeight: 500 }}>4 here</span>
+    <div className="wn-deck">
+      <div className="wn-deck-stack" aria-hidden />
+      <div className="wn-deck-top">
+        <span className="wn-deck-dots"><i /><i /><i /></span>
+        <span className="wn-deck-title">React Beginners · RX82KP</span>
+        <span className="wn-deck-live">LIVE</span>
+        <span className="wn-deck-count">4 here</span>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+      <div className="wn-deck-main">
         {tiles.map((t) => (
-          <div key={t.n} style={{ position: "relative", height: "112px", borderRadius: "16px", overflow: "hidden", background: t.c }}>
-            <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", fontSize: "30px", fontWeight: 500, color: "#fff" }}>{t.n.slice(0, 1)}</div>
-            <div style={{ position: "absolute", bottom: "6px", left: "6px", borderRadius: "100px", background: "rgba(0,0,0,.7)", padding: "3px 10px", fontSize: "11px", color: "#fff" }}>{t.n}</div>
+          <div key={t.n} className={`wn-tile ${t.you ? "you" : ""}`} style={{ background: t.c }}>
+            <span className="wn-tile-scan" aria-hidden />
+            <span className="wn-tile-initial">{t.n.slice(0, 1)}</span>
+            <span className="wn-tile-tag">{t.n}{t.you ? " · YOU" : ""}</span>
+            <span className={`wn-tile-mic ${t.you ? "on" : ""}`} aria-hidden />
           </div>
         ))}
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 120px", gap: "10px", marginTop: "10px" }}>
-        <div style={{ borderRadius: "16px", background: "#f5f2ff", padding: "10px 12px", fontSize: "12px", fontWeight: 500 }}>
-          Whiteboard · Live
-          <svg viewBox="0 0 200 60" style={{ marginTop: "6px", height: "42px", width: "100%" }}><path d="M5 50 Q 40 5 70 30 T 130 25 T 195 40" stroke="#724aee" strokeWidth="4" fill="none" strokeLinecap="round" /><circle cx="150" cy="18" r="8" stroke="#ff8655" fill="none" strokeWidth="4" /></svg>
+      <div className="wn-deck-bottom">
+        <div className="wn-deck-panel board">
+          <p>Whiteboard · Live</p>
+          <svg viewBox="0 0 200 60"><path d="M5 50 Q 40 5 70 30 T 130 25 T 195 40" stroke="#724aee" strokeWidth="4" fill="none" strokeLinecap="square" /><rect x="142" y="10" width="16" height="16" stroke="#ff8655" fill="none" strokeWidth="4" /></svg>
         </div>
-        <div style={{ borderRadius: "16px", background: "#f5f2ff", padding: "10px 12px", fontSize: "12px" }}>
-          <p style={{ fontWeight: 500, margin: 0 }}>Chat</p>
-          <p style={{ margin: "6px 0 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>Mia: All clear</p>
-          <p style={{ margin: 0 }}>Leo: +1</p>
+        <div className="wn-deck-panel chat">
+          <p className="h">Chat</p>
+          <p className="m"><strong>Mia:</strong> All clear</p>
+          <p className="m"><strong>Leo:</strong> +1</p>
+        </div>
+        <div className="wn-deck-panel ctrl">
+          <p className="h">Controls</p>
+          <div className="wn-ctrl-row">
+            <span className="k on">MIC</span>
+            <span className="k on">CAM</span>
+            <span className="k">SHARE</span>
+          </div>
         </div>
       </div>
     </div>
@@ -66,13 +76,13 @@ function ToolVisual({ tool }) {
   const Icon = tool.icon
   return (
     <div className="wn-pose-card">
-      <div style={{ background: "#fff", borderRadius: "20px", padding: "34px", boxShadow: "0 24px 60px -20px rgba(0,0,0,.35)" }}>
-        <div style={{ width: "56px", height: "56px", borderRadius: "18px", background: "#724aee", display: "grid", placeItems: "center", color: "#fff" }}>
+      <div style={{ background: "#fff", borderRadius: "10px", padding: "34px", boxShadow: "0 24px 60px -20px rgba(0,0,0,.35)", border: "2px solid #000" }}>
+        <div style={{ width: "56px", height: "56px", borderRadius: "8px", background: "#724aee", display: "grid", placeItems: "center", color: "#fff" }}>
           <Icon size={26} />
         </div>
         <h3 style={{ fontSize: "38px", fontWeight: 500, letterSpacing: "-1px", margin: "18px 0 6px", color: "#000" }}>{tool.name}</h3>
         <p style={{ fontSize: "17px", color: "rgba(0,0,0,.6)", margin: 0 }}>{tool.tag}</p>
-        <p style={{ display: "inline-block", marginTop: "16px", background: "#f5f2ff", color: "#7251eb", borderRadius: "100px", padding: "8px 18px", fontSize: "14px", fontWeight: 500 }}>{tool.stat}</p>
+        <p style={{ display: "inline-block", marginTop: "16px", background: "#f5f2ff", color: "#7251eb", borderRadius: "6px", padding: "8px 18px", fontSize: "14px", fontWeight: 500 }}>{tool.stat}</p>
       </div>
     </div>
   )
@@ -145,7 +155,7 @@ export default function Home() {
         const d = Number(el.dataset.depth) || 16
         el.style.translate = `${tx * d * 0.6}px ${y * 0.02 * (d / 16) + ty * d * 0.6}px`
       })
-      sec.querySelectorAll(".wn-orb[data-speed]").forEach((el) => {
+      sec.querySelectorAll("[data-speed]").forEach((el) => {
         el.style.translate = `0px ${y * Number(el.dataset.speed || 0.1)}px`
       })
     }
@@ -194,9 +204,12 @@ export default function Home() {
       {/* hero — centered minimal, cinematic 3D */}
       <div className="wn-pad"><div className="wn-wrap">
         <section className="wn-hero wn-hero-min" ref={heroSecRef}>
-          <span className="wn-orb o1" data-speed="0.12" aria-hidden />
-          <span className="wn-orb o2" data-speed="0.2" aria-hidden />
-          <span className="wn-orb o3" data-speed="0.07" aria-hidden />
+          <div className="wn-hero-bg" aria-hidden>
+            <div className="wn-gridlines" />
+            <div className="wn-shard s1" data-speed="0.12" />
+            <div className="wn-shard s2" data-speed="0.2" />
+            <div className="wn-beam" data-speed="0.07" />
+          </div>
           <motion.p
             className="wn-hero-pill"
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
@@ -244,20 +257,20 @@ export default function Home() {
           >
             <div className="wn-tilt" ref={heroTiltRef}>
               <div className="wn-chipf c1" data-depth="26" aria-hidden>
-                <p style={{ margin: 0, fontWeight: 500, fontSize: "14px" }}>Polls &amp; Quizzes</p>
-                <p style={{ margin: "8px 0 0", fontSize: "12px", background: "#e4dfff", borderRadius: "8px", padding: "6px 10px" }}>A = ½bh</p>
-                <p style={{ margin: "6px 0 0", fontSize: "12px", fontWeight: 700, color: "#7251eb" }}>78%</p>
+                <p style={{ margin: 0, fontWeight: 500, fontSize: "14px" }}>Polls · Live results</p>
+                <p style={{ margin: "8px 0 0", fontSize: "12px", background: "#e4dfff", borderRadius: "4px", padding: "6px 10px" }}>A = ½bh — 78% correct</p>
+                <p style={{ margin: "6px 0 0", fontSize: "12px", fontWeight: 700, color: "#7251eb" }}>24 votes in</p>
               </div>
               <div className="wn-chipf c2" data-depth="16" aria-hidden>
-                <p style={{ margin: 0, fontSize: "13px" }}><strong>Sarah</strong> · That makes sense!</p>
+                <p style={{ margin: 0, fontSize: "13px" }}><strong>SCREEN</strong> · Mia is sharing</p>
               </div>
               <div className="wn-chipf c3" data-depth="34" aria-hidden>
-                <p style={{ margin: 0, fontSize: "13px", fontWeight: 500 }}>Raise Hand</p>
+                <p style={{ margin: 0, fontSize: "13px", fontWeight: 500 }}>HANDS UP · 2</p>
                 <p style={{ margin: "6px 0 0", fontSize: "12px", color: "rgba(0,0,0,.55)" }}>Daniel · Aisha</p>
               </div>
               <div className="wn-browser-bar" aria-hidden>
                 <span /><span /><span />
-                <em>shadowmeet · live room</em>
+                <em>shadowmeet · live room · 1080p</em>
               </div>
               <HeroRoom />
             </div>
@@ -307,8 +320,8 @@ export default function Home() {
           {TOOLS.map((t) => {
             const Icon = t.icon
             return (
-              <div key={t.name} style={{ border: "2px solid #000", borderRadius: "20px", padding: "24px", display: "flex", gap: "16px", alignItems: "center" }}>
-                <span style={{ width: "48px", height: "48px", borderRadius: "14px", background: "#724aee", display: "grid", placeItems: "center", color: "#fff", flex: "none" }}><Icon size={22} /></span>
+              <div key={t.name} style={{ border: "2px solid #000", borderRadius: "10px", padding: "24px", display: "flex", gap: "16px", alignItems: "center" }}>
+                <span style={{ width: "48px", height: "48px", borderRadius: "8px", background: "#724aee", display: "grid", placeItems: "center", color: "#fff", flex: "none" }}><Icon size={22} /></span>
                 <span><strong style={{ fontSize: "20px", fontWeight: 500 }}>{t.name}</strong><br /><span style={{ color: "rgba(0,0,0,.55)" }}>{t.tag}</span></span>
               </div>
             )
@@ -323,15 +336,15 @@ export default function Home() {
             <h2 className="wn-title center white" style={{ maxWidth: "620px" }}>One room. Beautiful and modern.</h2>
           </div>
           <div className="wn-stage">
-            <div style={{ background: "#fff", borderRadius: "24px", padding: "26px", width: "min(880px, 92vw)", position: "relative", zIndex: 1 }}>
+            <div style={{ background: "#fff", borderRadius: "6px", padding: "26px", width: "min(880px, 92vw)", position: "relative", zIndex: 1 }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
-                <span style={{ background: "#000", color: "#fff", borderRadius: "100px", padding: "6px 14px", fontSize: "13px" }}>Algebra 101</span>
+                <span style={{ background: "#000", color: "#fff", borderRadius: "6px", padding: "6px 14px", fontSize: "13px" }}>Algebra 101</span>
                 <span style={{ background: "#E8382F", color: "#fff", borderRadius: "8px", padding: "4px 10px", fontSize: "12px", fontWeight: 700 }}>LIVE</span>
                 <span style={{ marginLeft: "auto", display: "flex", gap: "8px", alignItems: "center", color: "rgba(0,0,0,.5)", fontSize: "13px" }}><Clock size={14} /> 00:42:18 <Users size={14} /> 6 here</span>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "12px" }}>
-                <div style={{ borderRadius: "16px", background: "linear-gradient(135deg,#2B4A6B,#16283A)", minHeight: "240px", display: "grid", placeItems: "center", color: "#fff", fontSize: "60px", fontWeight: 300 }}>A</div>
-                <div style={{ borderRadius: "16px", background: "#f5f2ff", padding: "20px", minHeight: "240px" }}>
+                <div style={{ borderRadius: "8px", background: "linear-gradient(135deg,#2B4A6B,#16283A)", minHeight: "240px", display: "grid", placeItems: "center", color: "#fff", fontSize: "60px", fontWeight: 300 }}>A</div>
+                <div style={{ borderRadius: "8px", background: "#f5f2ff", padding: "20px", minHeight: "240px" }}>
                   <p style={{ fontWeight: 500, margin: "0 0 8px" }}>Whiteboard</p>
                   <svg viewBox="0 0 200 120" style={{ width: "100%", height: "150px" }}><path d="M10 100 Q 60 10 100 60 T 190 50" stroke="#724aee" strokeWidth="5" fill="none" strokeLinecap="round" /><circle cx="150" cy="35" r="14" stroke="#ff8655" fill="none" strokeWidth="5" /></svg>
                 </div>
@@ -343,8 +356,8 @@ export default function Home() {
           <div className="wn-feats">
             <motion.div className="wn-feat-1" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.5 }}>
               <div style={{ display: "flex", gap: "10px" }}>
-                <span style={{ width: "52px", height: "52px", borderRadius: "16px", background: "#724aee", display: "grid", placeItems: "center", color: "#fff" }}><Zap size={24} /></span>
-                <span style={{ width: "52px", height: "52px", borderRadius: "16px", background: "#fff", display: "grid", placeItems: "center", color: "#724aee" }}><ShieldCheck size={24} /></span>
+                <span style={{ width: "52px", height: "52px", borderRadius: "8px", background: "#724aee", display: "grid", placeItems: "center", color: "#fff" }}><Zap size={24} /></span>
+                <span style={{ width: "52px", height: "52px", borderRadius: "8px", background: "#fff", display: "grid", placeItems: "center", color: "#724aee" }}><ShieldCheck size={24} /></span>
               </div>
               <div style={{ marginTop: "60px" }}>
                 <h4 className="wn-h4">High attention to detail.</h4>
@@ -354,7 +367,7 @@ export default function Home() {
             <motion.div className="wn-feat-2" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.5, delay: 0.1 }}>
               <div style={{ display: "flex", gap: "12px" }}>
                 {["A", "M", "J"].map((c) => (
-                  <span key={c} style={{ width: "52px", height: "52px", borderRadius: "50%", background: "#000", color: "#fff", display: "grid", placeItems: "center", fontSize: "20px" }}>{c}</span>
+                  <span key={c} style={{ width: "52px", height: "52px", borderRadius: "6px", background: "#000", color: "#fff", display: "grid", placeItems: "center", fontSize: "20px" }}>{c}</span>
                 ))}
               </div>
               <div style={{ marginTop: "60px" }}>
@@ -369,14 +382,14 @@ export default function Home() {
               <p className="wn-small-2" style={{ marginTop: "30px" }}>The room is like an eyeball magnet!</p>
             </div>
             <div className="vis">
-              <div style={{ background: "#fff", borderRadius: "20px 20px 0 0", padding: "24px", display: "flex", gap: "10px", alignItems: "center" }}>
+              <div style={{ background: "#fff", borderRadius: "10px 10px 0 0", padding: "24px", display: "flex", gap: "10px", alignItems: "center" }}>
                 <MessageSquare size={20} color="#724aee" />
                 <span style={{ fontWeight: 500 }}>Chat is live. Say hello to the class.</span>
               </div>
-              <div style={{ background: "#e4dfff", borderRadius: "0 0 20px 20px", padding: "24px", display: "flex", gap: "10px" }}>
-                <span style={{ background: "#724aee", color: "#fff", borderRadius: "100px", padding: "8px 18px", fontSize: "14px" }}>Polls</span>
-                <span style={{ background: "#fff", color: "#000", borderRadius: "100px", padding: "8px 18px", fontSize: "14px" }}>Raise hand</span>
-                <span style={{ background: "#000", color: "#fff", borderRadius: "100px", padding: "8px 18px", fontSize: "14px" }}>Record</span>
+              <div style={{ background: "#e4dfff", borderRadius: "0 0 10px 10px", padding: "24px", display: "flex", gap: "10px" }}>
+                <span style={{ background: "#724aee", color: "#fff", borderRadius: "6px", padding: "8px 18px", fontSize: "14px" }}>Polls</span>
+                <span style={{ background: "#fff", color: "#000", borderRadius: "6px", padding: "8px 18px", fontSize: "14px" }}>Raise hand</span>
+                <span style={{ background: "#000", color: "#fff", borderRadius: "6px", padding: "8px 18px", fontSize: "14px" }}>Record</span>
               </div>
             </div>
           </motion.div>
@@ -398,8 +411,8 @@ export default function Home() {
                     <h4 className="wn-h4">{s.title}</h4>
                   </div>
                   <div className="wn-slide-vis">
-                    <div style={{ background: s.bg, borderRadius: "24px", padding: "48px", minHeight: "340px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <span style={{ background: "#fff", borderRadius: "20px", padding: "26px 34px", fontSize: "20px", fontWeight: 500, boxShadow: "0 20px 50px -20px rgba(0,0,0,.25)" }}>{s.n}</span>
+                    <div style={{ background: s.bg, borderRadius: "6px", padding: "48px", minHeight: "340px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <span style={{ background: "#fff", borderRadius: "10px", padding: "26px 34px", fontSize: "20px", fontWeight: 500, boxShadow: "0 20px 50px -20px rgba(0,0,0,.25)" }}>{s.n}</span>
                     </div>
                   </div>
                 </div>
@@ -420,13 +433,13 @@ export default function Home() {
             <div className="wn-shot" style={{ background: "#fff", padding: "22px", width: "240px" }}>
               <p style={{ fontWeight: 500, margin: "0 0 10px" }}>Breakout Rooms</p>
               {["Room 1", "Room 2", "Room 3"].map((r) => (
-                <p key={r} style={{ background: "#f5f2ff", borderRadius: "12px", padding: "8px 12px", fontSize: "13px", margin: "0 0 6px" }}>{r}</p>
+                <p key={r} style={{ background: "#f5f2ff", borderRadius: "6px", padding: "8px 12px", fontSize: "13px", margin: "0 0 6px" }}>{r}</p>
               ))}
             </div>
             <div className="wn-shot" style={{ background: "#fff", padding: "22px", flex: 1, maxWidth: "640px" }}>
               <p style={{ fontWeight: 500, margin: "0 0 10px" }}>Attendance · 6 present</p>
               <div style={{ display: "flex", gap: "8px" }}>{["A", "M", "J", "E", "+2"].map((c) => (
-                <span key={c} style={{ width: "44px", height: "44px", borderRadius: "50%", background: "#724aee", color: "#fff", display: "grid", placeItems: "center" }}>{c}</span>
+                <span key={c} style={{ width: "44px", height: "44px", borderRadius: "6px", background: "#724aee", color: "#fff", display: "grid", placeItems: "center" }}>{c}</span>
               ))}</div>
             </div>
           </div>
@@ -434,12 +447,12 @@ export default function Home() {
             <div className="wn-shot" style={{ background: "#fff", padding: "22px", width: "300px" }}>
               <p style={{ fontWeight: 500, margin: "0 0 10px" }}>Raise Hand</p>
               {["Daniel", "Aisha"].map((n) => (
-                <p key={n} style={{ background: "#f5f2ff", borderRadius: "12px", padding: "8px 12px", fontSize: "13px", margin: "0 0 6px" }}>{n}</p>
+                <p key={n} style={{ background: "#f5f2ff", borderRadius: "6px", padding: "8px 12px", fontSize: "13px", margin: "0 0 6px" }}>{n}</p>
               ))}
             </div>
             <div className="wn-shot" style={{ background: "#fff", padding: "22px", flex: 1, maxWidth: "560px" }}>
               <p style={{ fontWeight: 500, margin: "0 0 10px" }}>Chat · Q&A · People</p>
-              <p style={{ background: "#f5f2ff", borderRadius: "12px", padding: "10px 14px", fontSize: "14px" }}>Sarah: That makes sense!</p>
+              <p style={{ background: "#f5f2ff", borderRadius: "6px", padding: "10px 14px", fontSize: "14px" }}>Sarah: That makes sense!</p>
             </div>
           </div>
         </div>
@@ -459,7 +472,7 @@ export default function Home() {
               return (
                 <motion.div key={t.name} className="wn-cell" style={{ background: bgs[i % 4] }}
                   initial={{ opacity: 0, scale: 0.9, rotate: i % 2 ? -2 : 2 }} whileInView={{ opacity: 1, scale: 1, rotate: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.45, delay: (i % 4) * 0.06 }}>
-                  <span style={{ width: "48px", height: "48px", borderRadius: "14px", background: "#000", display: "grid", placeItems: "center", color: "#fff" }}><Icon size={22} /></span>
+                  <span style={{ width: "48px", height: "48px", borderRadius: "8px", background: "#000", display: "grid", placeItems: "center", color: "#fff" }}><Icon size={22} /></span>
                   <span><p className="t">{t.name}</p><p className="d">{t.tag}</p></span>
                 </motion.div>
               )
@@ -497,7 +510,7 @@ export default function Home() {
           </div>
         </div>
         <div className="wn-custom">
-          <span style={{ width: "90px", height: "90px", borderRadius: "50%", background: "#fff", display: "grid", placeItems: "center", marginBottom: "10px" }}><Users size={40} color="#724aee" /></span>
+          <span style={{ width: "90px", height: "90px", borderRadius: "6px", background: "#fff", display: "grid", placeItems: "center", marginBottom: "10px" }}><Users size={40} color="#724aee" /></span>
           <h3 style={{ color: "#fff", fontSize: "32px", fontWeight: 500, margin: "10px 0" }}>Got a team in mind? Let us talk!</h3>
           <a href="mailto:hello@shadowmeet.app" style={{ color: "#fff", fontSize: "18px" }}>hello@shadowmeet.app</a>
         </div>

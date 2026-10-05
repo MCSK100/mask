@@ -1,29 +1,19 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
-import { Video, Users, MonitorUp, GraduationCap, Presentation, BookOpen, Play, ArrowRight, Copy, CalendarPlus, RotateCcw, Clock } from "lucide-react"
+import { Video, Users, MonitorUp, ArrowRight, Copy, CalendarPlus, RotateCcw, Clock } from "lucide-react"
 import { roomsApi, meetingsApi } from "../services/api"
 import { setHostToken } from "../utils/identity"
 import { googleCalendarUrl, icsContent, downloadIcs } from "../utils/calendar"
 import { WannaShell, WannaBadge } from "../components/wanna/WannaChrome"
 
-const TYPES = [
-  { v: "meeting", label: "Meeting", Icon: Video },
-  { v: "classroom", label: "Classroom", Icon: GraduationCap },
-  { v: "webinar", label: "Webinar", Icon: Presentation },
-  { v: "study", label: "Study Room", Icon: BookOpen },
-  { v: "watch", label: "Watch Party", Icon: Play },
-]
-
 export default function CreateMeeting() {
   const navigate = useNavigate()
-  const [form, setForm] = useState({ title: "", hostName: "", date: "", time: "", duration: 60, password: "", roomType: "meeting" })
+  const [form, setForm] = useState({ title: "", hostName: "", password: "" })
   const [busy, setBusy] = useState(false)
   const [result, setResult] = useState(null)
   const [err, setErr] = useState(null)
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }))
-
-  const scheduledAt = form.date && form.time ? new Date(`${form.date}T${form.time}`) : null
 
   const create = async (startNow) => {
     setErr(null)
@@ -37,10 +27,10 @@ export default function CreateMeeting() {
         data = await meetingsApi.create({
           title: form.title.trim(),
           hostName: form.hostName.trim(),
-          scheduledAt: scheduledAt && !isNaN(scheduledAt) ? scheduledAt.toISOString() : null,
-          durationMin: Number(form.duration) || 60,
+          scheduledAt: null,
+          durationMin: 60,
           password: form.password.trim() || null,
-          roomType: form.roomType
+          roomType: "meeting"
         })
         data = { ...data, code: data.meetingCode || data.code }
       } catch (e) {
@@ -49,14 +39,14 @@ export default function CreateMeeting() {
         data = await roomsApi.create({
           title: form.title.trim(),
           hostName: form.hostName.trim(),
-          scheduledAt: scheduledAt && !isNaN(scheduledAt) ? scheduledAt.toISOString() : null,
-          durationMin: Number(form.duration) || 60,
+          scheduledAt: null,
+          durationMin: 60,
           password: form.password.trim() || null,
-          roomType: form.roomType
+          roomType: "meeting"
         })
       }
       setHostToken(data.code, data.hostToken)
-      const payload = { ...data, title: form.title.trim(), hostName: form.hostName.trim(), scheduledAt: scheduledAt?.toISOString() || null, duration: Number(form.duration) || 60 }
+      const payload = { ...data, title: form.title.trim(), hostName: form.hostName.trim(), scheduledAt: null, duration: 60 }
       setResult(payload)
       try { sessionStorage.setItem("sm_last_create", JSON.stringify(payload)) } catch { /* best-effort only */ }
       if (startNow) navigate(`/meet/${data.code}?name=${encodeURIComponent(form.hostName.trim())}&host=1`)
@@ -87,30 +77,6 @@ export default function CreateMeeting() {
               <div>
                 <label className="wz-label" htmlFor="hname">Your name (host)</label>
                 <input id="hname" value={form.hostName} onChange={(e) => set("hostName", e.target.value)} placeholder="e.g. Santhosh" className="wz-input" maxLength={40} />
-              </div>
-              <div>
-                <span className="wz-label">Room type</span>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                  {TYPES.map(({ v, label, Icon }) => (
-                    <button key={v} type="button" onClick={() => set("roomType", v)} className={`wz-chip ${form.roomType === v ? "active" : ""}`}>
-                      <Icon size={14} /> {label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div style={{ display: "grid", gap: "12px", gridTemplateColumns: "1fr 1fr 1fr" }} className="max-sm:!grid-cols-1">
-                <div>
-                  <label className="wz-label" htmlFor="mdate">Date (optional)</label>
-                  <input id="mdate" type="date" value={form.date} onChange={(e) => set("date", e.target.value)} className="wz-input" />
-                </div>
-                <div>
-                  <label className="wz-label" htmlFor="mtime">Time (optional)</label>
-                  <input id="mtime" type="time" value={form.time} onChange={(e) => set("time", e.target.value)} className="wz-input" />
-                </div>
-                <div>
-                  <label className="wz-label" htmlFor="mdur">Duration (min)</label>
-                  <input id="mdur" type="number" min={5} max={480} value={form.duration} onChange={(e) => set("duration", e.target.value)} className="wz-input" />
-                </div>
               </div>
               <div>
                 <label className="wz-label" htmlFor="mpass">Password (optional)</label>

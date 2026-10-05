@@ -22,8 +22,7 @@ import { PollsPanel } from "../components/meet/PollsPanel"
 import { MusicPanel } from "../components/meet/MusicPanel"
 import { ParticipantTile } from "../components/livekit/ParticipantTile"
 import { ParticipantGrid } from "../components/livekit/ParticipantGrid"
-import { Sky, SectionTab } from "../components/aurora/AuroraChrome"
-import AuroraNavbar from "../components/aurora/AuroraNavbar"
+import { WannaShell, WannaBadge } from "../components/wanna/WannaChrome"
 import {
   Mic, MicOff, Video as VideoIcon, VideoOff, LogIn, Lock, Users, UserPlus, Hand, ShieldCheck, PhoneOff, X,
   MonitorUp, RotateCcw, BarChart3, MessageSquare, CircleHelp, Send, ChevronRight,
@@ -559,113 +558,109 @@ export default function Meeting() {
   // ---------- LOBBY ----------
   if (lobby) {
     return (
-      <div style={{ position: "relative", minHeight: "100svh", overflow: "clip" }}>
-        <Sky />
-        <AuroraNavbar />
-        <div style={{ position: "relative", zIndex: 2, margin: "0 auto", maxWidth: "1024px", padding: "150px 34px 40px", display: "grid", gap: "22px" }} className="lg:grid-cols-[1fr_340px]">
-          <div>
-            <div className="aurora-badge">
-              <div style={{ display: "flex" }}>{[0, 1, 2].map((i) => (<div key={i} className="aurora-avatar" style={{ marginLeft: i === 0 ? 0 : "-8px" }} />))}</div>
-              <span style={{ fontSize: "13px", color: "#4A6173" }}>Code <strong style={{ color: "#14202B" }}>{code}</strong>{meta?.hasPassword ? " · locked" : " · open"}</span>
-            </div>
-            <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: "clamp(1.9rem,3.6vw,2.8rem)", letterSpacing: "-0.02em", marginTop: "16px", textTransform: "uppercase" }}>{meta?.title || `Meeting ${code}`}</h1>
-            {metaErr && <p role="alert" style={{ marginTop: "12px", borderRadius: "12px", background: "#FFF1EC", border: "1px solid #F0531C44", padding: "12px", fontSize: "13px", color: "#D2410E", fontWeight: 600 }}>{metaErr}. Ask the host for a fresh link.</p>}
-            <div style={{ marginTop: "14px" }}>
-              <SectionTab icon={VideoIcon} label="preview.frame" />
-              <div className="aurora-card sel" style={{ marginTop: "-1px", overflow: "hidden", borderRadius: "0 18px 18px 18px" }}>
-                <span className="h tl" /><span className="h tr" /><span className="h bl" /><span className="h br" />
-                <span className="dim">16 : 9 · live preview</span>
+      <WannaShell>
+        <div style={{ maxWidth: "1024px", margin: "0 auto", padding: "30px 0 20px" }}>
+          <WannaBadge prefix="Code" strong={`${code}${meta?.hasPassword ? " · locked" : " · open"}`} />
+          <h1 className="wz-title">{meta?.title || `Meeting ${code}`}</h1>
+          <p className="wz-sub">Check your camera and mic, then join. Everything stays in your browser until you join.</p>
+          {metaErr && <p role="alert" className="wz-alert" style={{ marginTop: "14px" }}>{metaErr}. Ask the host for a fresh link.</p>}
+          <div className="wz-lobby-grid">
+            <div>
+              <div className="wz-stage">
+                <div className="wz-stage-top">
+                  <span className="wz-live">PREVIEW</span>
+                  <span style={{ color: "rgba(255,255,255,.65)" }}>16 : 9 · live preview</span>
+                </div>
                 {media.stream ? (
-                  <video ref={previewRef} autoPlay playsInline muted style={{ aspectRatio: "16/9", width: "100%", background: "#0E1622", objectFit: "cover" }} />
+                  <video ref={previewRef} autoPlay playsInline muted />
                 ) : (
-                  <div style={{ aspectRatio: "16/9", display: "grid", placeItems: "center", fontSize: "14px", color: "#8AA6B8", background: "#F1F6FA" }}>{media.error || "Starting camera…"}</div>
+                  <div className="wz-stage-fallback">{media.error || "Starting camera…"}</div>
                 )}
               </div>
-            </div>
-            {media.error && <p style={{ marginTop: "8px", fontSize: "13px", fontWeight: 600, color: "#4A6173" }}>{media.error} You can still join with camera off.</p>}
-            <div style={{ marginTop: "12px", display: "flex", gap: "8px", flexWrap: "wrap" }}>
-              <button onClick={media.toggleMute} className="chip" style={{ cursor: "pointer" }}>{media.muted ? <MicOff size={14} /> : <Mic size={14} />} {media.muted ? "Unmute" : "Mute"}</button>
-              <button onClick={media.toggleCamera} className="chip" style={{ cursor: "pointer" }}>{media.cameraOff ? <VideoIcon size={14} /> : <VideoOff size={14} />} {media.cameraOff ? "Camera on" : "Camera off"}</button>
-              <button onClick={() => media.start().catch(() => {})} style={{ background: "none", border: 0, color: "#0D99FF", fontSize: "13px", fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px" }}><RotateCcw size={13} /> Retry</button>
-            </div>
-            {(media.devices.audio.length > 1 || media.devices.video.length > 1) && (
-              <div style={{ marginTop: "10px", display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                {media.devices.audio.length > 1 && (
-                  <select aria-label="Microphone" onChange={(e) => media.start({ video: true, audio: { deviceId: { exact: e.target.value } } }).catch(() => {})} className="aurora-input" style={{ maxWidth: "220px", fontSize: "13px" }}>
-                    {media.devices.audio.map((d, i) => (<option key={d.deviceId || i} value={d.deviceId}>{d.label || `Microphone ${i + 1}`}</option>))}
-                  </select>
-                )}
-                {media.devices.video.length > 1 && (
-                  <select aria-label="Camera" onChange={(e) => media.start({ video: { deviceId: { exact: e.target.value } }, audio: true }).catch(() => {})} className="aurora-input" style={{ maxWidth: "220px", fontSize: "13px" }}>
-                    {media.devices.video.map((d, i) => (<option key={d.deviceId || i} value={d.deviceId}>{d.label || `Camera ${i + 1}`}</option>))}
-                  </select>
-                )}
+              {media.error && <p style={{ marginTop: "8px", fontSize: "13px", fontWeight: 600, color: "rgba(0,0,0,.55)" }}>{media.error} You can still join with camera off.</p>}
+              <div style={{ marginTop: "12px", display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
+                <button onClick={media.toggleMute} className="wz-chip">{media.muted ? <MicOff size={14} /> : <Mic size={14} />} {media.muted ? "Unmute" : "Mute"}</button>
+                <button onClick={media.toggleCamera} className="wz-chip">{media.cameraOff ? <VideoIcon size={14} /> : <VideoOff size={14} />} {media.cameraOff ? "Camera on" : "Camera off"}</button>
+                <button onClick={() => media.start().catch(() => {})} className="wz-link"><RotateCcw size={13} /> Retry</button>
               </div>
-            )}
-          </div>
-          <div>
-            <SectionTab icon={LogIn} label="join-card" />
-            <div className="aurora-card" style={{ marginTop: "-1px", height: "fit-content", padding: "22px", borderRadius: "0 18px 18px 18px" }}>
-              <h2 style={{ fontWeight: 700, fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "24px" }}>Ready to join?</h2>
-              <p style={{ fontSize: "13px", color: "#4A6173", marginTop: "4px" }}>Camera and mic stay in your browser until you join.</p>
-              <label htmlFor="lname" className="aurora-label" style={{ marginTop: "16px" }}>Your name</label>
-              <input id="lname" value={name} onChange={(e) => setName(e.target.value)} placeholder="Display name" maxLength={40} className="aurora-input" />
-              {meta?.hasPassword && (
-                <>
-                  <label htmlFor="lpwd" className="aurora-label" style={{ marginTop: "12px" }}><Lock size={11} style={{ display: "inline" }} /> Password</label>
-                  <input id="lpwd" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="aurora-input" />
-                </>
-              )}
-              <button onClick={doJoin} disabled={!name.trim() || joining} className="aurora-btn-dark" style={{ marginTop: "16px", width: "100%", opacity: name.trim() && !joining ? 1 : 0.55, justifyContent: "center" }}>
-                <LogIn size={15} /> {joining ? "Joining…" : hostToken ? "Start meeting" : "Join now"}
-              </button>
-              <p style={{ marginTop: "10px", textAlign: "center", fontSize: "11px", color: "#8AA6B8", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}><ShieldCheck size={12} /> Private by design · no signup</p>
-              {waiting && (
-                <div style={{ marginTop: "12px", borderRadius: "12px", background: "#F1F6FA", padding: "12px", textAlign: "center" }}>
-                  <p style={{ fontSize: "13px", fontWeight: 700 }}>Waiting for the host to let you in…</p>
-                  <button onClick={doJoin} disabled={joining} style={{ marginTop: "8px", fontSize: "13px", fontWeight: 700, color: "#0D99FF", background: "none", border: 0, cursor: "pointer" }}>Retry now</button>
+              {(media.devices.audio.length > 1 || media.devices.video.length > 1) && (
+                <div style={{ marginTop: "10px", display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                  {media.devices.audio.length > 1 && (
+                    <select aria-label="Microphone" onChange={(e) => media.start({ video: true, audio: { deviceId: { exact: e.target.value } } }).catch(() => {})} className="wz-input" style={{ maxWidth: "240px", fontSize: "13px", minHeight: "44px" }}>
+                      {media.devices.audio.map((d, i) => (<option key={d.deviceId || i} value={d.deviceId}>{d.label || `Microphone ${i + 1}`}</option>))}
+                    </select>
+                  )}
+                  {media.devices.video.length > 1 && (
+                    <select aria-label="Camera" onChange={(e) => media.start({ video: { deviceId: { exact: e.target.value } }, audio: true }).catch(() => {})} className="wz-input" style={{ maxWidth: "240px", fontSize: "13px", minHeight: "44px" }}>
+                      {media.devices.video.map((d, i) => (<option key={d.deviceId || i} value={d.deviceId}>{d.label || `Camera ${i + 1}`}</option>))}
+                    </select>
+                  )}
                 </div>
               )}
-              {joinErr && <p role="alert" style={{ marginTop: "8px", textAlign: "center", fontSize: "13px", fontWeight: 700, color: "#D2410E" }}>{joinErr}</p>}
-              {toast && <p style={{ marginTop: "8px", textAlign: "center", fontSize: "13px", fontWeight: 700, color: "#D2410E" }}>{toast}</p>}
+            </div>
+            <div className="wz-card">
+              <h2 style={{ fontSize: "24px", fontWeight: 500, letterSpacing: "-1px", margin: 0 }}>Ready to join?</h2>
+              <p style={{ fontSize: "13px", color: "rgba(0,0,0,.55)", marginTop: "4px" }}>Camera and mic stay in your browser until you join.</p>
+              <label htmlFor="lname" className="wz-label" style={{ marginTop: "16px" }}>Your name</label>
+              <input id="lname" value={name} onChange={(e) => setName(e.target.value)} placeholder="Display name" maxLength={40} className="wz-input" />
+              {meta?.hasPassword && (
+                <>
+                  <label htmlFor="lpwd" className="wz-label" style={{ marginTop: "12px" }}><Lock size={11} style={{ display: "inline" }} /> Password</label>
+                  <input id="lpwd" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="wz-input" />
+                </>
+              )}
+              <button onClick={doJoin} disabled={!name.trim() || joining} className="wz-btn big" style={{ marginTop: "16px", width: "100%" }}>
+                <LogIn size={18} color="#fff" /> {joining ? "Joining…" : hostToken ? "Start meeting" : "Join now"}
+              </button>
+              <p style={{ marginTop: "10px", textAlign: "center", fontSize: "12px", color: "rgba(0,0,0,.55)", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}><ShieldCheck size={12} /> Private by design · no signup</p>
+              {waiting && (
+                <div style={{ marginTop: "12px", borderRadius: "8px", background: "#f5f2ff", border: "2px solid #000", padding: "12px", textAlign: "center" }}>
+                  <p style={{ fontSize: "13px", fontWeight: 500, margin: 0 }}>Waiting for the host to let you in…</p>
+                  <button onClick={doJoin} disabled={joining} className="wz-link" style={{ marginTop: "8px" }}>Retry now</button>
+                </div>
+              )}
+              {joinErr && <p role="alert" className="wz-alert" style={{ marginTop: "8px", textAlign: "center" }}>{joinErr}</p>}
+              {toast && <p style={{ marginTop: "8px", textAlign: "center", fontSize: "13px", fontWeight: 500 }}>{toast}</p>}
             </div>
           </div>
         </div>
-      </div>
+      </WannaShell>
     )
   }
 
   // ---------- WAITING / ERROR / ENDED ----------
   if (waiting && !joined) {
     return (
-      <div style={{ position: "relative", minHeight: "100svh", display: "grid", placeItems: "center", padding: "24px", textAlign: "center" }}>
-        <Sky />
-        <div className="omd-card" style={{ position: "relative", zIndex: 2, padding: "36px", maxWidth: "440px" }}>
-          <p className="pin-tag" style={{ margin: "0 auto" }}><Users size={12} /> waiting room</p>
-          <h1 style={{ fontSize: "28px", fontWeight: 800, marginTop: "14px", textTransform: "uppercase" }}>Waiting for host…</h1>
-          <p style={{ marginTop: "8px", fontSize: "14px", color: "#4A6173" }}>Keep this tab open. The host sees “{name} wants to join.”</p>
-          <div style={{ marginTop: "18px", display: "flex", gap: "10px", justifyContent: "center" }}>
-            <button onClick={doJoin} disabled={joining} className="btn"><RotateCcw size={14} /> {joining ? "Checking…" : "Retry"}</button>
-            <button onClick={() => { setWaiting(false); navigate("/") }} className="btn ghost"><PhoneOff size={15} /> Leave</button>
+      <WannaShell>
+        <div style={{ maxWidth: "480px", margin: "40px auto", padding: "10px 0 20px" }}>
+          <div className="wz-card" style={{ textAlign: "center", padding: "36px" }}>
+            <WannaBadge prefix="Waiting" strong="for host" />
+            <h1 className="wz-title" style={{ textAlign: "center" }}>Waiting for host…</h1>
+            <p className="wz-sub" style={{ textAlign: "center", margin: "12px auto 0" }}>Keep this tab open. The host sees “{name} wants to join.”</p>
+            <div style={{ marginTop: "18px", display: "flex", gap: "10px", justifyContent: "center", flexWrap: "wrap" }}>
+              <button onClick={doJoin} disabled={joining} className="wz-btn"><RotateCcw size={16} /> {joining ? "Checking…" : "Retry"}</button>
+              <button onClick={() => { setWaiting(false); navigate("/") }} className="wz-chip"><PhoneOff size={14} /> Leave</button>
+            </div>
+            {joinErr && <p role="alert" className="wz-alert" style={{ marginTop: "12px" }}>{joinErr}</p>}
           </div>
-          {joinErr && <p style={{ marginTop: "10px", fontSize: "13px", fontWeight: 700, color: "#D2410E" }}>{joinErr}</p>}
         </div>
-      </div>
+      </WannaShell>
     )
   }
   if (ended || lk.error) {
     return (
-      <div style={{ position: "relative", minHeight: "100svh", display: "grid", placeItems: "center", padding: "24px", textAlign: "center" }}>
-        <Sky />
-        <div className="omd-card" style={{ position: "relative", zIndex: 2, padding: "36px", maxWidth: "440px" }}>
-          <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "32px", fontWeight: 800, textTransform: "uppercase" }}>{ended ? "Meeting ended" : "Could not join"}</h1>
-          <p style={{ marginTop: "8px", fontSize: "14px", color: "#4A6173" }}>{ended || lk.error || "Room unavailable."}</p>
-          <div style={{ marginTop: "20px", display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
-            <button onClick={() => navigate("/join")} className="btn">Try again</button>
-            <button onClick={() => navigate("/")} className="btn ghost">Home</button>
+      <WannaShell>
+        <div style={{ maxWidth: "480px", margin: "40px auto", padding: "10px 0 20px" }}>
+          <div className="wz-card" style={{ textAlign: "center", padding: "36px" }}>
+            <h1 className="wz-title" style={{ textAlign: "center", marginTop: 0 }}>{ended ? "Meeting ended" : "Could not join"}</h1>
+            <p className="wz-sub" style={{ textAlign: "center", margin: "12px auto 0" }}>{ended || lk.error || "Room unavailable."}</p>
+            <div style={{ marginTop: "20px", display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
+              <button onClick={() => navigate("/join")} className="wz-btn">Try again</button>
+              <button onClick={() => navigate("/")} className="wz-link">Home</button>
+            </div>
           </div>
         </div>
-      </div>
+      </WannaShell>
     )
   }
 
