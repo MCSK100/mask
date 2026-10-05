@@ -1,18 +1,18 @@
 {
   "id": "/",
-  "name": "Shadowchaty — Anonymous Stranger Chat",
-  "short_name": "Shadowchaty",
-  "description": "Free random video & text chat with strangers. No signup. Talk to people worldwide instantly.",
+  "name": "ShadowMeet — Meet. Teach. Share. Play. Together.",
+  "short_name": "ShadowMeet",
+  "description": "No-signup video meetings, classrooms, whiteboard, watch parties and polls — right in the browser.",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui", "browser"],
-  "orientation": "portrait",
+  "orientation": "any",
   "background_color": "#020617",
   "theme_color": "#020617",
   "lang": "en-US",
   "dir": "ltr",
-  "categories": ["social", "lifestyle", "communication"],
+  "categories": ["productivity", "education", "communication"],
   "prefer_related_applications": false,
   "icons": [
     {
@@ -32,28 +32,22 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
-    },
-    {
-      "src": "/shadowchaty-favicon.jpg",
-      "sizes": "192x192",
-      "type": "image/jpeg",
-      "purpose": "any"
     }
   ],
   "shortcuts": [
     {
-      "name": "Start Text Chat",
-      "short_name": "Text Chat",
-      "description": "Start an anonymous text chat instantly",
-      "url": "/chat?source=shortcut",
-      "icons": [{ "src": "/shadowchaty-favicon.jpg", "sizes": "96x96", "type": "image/jpeg" }]
+      "name": "Create Meeting",
+      "short_name": "Create",
+      "description": "Create a ShadowMeet room instantly",
+      "url": "/create?source=shortcut",
+      "icons": [{ "src": "/shadowchaty-logo.png", "sizes": "96x96", "type": "image/png" }]
     },
     {
-      "name": "Start Video Chat",
-      "short_name": "Video Chat",
-      "description": "Start a random video chat instantly",
-      "url": "/video?source=shortcut",
-      "icons": [{ "src": "/shadowchaty-favicon.jpg", "sizes": "96x96", "type": "image/jpeg" }]
+      "name": "Join Meeting",
+      "short_name": "Join",
+      "description": "Join with a meeting code",
+      "url": "/join?source=shortcut",
+      "icons": [{ "src": "/shadowchaty-logo.png", "sizes": "96x96", "type": "image/png" }]
     }
   ]
 }
