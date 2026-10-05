@@ -1,233 +1,307 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import {
-  Video, MonitorUp, PenTool, Play, BarChart3, Lock, ArrowRight, ArrowUpRight,
-  Clock, Users, Zap, MessageSquare, LayoutGrid, Sparkles, ShieldCheck, Globe
+  Video, MonitorUp, PenTool, Play, BarChart3, Lock, ArrowRight, Check,
+  Sparkles, GraduationCap, Zap, MessageSquare, Users, Clock, ShieldCheck, Star
 } from "lucide-react"
-import AuroraNavbar from "../components/aurora/AuroraNavbar"
-import { AuroraBadge, AuroraFooter, Sky, SectionTab } from "../components/aurora/AuroraChrome"
 import { normalizeCode } from "../utils/meetingCode"
+import "./Home.css"
 
-function MockRoom() {
+const TOOLS = [
+  { name: "Live Video", icon: Video, tag: "Crystal-clear faces, big and bright.", stat: "1080p · adaptive" },
+  { name: "Screen Share", icon: MonitorUp, tag: "Share any tab in one click.", stat: "1-click · no plugins" },
+  { name: "Whiteboard", icon: PenTool, tag: "Sketch together, strokes saved.", stat: "live · synced" },
+  { name: "Watch Together", icon: Play, tag: "Press play at the same time.", stat: "YouTube · in sync" },
+  { name: "Polls", icon: BarChart3, tag: "Answers in seconds, live results.", stat: "instant · realtime" },
+  { name: "Private Rooms", icon: Lock, tag: "Codes, locks and host controls.", stat: "private · by design" },
+]
+
+const SLIDES = [
+  { n: "1. Instant Join", cls: "orange", title: "No accounts, no downloads — share a code and you are in.", bg: "#FFF3E8" },
+  { n: "2. Live Collaboration", cls: "blue", title: "Video, whiteboard, chat and polls in one fast room.", bg: "#ECE9FF" },
+  { n: "3. Classroom Mode", cls: "green", title: "Teach with a stage, raise hands and quiz the class.", bg: "#E4FAF4" },
+]
+
+function HeroRoom() {
   const tiles = [
     { n: "Aarav · Host", c: "#0D99FF" },
-    { n: "Mia", c: "#F0531C" },
-    { n: "Leo", c: "#14202B" },
-    { n: "Zara", c: "#7C5CFF" },
+    { n: "Mia", c: "#724aee" },
+    { n: "Leo", c: "#16283A" },
+    { n: "Zara", c: "#2ad7b8" },
   ]
   return (
-    <div className="sel omd-card" style={{ overflow: "visible", padding: "22px", background: "#fff" }}>
-      <span className="h tl" /><span className="h tr" /><span className="h bl" /><span className="h br" />
-      <span className="dim">meeting-room.fig · 4 online</span>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingBottom: "14px", fontSize: "14px", fontWeight: 600 }}>
-        <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#27c06b", display: "inline-block" }} />
+    <div style={{ background: "#fff", border: "2px solid #000", borderRadius: "24px", padding: "22px", boxShadow: "12px 12px 0 #724aee" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingBottom: "14px" }}>
+        <span style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: 500, fontSize: "15px" }}>
+          <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#2ad7b8", display: "inline-block" }} />
           React Beginners · RX82KP
         </span>
-        <span className="pin-tag" style={{ fontSize: "10px", padding: "5px 10px" }}><Users size={12} /> 4 here</span>
+        <span style={{ background: "#000", color: "#fff", borderRadius: "100px", padding: "6px 14px", fontSize: "12px", fontWeight: 500 }}>4 here</span>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
         {tiles.map((t) => (
-          <div key={t.n} style={{ position: "relative", height: "112px", borderRadius: "12px", overflow: "hidden", background: t.c, border: "1px solid rgba(20,32,43,.08)" }}>
-            <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", fontSize: "30px", fontWeight: 700, color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif" }}>{t.n.slice(0, 1)}</div>
-            <div style={{ position: "absolute", bottom: "6px", left: "6px", borderRadius: "7px", background: "rgba(20,32,43,.85)", padding: "3px 8px", fontSize: "11px", fontWeight: 600, color: "#fff" }}>{t.n}</div>
+          <div key={t.n} style={{ position: "relative", height: "112px", borderRadius: "16px", overflow: "hidden", background: t.c }}>
+            <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", fontSize: "30px", fontWeight: 500, color: "#fff" }}>{t.n.slice(0, 1)}</div>
+            <div style={{ position: "absolute", bottom: "6px", left: "6px", borderRadius: "100px", background: "rgba(0,0,0,.7)", padding: "3px 10px", fontSize: "11px", color: "#fff" }}>{t.n}</div>
           </div>
         ))}
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 120px", gap: "10px", marginTop: "10px" }}>
-        <div style={{ borderRadius: "12px", border: "1px solid rgba(20,32,43,.08)", background: "#F1F6FA", padding: "10px 12px" }}>
-          <p style={{ fontSize: "12px", fontWeight: 700, display: "flex", alignItems: "center", gap: "6px" }}><PenTool size={13} color="#F0531C" /> Whiteboard · Live</p>
-          <svg viewBox="0 0 200 60" style={{ marginTop: "6px", height: "42px", width: "100%" }}><path d="M5 50 Q 40 5 70 30 T 130 25 T 195 40" stroke="#F0531C" strokeWidth="4" fill="none" strokeLinecap="round" /><circle cx="150" cy="18" r="8" stroke="#0D99FF" fill="none" strokeWidth="4" /></svg>
+        <div style={{ borderRadius: "16px", background: "#f5f2ff", padding: "10px 12px", fontSize: "12px", fontWeight: 500 }}>
+          Whiteboard · Live
+          <svg viewBox="0 0 200 60" style={{ marginTop: "6px", height: "42px", width: "100%" }}><path d="M5 50 Q 40 5 70 30 T 130 25 T 195 40" stroke="#724aee" strokeWidth="4" fill="none" strokeLinecap="round" /><circle cx="150" cy="18" r="8" stroke="#ff8655" fill="none" strokeWidth="4" /></svg>
         </div>
-        <div style={{ borderRadius: "12px", border: "1px solid rgba(20,32,43,.08)", background: "#F1F6FA", padding: "10px 12px", fontSize: "12px", fontWeight: 500 }}>
-          <p style={{ fontWeight: 700, display: "flex", alignItems: "center", gap: "6px" }}><MessageSquare size={13} color="#0D99FF" /> Chat</p>
-          <p style={{ marginTop: "6px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>Mia: All clear</p>
-          <p>Leo: +1</p>
+        <div style={{ borderRadius: "16px", background: "#f5f2ff", padding: "10px 12px", fontSize: "12px" }}>
+          <p style={{ fontWeight: 500, margin: 0 }}>Chat</p>
+          <p style={{ margin: "6px 0 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>Mia: All clear</p>
+          <p style={{ margin: 0 }}>Leo: +1</p>
         </div>
       </div>
     </div>
   )
 }
 
-const MARQUEE = ["Live Video", "Screen Share", "Whiteboard", "Watch Together", "Polls", "No Signup", "Classrooms"]
-
-const FEATURES = [
-  { icon: Video, title: "Live Video", desc: "Crystal-clear meetings with every face big, bright and in sync." },
-  { icon: MonitorUp, title: "Screen Share", desc: "Share tabs and screens in one click. No plugins, no friction." },
-  { icon: PenTool, title: "Whiteboard", desc: "Sketch together live and keep every stroke saved." },
-  { icon: Play, title: "Watch Together", desc: "Press play at the same time. Perfect for classes and parties." },
-  { icon: BarChart3, title: "Polls", desc: "Ask anything, get answers in seconds with live results." },
-  { icon: Lock, title: "Private by Design", desc: "Every room guarded by codes and host controls." },
-]
-
-const STEPS = [
-  { n: "01 · Create", who: "You", time: "10:02", text: "Pick a title, hit Meet Now — link is ready in seconds.", file: "meeting-link.copied" },
-  { n: "02 · Share it", who: "ShadowMeet", time: "10:03", text: "One code, one link. Works for meetings, classes and watch parties.", file: null },
-  { n: "03 · Meet live", who: "You + team", time: "Day 1", text: "Video, chat, whiteboard, polls and YouTube — all in the browser.", file: "whiteboard-live.png" },
-  { n: "04 · Ship it", who: "ShadowMeet", time: "Done", text: "No accounts. No downloads. Just modern rooms that feel instant.", file: null },
-]
+function ToolVisual({ tool }) {
+  const Icon = tool.icon
+  return (
+    <div className="wn-pose-card">
+      <div style={{ background: "#fff", borderRadius: "20px", padding: "34px", boxShadow: "0 24px 60px -20px rgba(0,0,0,.35)" }}>
+        <div style={{ width: "56px", height: "56px", borderRadius: "18px", background: "#724aee", display: "grid", placeItems: "center", color: "#fff" }}>
+          <Icon size={26} />
+        </div>
+        <h3 style={{ fontSize: "38px", fontWeight: 500, letterSpacing: "-1px", margin: "18px 0 6px", color: "#000" }}>{tool.name}</h3>
+        <p style={{ fontSize: "17px", color: "rgba(0,0,0,.6)", margin: 0 }}>{tool.tag}</p>
+        <p style={{ display: "inline-block", marginTop: "16px", background: "#f5f2ff", color: "#7251eb", borderRadius: "100px", padding: "8px 18px", fontSize: "14px", fontWeight: 500 }}>{tool.stat}</p>
+      </div>
+    </div>
+  )
+}
 
 export default function Home() {
   const navigate = useNavigate()
   const [code, setCode] = useState("")
+  const [activeTool, setActiveTool] = useState(0)
+  const toolListRef = useRef(null)
+  const slideSecRef = useRef(null)
+  const slideTrackRef = useRef(null)
+
   const quickJoin = (e) => {
     e?.preventDefault()
     const c = normalizeCode(code)
     if (c) navigate(`/meet/${c}`)
   }
 
+  // poses-style scroll spy
+  useEffect(() => {
+    const el = toolListRef.current
+    if (!el) return
+    const onScroll = () => {
+      const items = el.querySelectorAll("[data-tool]")
+      let best = 0
+      let bestDist = Infinity
+      items.forEach((it, i) => {
+        const d = Math.abs(it.offsetTop - el.scrollTop - 200)
+        if (d < bestDist) { bestDist = d; best = i }
+      })
+      setActiveTool(best)
+    }
+    el.addEventListener("scroll", onScroll, { passive: true })
+    return () => el.removeEventListener("scroll", onScroll)
+  }, [])
+
+  // sticky horizontal slider progress
+  useEffect(() => {
+    const onScroll = () => {
+      const sec = slideSecRef.current
+      const track = slideTrackRef.current
+      if (!sec || !track) return
+      const rect = sec.getBoundingClientRect()
+      const total = sec.offsetHeight - window.innerHeight
+      const p = Math.min(Math.max(-rect.top / total, 0), 1)
+      track.style.transform = `translateX(${-p * 200}vw)`
+    }
+    window.addEventListener("scroll", onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  const pickTool = (i) => {
+    const el = toolListRef.current
+    const item = el?.querySelectorAll("[data-tool]")?.[i]
+    if (item) el.scrollTo({ top: item.offsetTop - 220, behavior: "smooth" })
+    else setActiveTool(i)
+  }
+
   return (
-    <div className="sup-page" style={{ position: "relative", width: "100%", minHeight: "100svh", overflow: "clip" }}>
-      <Sky />
-      <AuroraNavbar />
-
-      {/* HERO */}
-      <section className="hero" style={{ padding: "150px 0 44px", textAlign: "center", minHeight: "92vh", display: "flex", flexDirection: "column", justifyContent: "center", position: "relative", zIndex: 2 }}>
-        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 34px", width: "100%" }}>
-          <div className="clock" style={{ display: "inline-flex", alignItems: "center", gap: "10px", fontFamily: "'Space Mono', monospace", fontSize: "12px", fontWeight: 700, letterSpacing: ".1em", color: "#14202B", background: "rgba(255,255,255,.65)", border: "1px solid rgba(20,32,43,.13)", padding: "7px 8px 7px 14px", borderRadius: "999px", marginBottom: "22px" }}>
-            <span className="cdot" style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#F0531C", display: "inline-block" }} />
-            NO SIGNUP · FREE TO START
-            <span className="cz" style={{ color: "#8AA6B8", fontSize: "10px", borderLeft: "1px solid rgba(20,32,43,.13)", paddingLeft: "10px" }}>IN YOUR BROWSER</span>
+    <div className="wn-">
+      {/* header */}
+      <div className="wn-pad"><div className="wn-wrap">
+        <header className="wn-header">
+          <div className="wn-header-left">
+            <button className="wn-logo" onClick={() => navigate("/")}>ShadowMeet</button>
+            <span className="wn-by">by</span>
+            <span className="wn-mark"><Video size={18} /></span>
           </div>
+          <button className="wn-btn" onClick={() => navigate("/create")}>
+            <span>Meet Now</span><Video size={18} color="#fff" />
+          </button>
+        </header>
+      </div></div>
 
-          <p className="we" style={{ fontFamily: "'Shantell Sans', cursive", fontSize: "22px", fontWeight: 600 }}>your meeting room, but modern</p>
-
-          <div className="wordmark-wrap" style={{ display: "flex", justifyContent: "center", margin: "2px 0 10px" }}>
-            <div className="wordmark sel" style={{ fontSize: "clamp(44px,9vw,118px)" }}>
-              <span className="h tl" /><span className="h tr" /><span className="h bl" /><span className="h br" />
-              IMPOSSIBLE<br />TO <span className="o">miss.</span>
-              <span className="dim">hero.frame · 1280 × auto</span>
-            </div>
+      {/* hero */}
+      <div className="wn-pad"><div className="wn-wrap">
+        <section className="wn-hero">
+          <p className="wn-eyebrow">No-signup video meetings for teams &amp; classrooms</p>
+          <div className="wn-hero-inner">
+            <h1 className="wn-h1">Meet.</h1>
+            <span className="wn-smile s1" aria-hidden><Star size={96} color="#724aee" fill="#e4dfff" /></span>
+            <span className="wn-smile s2" aria-hidden><Sparkles size={60} color="#ff8655" /></span>
           </div>
-
-          <p className="tagline" style={{ fontSize: "clamp(16px,1.85vw,20px)", color: "#4A6173", maxWidth: "52ch", margin: "12px auto 26px", lineHeight: 1.55 }}>
-            Meetings, classrooms and watch parties in one light, fast room. <span className="ser" style={{ fontFamily: "'Fraunces', serif", fontStyle: "italic", color: "#14202B" }}>No accounts. No downloads.</span> Just share a code and go.
-          </p>
-
-          <div className="hero-actions" style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
-            <button onClick={() => navigate("/create")} className="btn">Meet Now <ArrowRight size={16} /></button>
-            <button onClick={() => navigate("/join")} className="btn ghost">Join with code</button>
+          <motion.div
+            className="wn-hero-visual"
+            initial={{ opacity: 0, y: 60 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }}
+          >
+            <HeroRoom />
+          </motion.div>
+          <div className="wn-hero-cta">
+            <button className="wn-btn big" onClick={() => navigate("/create")}><span>Meet Now</span><ArrowRight size={18} color="#fff" /></button>
+            <button className="wn-btn big light" onClick={() => navigate("/join")}><span>Join with code</span></button>
           </div>
-
-          <form onSubmit={quickJoin} style={{ margin: "22px auto 0", display: "flex", gap: "10px", maxWidth: "440px", justifyContent: "center" }}>
-            <input value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="ENTER CODE" aria-label="Meeting code" maxLength={10} className="aurora-input" style={{ fontFamily: "'Space Mono', monospace", letterSpacing: "0.25em", textAlign: "center", maxWidth: "260px" }} />
-            <button className="btn" style={{ padding: "12px 22px", whiteSpace: "nowrap" }}>Join <ArrowUpRight size={15} /></button>
+          <form className="wn-join" onSubmit={quickJoin}>
+            <input value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="ENTER CODE" aria-label="Meeting code" maxLength={10} />
+            <button className="wn-btn big dark" type="submit"><span>Join</span></button>
           </form>
+        </section>
+      </div></div>
 
-          <div style={{ display: "grid", gap: "22px", marginTop: "48px", textAlign: "left" }} className="lg:grid-cols-[1fr_1fr] lg:items-center">
-            <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.4 }}>
-              <MockRoom />
-            </motion.div>
-            <div style={{ display: "grid", gap: "14px" }}>
-              <div>
-                <SectionTab icon={Sparkles} label="why shadowmeet" />
-                <div className="omd-card omd-card-hover" style={{ padding: "30px", marginTop: "-1px" }}>
-                  <p style={{ fontSize: "clamp(20px,2.2vw,28px)", lineHeight: 1.35, fontWeight: 500 }}>
-                    We make people actually <em style={{ fontStyle: "normal", fontWeight: 700, color: "#F0531C" }}>show up</em> — because joining takes 3 seconds, not 3 downloads.
-                  </p>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "9px", marginTop: "18px" }}>
-                    {["Video", "Whiteboard", "Polls", "YouTube", "Chat", "Screen Share"].map((c) => (
-                      <span key={c} className="chip" style={{ fontSize: "13px" }}>{c}</span>
-                    ))}
-                  </div>
-                </div>
+      {/* tools / poses */}
+      <section style={{ marginTop: "40px" }}>
+        <div className="wn-pad"><div className="wn-wrap" style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ maxWidth: "600px", textAlign: "center" }}>
+            <h2 className="wn-title center">6 Tools for different scenarios</h2>
+            <p className="wn-sub">Scroll the list to enjoy the tool variations!</p>
+          </div>
+        </div></div>
+        <div className="wn-poses">
+          <div className="wn-poses-l">
+            <span className="wn-pose-num">0{activeTool + 1}.</span>
+            <ToolVisual tool={TOOLS[activeTool]} />
+          </div>
+          <div className="wn-poses-r">
+            <div className="wn-selector" aria-hidden>
+              <div className="wn-fade top" />
+              <div className="wn-pill">{TOOLS[activeTool].name}</div>
+              <div className="wn-fade btm" />
+            </div>
+            <div className="wn-tool-scroll" ref={toolListRef}>
+              <div style={{ height: "240px" }} />
+              {TOOLS.map((t, i) => (
+                <button key={t.name} data-tool className="wn-tool-name" onClick={() => pickTool(i)} style={{ opacity: i === activeTool ? 1 : 0.35, display: "block" }}>
+                  {t.name}
+                </button>
+              ))}
+              <div style={{ height: "240px" }} />
+            </div>
+          </div>
+        </div>
+        <div className="wn-pad wn-mtools"><div className="wn-wrap" style={{ display: "grid", gap: "16px", paddingBottom: "80px" }}>
+          {TOOLS.map((t) => {
+            const Icon = t.icon
+            return (
+              <div key={t.name} style={{ border: "2px solid #000", borderRadius: "20px", padding: "24px", display: "flex", gap: "16px", alignItems: "center" }}>
+                <span style={{ width: "48px", height: "48px", borderRadius: "14px", background: "#724aee", display: "grid", placeItems: "center", color: "#fff", flex: "none" }}><Icon size={22} /></span>
+                <span><strong style={{ fontSize: "20px", fontWeight: 500 }}>{t.name}</strong><br /><span style={{ color: "rgba(0,0,0,.55)" }}>{t.tag}</span></span>
               </div>
-              <div className="omd-card" style={{ padding: "22px 24px", background: "#14202B", color: "#fff", borderColor: "#14202B" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "8px 0", borderBottom: "1px solid rgba(255,255,255,.12)" }}>
-                  <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: "30px" }}>3s <span style={{ color: "#F0531C", fontSize: "18px" }}>join</span></span>
-                  <span style={{ fontFamily: "'Space Mono', monospace", fontSize: "11px", letterSpacing: ".06em", textTransform: "uppercase", color: "#bdb8ad" }}>no signup</span>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "8px 0", borderBottom: "1px solid rgba(255,255,255,.12)" }}>
-                  <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: "30px" }}>6 <span style={{ color: "#F0531C", fontSize: "18px" }}>tools</span></span>
-                  <span style={{ fontFamily: "'Space Mono', monospace", fontSize: "11px", textTransform: "uppercase", color: "#bdb8ad" }}>one room</span>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "8px 0" }}>
-                  <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: "30px" }}>100% <span style={{ color: "#F0531C", fontSize: "18px" }}>free start</span></span>
-                  <span style={{ fontFamily: "'Space Mono', monospace", fontSize: "11px", textTransform: "uppercase", color: "#bdb8ad" }}>in browser</span>
+            )
+          })}
+        </div></div>
+      </section>
+
+      {/* purple features */}
+      <section className="wn-purple">
+        <div className="wn-wrap">
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <h2 className="wn-title center white" style={{ maxWidth: "620px" }}>One room. Beautiful and modern.</h2>
+          </div>
+          <div className="wn-stage">
+            <div style={{ background: "#fff", borderRadius: "24px", padding: "26px", width: "min(880px, 92vw)", position: "relative", zIndex: 1 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
+                <span style={{ background: "#000", color: "#fff", borderRadius: "100px", padding: "6px 14px", fontSize: "13px" }}>Algebra 101</span>
+                <span style={{ background: "#E8382F", color: "#fff", borderRadius: "8px", padding: "4px 10px", fontSize: "12px", fontWeight: 700 }}>LIVE</span>
+                <span style={{ marginLeft: "auto", display: "flex", gap: "8px", alignItems: "center", color: "rgba(0,0,0,.5)", fontSize: "13px" }}><Clock size={14} /> 00:42:18 <Users size={14} /> 6 here</span>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "12px" }}>
+                <div style={{ borderRadius: "16px", background: "linear-gradient(135deg,#2B4A6B,#16283A)", minHeight: "240px", display: "grid", placeItems: "center", color: "#fff", fontSize: "60px", fontWeight: 300 }}>A</div>
+                <div style={{ borderRadius: "16px", background: "#f5f2ff", padding: "20px", minHeight: "240px" }}>
+                  <p style={{ fontWeight: 500, margin: "0 0 8px" }}>Whiteboard</p>
+                  <svg viewBox="0 0 200 120" style={{ width: "100%", height: "150px" }}><path d="M10 100 Q 60 10 100 60 T 190 50" stroke="#724aee" strokeWidth="5" fill="none" strokeLinecap="round" /><circle cx="150" cy="35" r="14" stroke="#ff8655" fill="none" strokeWidth="5" /></svg>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* MARQUEE */}
-      <div className="marquee">
-        <div className="track">
-          {[...MARQUEE, ...MARQUEE].map((m, i) => (
-            <span key={i} className="item">{m}</span>
-          ))}
-        </div>
-      </div>
-
-      {/* FEATURES */}
-      <section id="features" style={{ position: "relative", zIndex: 2, padding: "84px 34px 10px", maxWidth: "1280px", margin: "0 auto" }}>
-        <div className="sec-head">
-          <span className="scribble">what we make</span>
-          <h2>One room.<br />Every tool.</h2>
-          <span className="note">Six tools, one canvas — no tab-switching</span>
-        </div>
-        <div style={{ display: "grid", gap: "18px", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", marginTop: "20px" }}>
-          {FEATURES.map(({ icon: Icon, title, desc }, i) => (
-            <motion.div
-              key={title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.35, delay: (i % 3) * 0.08 }}
-              className="omd-card omd-card-hover sel"
-              style={{ padding: "26px", background: i === 0 ? "#F0531C" : "#fff", borderColor: i === 0 ? "#F0531C" : "rgba(20,32,43,.13)", color: i === 0 ? "#fff" : "#14202B" }}
-            >
-              <span className="h tl" /><span className="h tr" /><span className="h bl" /><span className="h br" />
-              <span className="dim">0{i + 1} · {title.toLowerCase()}.fig</span>
-              <div style={{ width: "42px", height: "42px", borderRadius: "12px", background: i === 0 ? "#fff" : "#F1F6FA", display: "grid", placeItems: "center", border: "1px solid rgba(20,32,43,.08)" }}>
-                <Icon size={20} color={i === 0 ? "#F0531C" : "#14202B"} />
+          <div className="wn-curve" aria-hidden />
+          <p className="wn-sub white">One fast room for the whole class. Here are a few features of the crew:</p>
+          <div className="wn-feats">
+            <motion.div className="wn-feat-1" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.5 }}>
+              <div style={{ display: "flex", gap: "10px" }}>
+                <span style={{ width: "52px", height: "52px", borderRadius: "16px", background: "#724aee", display: "grid", placeItems: "center", color: "#fff" }}><Zap size={24} /></span>
+                <span style={{ width: "52px", height: "52px", borderRadius: "16px", background: "#fff", display: "grid", placeItems: "center", color: "#724aee" }}><ShieldCheck size={24} /></span>
               </div>
-              <h3 style={{ marginTop: "16px", fontSize: "24px", color: i === 0 ? "#fff" : "#14202B" }}>{title}</h3>
-              <p style={{ marginTop: "10px", fontSize: "15px", lineHeight: 1.6, color: i === 0 ? "rgba(255,255,255,.92)" : "#4A6173" }}>{desc}</p>
+              <div style={{ marginTop: "60px" }}>
+                <h4 className="wn-h4">High attention to detail.</h4>
+                <p className="wn-small">Just have a look at this stage!</p>
+              </div>
             </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* PROCESS */}
-      <section className="process" style={{ padding: "80px 34px 10px", maxWidth: "860px", margin: "0 auto", position: "relative", zIndex: 2 }}>
-        <div className="sec-head">
-          <span className="scribble">how it works</span>
-          <h2>No forms.<br />Just this.</h2>
-        </div>
-        <div style={{ position: "relative" }}>
-          <div style={{ marginTop: "-1px" }}><SectionTab icon={MessageSquare} label="project-channel" /></div>
-          <div className="omd-card" style={{ borderRadius: "0 18px 18px 18px", overflow: "hidden" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px", borderBottom: "1px solid rgba(20,32,43,.08)", background: "#F1F6FA" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", fontWeight: 700, fontSize: "15px" }}>
-                <Globe size={15} color="#8AA6B8" /> shadowmeet × your-team
+            <motion.div className="wn-feat-2" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.5, delay: 0.1 }}>
+              <div style={{ display: "flex", gap: "12px" }}>
+                {["A", "M", "J"].map((c) => (
+                  <span key={c} style={{ width: "52px", height: "52px", borderRadius: "50%", background: "#000", color: "#fff", display: "grid", placeItems: "center", fontSize: "20px" }}>{c}</span>
+                ))}
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", fontFamily: "'Space Mono', monospace", fontSize: "11px", fontWeight: 700, color: "#4A6173" }}>
-                <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#27c06b", display: "inline-block" }} /> 3 online
+              <div style={{ marginTop: "60px" }}>
+                <h4 className="wn-h4">Separate tracks.</h4>
+                <p className="wn-small">Turn camera or mic on or off — either way it looks great!</p>
+              </div>
+            </motion.div>
+          </div>
+          <motion.div className="wn-feat-wide" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.5 }}>
+            <div className="txt">
+              <h3>Adaptive quality with LiveKit, satisfying for every network.</h3>
+              <p className="wn-small-2" style={{ marginTop: "30px" }}>The room is like an eyeball magnet!</p>
+            </div>
+            <div className="vis">
+              <div style={{ background: "#fff", borderRadius: "20px 20px 0 0", padding: "24px", display: "flex", gap: "10px", alignItems: "center" }}>
+                <MessageSquare size={20} color="#724aee" />
+                <span style={{ fontWeight: 500 }}>Chat is live. Say hello to the class.</span>
+              </div>
+              <div style={{ background: "#e4dfff", borderRadius: "0 0 20px 20px", padding: "24px", display: "flex", gap: "10px" }}>
+                <span style={{ background: "#724aee", color: "#fff", borderRadius: "100px", padding: "8px 18px", fontSize: "14px" }}>Polls</span>
+                <span style={{ background: "#fff", color: "#000", borderRadius: "100px", padding: "8px 18px", fontSize: "14px" }}>Raise hand</span>
+                <span style={{ background: "#000", color: "#fff", borderRadius: "100px", padding: "8px 18px", fontSize: "14px" }}>Record</span>
               </div>
             </div>
-            <div style={{ padding: "22px 22px 26px", display: "flex", flexDirection: "column", gap: "18px" }}>
-              {STEPS.map((s) => (
-                <div key={s.n}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", margin: "6px 0" }}>
-                    <span style={{ fontFamily: "'Space Mono', monospace", fontSize: "10.5px", fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "#F0531C", whiteSpace: "nowrap" }}>{s.n}</span>
-                    <span style={{ height: "1px", flex: 1, background: "linear-gradient(90deg, rgba(240,83,28,.35), transparent)" }} />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* sticky slider */}
+      <section>
+        <div className="wn-pad"><div className="wn-wrap" style={{ display: "flex", justifyContent: "center", marginTop: "120px" }}>
+          <h2 className="wn-title center">How meetings improve your workflow?</h2>
+        </div></div>
+        <div className="wn-hscroll" ref={slideSecRef}>
+          <div className="wn-hsticky">
+            <div className="wn-htrack" ref={slideTrackRef}>
+              {SLIDES.map((s) => (
+                <div className="wn-slide" key={s.n}>
+                  <div className="wn-slide-title">
+                    <p className={`wn-slide-tag ${s.cls}`}>{s.n}</p>
+                    <h4 className="wn-h4">{s.title}</h4>
                   </div>
-                  <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-                    <div style={{ width: "36px", height: "36px", borderRadius: "10px", flex: "none", display: "grid", placeItems: "center", background: s.who === "ShadowMeet" ? "#F0531C" : "#0D99FF", color: "#fff", fontWeight: 700 }}>{s.who.slice(0, 1)}</div>
-                    <div>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                        <span style={{ fontWeight: 700, fontSize: "14px" }}>{s.who}</span>
-                        <span style={{ fontFamily: "'Space Mono', monospace", fontSize: "11px", color: "#8AA6B8" }}>{s.time}</span>
-                      </div>
-                      <p style={{ fontSize: "14.5px", color: "#14202B", marginTop: "2px" }}>{s.text}</p>
-                      {s.file && (
-                        <span style={{ display: "inline-flex", alignItems: "center", gap: "8px", marginTop: "8px", background: "#F1F6FA", border: "1px solid rgba(20,32,43,.08)", borderRadius: "9px", padding: "7px 12px", fontFamily: "'Space Mono', monospace", fontSize: "12px", fontWeight: 700 }}>
-                          <LayoutGrid size={14} color="#0D99FF" /> {s.file}
-                        </span>
-                      )}
+                  <div className="wn-slide-vis">
+                    <div style={{ background: s.bg, borderRadius: "24px", padding: "48px", minHeight: "340px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <span style={{ background: "#fff", borderRadius: "20px", padding: "26px 34px", fontSize: "20px", fontWeight: 500, boxShadow: "0 20px 50px -20px rgba(0,0,0,.25)" }}>{s.n}</span>
                     </div>
                   </div>
                 </div>
@@ -237,33 +311,117 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section style={{ position: "relative", zIndex: 2, padding: "60px 34px 10px", maxWidth: "1280px", margin: "0 auto" }}>
-        <div className="omd-card sel" style={{ padding: "clamp(32px,5vw,64px)", display: "grid", gap: "24px", background: "#F0531C", borderColor: "#F0531C", color: "#fff", overflow: "visible" }}>
-          <span className="h tl" /><span className="h tr" /><span className="h bl" /><span className="h br" />
-          <span className="dim">cta.frame · ready to ship</span>
-          <div>
-            <p style={{ fontFamily: "'Shantell Sans', cursive", fontSize: "18px", opacity: 0.95 }}>have an idea worth meeting about?</p>
-            <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: "clamp(2.2rem,4.5vw,3.8rem)", lineHeight: 1, color: "#fff", marginTop: "8px" }}>MEET ALL TOGETHER NOW.</h2>
-            <p style={{ marginTop: "14px", fontSize: "17px", fontWeight: 500, color: "rgba(255,255,255,.92)", maxWidth: "480px" }}>One simple link for every team and class. Free to start, modern by default.</p>
+      {/* showcase */}
+      <section className="wn-purple">
+        <div className="wn-wrap">
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <h2 className="wn-title center white" style={{ maxWidth: "620px" }}>Created specifically for meetings, classes and watch parties</h2>
           </div>
-          <div style={{ display: "flex", gap: "12px", alignItems: "center", flexWrap: "wrap" }}>
-            <button onClick={() => navigate("/create")} className="aurora-btn-white"><Zap size={15} /> Meet Now</button>
-            <button onClick={() => navigate("/join")} style={{ background: "transparent", color: "#fff", fontWeight: 700, fontSize: "15px", padding: "12px 24px", borderRadius: "999px", border: "1.5px solid #fff", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "8px" }}><Clock size={15} /> Join with code</button>
+          <div className="wn-cases-1">
+            <div className="wn-shot" style={{ background: "#fff", padding: "22px", width: "240px" }}>
+              <p style={{ fontWeight: 500, margin: "0 0 10px" }}>Breakout Rooms</p>
+              {["Room 1", "Room 2", "Room 3"].map((r) => (
+                <p key={r} style={{ background: "#f5f2ff", borderRadius: "12px", padding: "8px 12px", fontSize: "13px", margin: "0 0 6px" }}>{r}</p>
+              ))}
+            </div>
+            <div className="wn-shot" style={{ background: "#fff", padding: "22px", flex: 1, maxWidth: "640px" }}>
+              <p style={{ fontWeight: 500, margin: "0 0 10px" }}>Attendance · 6 present</p>
+              <div style={{ display: "flex", gap: "8px" }}>{["A", "M", "J", "E", "+2"].map((c) => (
+                <span key={c} style={{ width: "44px", height: "44px", borderRadius: "50%", background: "#724aee", color: "#fff", display: "grid", placeItems: "center" }}>{c}</span>
+              ))}</div>
+            </div>
           </div>
-          <div style={{ display: "flex", gap: "18px", flexWrap: "wrap", fontSize: "13px", fontWeight: 600, opacity: 0.95 }}>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}><ShieldCheck size={14} /> Private by design</span>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}><Users size={14} /> Built for classes & teams</span>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}><Zap size={14} /> 48h-fast setup</span>
+          <div className="wn-cases-2">
+            <div className="wn-shot" style={{ background: "#fff", padding: "22px", width: "300px" }}>
+              <p style={{ fontWeight: 500, margin: "0 0 10px" }}>Raise Hand</p>
+              {["Daniel", "Aisha"].map((n) => (
+                <p key={n} style={{ background: "#f5f2ff", borderRadius: "12px", padding: "8px 12px", fontSize: "13px", margin: "0 0 6px" }}>{n}</p>
+              ))}
+            </div>
+            <div className="wn-shot" style={{ background: "#fff", padding: "22px", flex: 1, maxWidth: "560px" }}>
+              <p style={{ fontWeight: 500, margin: "0 0 10px" }}>Chat · Q&A · People</p>
+              <p style={{ background: "#f5f2ff", borderRadius: "12px", padding: "10px 14px", fontSize: "14px" }}>Sarah: That makes sense!</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "18px", position: "relative", zIndex: 2 }}>
-        <AuroraBadge prefix="Loved by" strong="modern teams & classrooms" />
-      </div>
+      {/* preview grid */}
+      <section className="wn-preview-sec">
+        <div className="wn-wrap">
+          <div style={{ textAlign: "center" }}>
+            <p className="wn-sub" style={{ margin: 0 }}>Full Preview</p>
+            <h2 className="wn-title center" style={{ fontSize: "90px", letterSpacing: "-4px", marginTop: "10px" }}>Every tool</h2>
+          </div>
+          <div className="wn-grid">
+            {[...TOOLS, { name: "Classroom Mode", icon: GraduationCap, tag: "Stage, strip and teacher controls.", stat: "teach · live" }, { name: "No Signup", icon: Zap, tag: "Join in 3 seconds flat.", stat: "free · instant" }].map((t, i) => {
+              const Icon = t.icon
+              const bgs = ["#f5f2ff", "#FFF3E8", "#E4FAF4", "#ECE9FF"]
+              return (
+                <motion.div key={t.name} className="wn-cell" style={{ background: bgs[i % 4] }}
+                  initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.4, delay: (i % 4) * 0.06 }}>
+                  <span style={{ width: "48px", height: "48px", borderRadius: "14px", background: "#000", display: "grid", placeItems: "center", color: "#fff" }}><Icon size={22} /></span>
+                  <span><p className="t">{t.name}</p><p className="d">{t.tag}</p></span>
+                </motion.div>
+              )
+            })}
+          </div>
+          <div className="wn-more">
+            <button className="wn-btn big" onClick={() => navigate("/create")}><span>Start a meeting</span><ArrowRight size={18} color="#fff" /></button>
+          </div>
+        </div>
+      </section>
 
-      <AuroraFooter />
+      {/* cta */}
+      <section className="wn-cta-sec">
+        <div className="wn-cta-wrap">
+          <div className="wn-cta-1">
+            <p className="wn-title white" style={{ fontSize: "40px" }}>Full pack</p>
+            <div style={{ width: "100%", maxWidth: "340px" }}>
+              {[["6 realtime tools", "Live video, screen, board"], ["Classroom mode", "Stage + strip + polls"], ["Private by design", "Codes + host controls"], ["No signup", "Join in 3 seconds"], ["In the browser", "Nothing to install"]].map(([a, b]) => (
+                <p className="wn-check" key={a}><Check size={18} /> <span><strong>{a}</strong><br /><span style={{ color: "rgba(255,255,255,.7)", fontSize: "14px" }}>{b}</span></span></p>
+              ))}
+            </div>
+            <button className="wn-btn big light" style={{ width: "100%", justifyContent: "center" }} onClick={() => navigate("/create")}><span>Start free</span></button>
+          </div>
+          <div className="wn-cta-2">
+            <Sparkles size={40} color="#000" />
+            <p className="wn-title" style={{ fontSize: "40px", textAlign: "center" }}>Classroom</p>
+            <p style={{ textAlign: "center", color: "rgba(0,0,0,.6)" }}>Teach with a stage, hand raises and quizzes.</p>
+            <button className="wn-btn big dark" style={{ width: "100%", justifyContent: "center" }} onClick={() => navigate("/create")}><span>Teach now</span></button>
+          </div>
+        </div>
+        <div className="wn-cta-wrap" style={{ marginTop: "24px" }}>
+          <div className="wn-dl">
+            <p className="wn-dl-title">Try it right now, in your browser</p>
+            <button className="wn-btn big light" onClick={() => navigate("/join")}><span>Join a room</span></button>
+          </div>
+        </div>
+        <div className="wn-custom">
+          <span style={{ width: "90px", height: "90px", borderRadius: "50%", background: "#fff", display: "grid", placeItems: "center", marginBottom: "10px" }}><Users size={40} color="#724aee" /></span>
+          <h3 style={{ color: "#fff", fontSize: "32px", fontWeight: 500, margin: "10px 0" }}>Got a team in mind? Let us talk!</h3>
+          <a href="mailto:hello@shadowmeet.app" style={{ color: "#fff", fontSize: "18px" }}>hello@shadowmeet.app</a>
+        </div>
+      </section>
+
+      {/* footer */}
+      <footer className="wn-footer">
+        <div className="wn-fo">
+          <div className="col">
+            <button className="wn-logo" style={{ color: "#fff" }} onClick={() => navigate("/")}>ShadowMeet</button>
+            <span style={{ color: "rgba(255,255,255,.7)" }}>Live meetings for modern teams.</span>
+          </div>
+          <div className="col">
+            <span className="t">Product</span>
+            <a href="/create">Meetings</a><a href="/create">Classroom</a><a href="/create">Watch Party</a><a href="/blog">Blog</a>
+          </div>
+          <div className="col">
+            <span className="t">Info</span>
+            <a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/about">About</a><a href="mailto:hello@shadowmeet.app">Contact</a>
+          </div>
+        </div>
+        <p className="wn-copy">© 2026 ShadowMeet · All Rights Reserved</p>
+      </footer>
     </div>
   )
 }
