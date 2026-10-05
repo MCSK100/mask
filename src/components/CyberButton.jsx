@@ -51,10 +51,10 @@ const Wrapper = styled.div`
   }
 
   button {
-    --color: #3b82f6;
-    --color-hover: #6366f1;
-    --corner-color: #1d4ed8;
-    --clip-shadow: #1e3a8a;
+    --color: #cb3e42;
+    --color-hover: #f72b2b;
+    --corner-color: #cb3e42;
+    --clip-shadow: #0c090c;
     position: relative;
     min-width: 11em;
     height: 3.5em;

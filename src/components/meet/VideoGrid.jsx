@@ -37,7 +37,7 @@ export function VideoGrid({ local, remotes }) {
         ))
       )}
       {all.length === 0 && (
-        <div className="col-span-full grid place-items-center rounded-2xl border border-white/10 bg-white/5 p-10 text-slate-400">
+        <div className="col-span-full grid place-items-center rounded-[3px] border border-white/20 bg-black p-10 font-semibold text-white">
           Waiting for others to join…
         </div>
       )}

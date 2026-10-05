@@ -5,7 +5,7 @@ import { socket } from "../../lib/socket"
 export function Whiteboard({ onOp, canDraw }) {
   const canvasRef = useRef(null)
   const [tool, setTool] = useState("pen")
-  const [color, setColor] = useState("#a78bfa")
+  const [color, setColor] = useState("#f72b2b")
   const [size, setSize] = useState(3)
   const drawing = useRef(null)
   const undoStack = useRef([])
@@ -131,15 +131,15 @@ export function Whiteboard({ onOp, canDraw }) {
     <div className="flex h-full flex-col">
       <div className="flex flex-wrap items-center gap-1.5 border-b border-white/10 p-2">
         {[["pen", "✏️"], ["erase", "🧽"], ["line", "📏"], ["arrow", "➡️"], ["rect", "▭"], ["circle", "⭕"], ["text", "T"]].map(([t, icon]) => (
-          <button key={t} onClick={() => setTool(t)} aria-label={t} className={`rounded-lg px-2.5 py-1.5 text-sm ${tool === t ? "bg-indigo-500 text-white" : "bg-white/5 text-slate-300"}`}>{icon}</button>
+          <button key={t} onClick={() => setTool(t)} aria-label={t} className={`rounded-[3px] px-2.5 py-1.5 text-sm font-bold ${tool === t ? "bg-supari-primary text-white" : "bg-white/5 text-white"}`}>{icon}</button>
         ))}
         <input type="color" value={color} onChange={(e) => setColor(e.target.value)} aria-label="Color" className="h-8 w-10 cursor-pointer rounded bg-transparent" />
         <input type="range" min={1} max={12} value={size} onChange={(e) => setSize(Number(e.target.value))} aria-label="Brush size" className="w-20" />
         <button onClick={() => { undoStack.current = []; canvasRef.current.getContext("2d").clearRect(0, 0, 9999, 9999) }} className="rounded-lg bg-white/5 px-2 py-1 text-xs">Clear view</button>
         <button onClick={savePng} className="rounded-lg bg-white/5 px-2 py-1 text-xs">PNG</button>
-        {!canDraw && <span className="text-[11px] text-amber-300">Drawing disabled by host</span>}
+        {!canDraw && <span className="text-[11px] font-bold text-white">Drawing Paused By Host</span>}
       </div>
-      <div className="relative flex-1 touch-none overflow-hidden bg-slate-950">
+      <div className="relative flex-1 touch-none overflow-hidden bg-black">
         <canvas
           ref={canvasRef}
           className="touch-none cursor-crosshair"

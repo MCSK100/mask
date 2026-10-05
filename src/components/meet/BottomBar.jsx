@@ -4,9 +4,9 @@ const Btn = ({ active, danger, onClick, label, children, title }) => (
     aria-label={label}
     title={title || label}
     className={`flex h-11 w-11 items-center justify-center rounded-full border text-lg transition sm:h-12 sm:w-12 ${
-      danger ? "border-red-500/40 bg-red-500/15 text-red-300 hover:bg-red-500/25"
-      : active ? "border-emerald-400/50 bg-emerald-500/25 text-white"
-      : "border-white/10 bg-white/5 text-slate-200 hover:bg-white/10"
+      danger ? "border-[#f72b2b] bg-supari-secondary text-white"
+      : active ? "border-[#f72b2b] bg-supari-secondary text-white"
+      : "border-white/20 bg-white/5 text-white hover:bg-white/10"
     }`}
   >
     {children}
@@ -30,7 +30,7 @@ export function BottomBar({ muted, cameraOff, sharing, handRaised, recording, on
           <Btn onClick={onRecord} label="Record (local)" active={recording}>⏺️</Btn>
         </span>
         <Btn onClick={onMore} label="More">⋯</Btn>
-        <button onClick={onLeave} aria-label="Leave meeting" className="ml-1 rounded-full bg-red-600 px-5 py-3 text-sm font-bold text-white hover:bg-red-500">Leave</button>
+        <button onClick={onLeave} aria-label="Leave meeting" className="ml-1 rounded-[80px] bg-supari-primary px-5 py-3 text-sm font-bold text-white">Leave</button>
       </div>
     </footer>
   )

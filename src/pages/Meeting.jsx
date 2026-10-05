@@ -230,7 +230,7 @@ export default function Meeting() {
               <div style={{ display: "flex" }}>{[0, 1, 2].map((i) => (<div key={i} className="aurora-avatar" style={{ marginLeft: i === 0 ? 0 : "-8px" }} />))}</div>
               <span style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.75)" }}>Code <strong style={{ color: "#fff" }}>{code}</strong>{meta?.hasPassword ? " · locked" : " · open"}</span>
             </div>
-            <h1 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: "clamp(1.8rem, 3.4vw, 2.6rem)", letterSpacing: "-0.02em", marginTop: "18px" }}>{meta?.title || `Meeting ${code}`}</h1>
+            <h1 style={{ fontFamily: "'Londrina Solid', sans-serif", fontWeight: 400, fontSize: "clamp(1.8rem, 3.4vw, 2.6rem)", marginTop: "18px" }}>{meta?.title || `Meeting ${code}`}</h1>
             {metaErr && <p role="alert" style={{ marginTop: "12px", borderRadius: "12px", background: "rgba(255,80,80,0.1)", padding: "12px", fontSize: "13px", color: "#ff9c9c" }}>{metaErr}. Ask the host for a fresh link.</p>}
             <div className="aurora-card" style={{ marginTop: "16px", overflow: "hidden" }}>
               {media.stream ? (
@@ -239,7 +239,7 @@ export default function Meeting() {
                 <div style={{ aspectRatio: "16/9", display: "grid", placeItems: "center", fontSize: "14px", color: "rgba(255,255,255,0.5)" }}>{media.error || "Starting camera…"}</div>
               )}
             </div>
-            {media.error && <p style={{ marginTop: "8px", fontSize: "12px", color: "#ffd37a" }}>{media.error} You can still join with camera off.</p>}
+            {media.error && <p style={{ marginTop: "8px", fontSize: "14px", fontWeight: 600, color: "#ffffff" }}>{media.error} We Can Still Meet With Camera Off.</p>}
             <div style={{ marginTop: "12px", display: "flex", gap: "8px", flexWrap: "wrap" }}>
               <button onClick={media.toggleMute} className="aurora-btn-dark" style={{ padding: "10px 20px" }}>{media.muted ? "Unmute" : "Mute"}</button>
               <button onClick={media.toggleCamera} className="aurora-btn-dark" style={{ padding: "10px 20px" }}>{media.cameraOff ? "Camera on" : "Camera off"}</button>
@@ -247,7 +247,7 @@ export default function Meeting() {
             </div>
           </div>
           <div className="aurora-card" style={{ height: "fit-content", padding: "20px" }}>
-            <h2 style={{ fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Ready to join?</h2>
+            <h2 style={{ fontWeight: 400, fontFamily: "'Londrina Solid', sans-serif", fontSize: "24px" }}>Ready To Join?</h2>
             <label htmlFor="lname" className="aurora-label" style={{ marginTop: "16px" }}>Your name</label>
             <input id="lname" value={name} onChange={(e) => setName(e.target.value)} placeholder="Display name" maxLength={40} className="aurora-input" />
             {meta?.hasPassword && (
@@ -260,7 +260,7 @@ export default function Meeting() {
               {hostToken ? "Start meeting" : "Join now"}
             </button>
             <p style={{ marginTop: "8px", textAlign: "center", fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>Camera/mic stay in your browser until you join.</p>
-            {toast && <p style={{ marginTop: "8px", textAlign: "center", fontSize: "12px", color: "#ffd37a" }}>{toast}</p>}
+            {toast && <p style={{ marginTop: "8px", textAlign: "center", fontSize: "14px", fontWeight: 700, color: "#f72b2b" }}>{toast}</p>}
           </div>
         </div>
       </div>
@@ -269,13 +269,13 @@ export default function Meeting() {
 
   // ---------- ROOM ----------
   if (m.status === "waiting") {
-    return <div style={{ display: "grid", placeItems: "center", minHeight: "100svh", background: "#000", color: "#fff", padding: "24px", textAlign: "center" }}><div><h1 style={{ fontSize: "20px", fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Waiting for the host to let you in…</h1><p style={{ marginTop: "8px", fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>Keep this tab open.</p><button onClick={doLeave} className="aurora-btn-dark" style={{ marginTop: "16px" }}>Leave</button></div></div>
+    return <div style={{ display: "grid", placeItems: "center", minHeight: "100svh", background: "#0c090c", color: "#fff", padding: "24px", textAlign: "center" }}><div><h1 style={{ fontSize: "24px", fontWeight: 400, fontFamily: "'Londrina Solid', sans-serif" }}>Waiting For The Host To Let You In…</h1><p style={{ marginTop: "8px", fontSize: "16px", fontWeight: 600, color: "#ffffff" }}>We Will Let You In Soon. Keep This Tab Open.</p><button onClick={doLeave} className="aurora-btn-dark" style={{ marginTop: "16px" }}>Leave</button></div></div>
   }
   if (m.status === "error" || m.status === "ended") {
     return (
       <div style={{ display: "grid", placeItems: "center", minHeight: "100svh", background: "#000", color: "#fff", padding: "24px", textAlign: "center" }}>
         <div style={{ maxWidth: "420px" }}>
-          <h1 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "28px", fontWeight: 500 }}>{m.status === "ended" ? "Meeting ended" : "Could not join"}</h1>
+          <h1 style={{ fontFamily: "'Londrina Solid', sans-serif", fontSize: "32px", fontWeight: 400 }}>{m.status === "ended" ? "Meeting Ended" : "Could Not Join"}</h1>
           <p style={{ marginTop: "8px", fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>{m.error || "Room unavailable."}</p>
           <div style={{ marginTop: "20px", display: "flex", justifyContent: "center", gap: "14px" }}>
             <button onClick={() => navigate("/join")} className="aurora-btn-dark">Try again</button>
@@ -300,17 +300,17 @@ export default function Meeting() {
   return (
     <div className="flex h-dvh flex-col bg-black text-white">
       <TopBar title={meta?.title || m.room?.title || "ShadowMeet"} code={code} count={allTiles.length} timer={formatTimer(elapsed)} conn={m.status === "joined" ? "Good" : m.status} recording={recording} onInvite={() => setInvite(true)} />
-      {toast && <div className="bg-amber-400/10 px-4 py-1.5 text-center text-xs text-amber-200">{toast}</div>}
-      {m.locked && <div className="bg-white/5 px-4 py-1 text-center text-[11px] text-slate-400">🔒 Room locked</div>}
+      {toast && <div className="bg-supari-primary px-4 py-1.5 text-center text-xs font-bold text-white">{toast}</div>}
+      {m.locked && <div className="bg-white/5 px-4 py-1 text-center text-[11px] font-semibold text-white">Room Locked</div>}
 
       <div className="flex min-h-0 flex-1">
         <main className="flex min-w-0 flex-1 flex-col p-2 sm:p-3">
           <VideoGrid local={[allTiles[0]]} remotes={allTiles.slice(1)} />
-          {sharing && <p className="mt-1 text-center text-xs text-emerald-300">You are sharing your screen <button onClick={toggleShare} className="ml-2 rounded bg-white/10 px-2 py-0.5 font-bold">Stop sharing</button></p>}
+          {sharing && <p className="mt-1 text-center text-xs font-bold text-white">We Are Sharing Your Screen <button onClick={toggleShare} className="ml-2 rounded-[3px] bg-supari-primary px-2 py-0.5 font-bold text-white">Stop Sharing</button></p>}
         </main>
 
         {sideOpen && (
-          <aside className="flex w-full max-w-[340px] shrink-0 flex-col border-l border-white/10 bg-slate-900/60 max-sm:fixed max-sm:inset-y-0 max-sm:right-0 max-sm:z-40 max-sm:w-[88vw] max-sm:shadow-2xl">
+          <aside className="flex w-full max-w-[340px] shrink-0 flex-col border-l-[3px] border-white bg-black max-sm:fixed max-sm:inset-y-0 max-sm:right-0 max-sm:z-40 max-sm:w-[88vw]">
             <div className="flex items-center justify-between border-b border-white/10 px-3 py-2">
               <p className="text-sm font-bold capitalize">{panel}</p>
               <button onClick={() => setPanel(null)} aria-label="Close panel" className="rounded-lg bg-white/10 px-2.5 py-1 text-xs">✕</button>
@@ -342,16 +342,16 @@ export default function Meeting() {
         onLeave={doLeave}
       />
       {moreOpen && (
-        <div className="fixed bottom-20 left-1/2 z-40 w-[92vw] max-w-sm -translate-x-1/2 rounded-2xl border border-white/10 bg-slate-900 p-3 shadow-2xl">
+        <div className="fixed bottom-20 left-1/2 z-40 w-[92vw] max-w-sm -translate-x-1/2 rounded-[3px] border-[3px] border-white bg-black p-3">
           <div className="grid grid-cols-2 gap-2 text-sm">
             <button onClick={() => { setInvite(true); setMoreOpen(false) }} className="rounded-xl bg-white/5 p-2.5 font-semibold">📨 Invite</button>
             <button onClick={() => { m.raiseHand(!m.handRaised); }} className="rounded-xl bg-white/5 p-2.5 font-semibold">{m.handRaised ? "Lower hand" : "✋ Raise hand"}</button>
             {isHost && <button onClick={() => { m.host.muteAll(); setMoreOpen(false) }} className="rounded-xl bg-white/5 p-2.5 font-semibold">Mute all</button>}
             {isHost && <button onClick={() => { m.host.lock(!m.locked); setMoreOpen(false) }} className="rounded-xl bg-white/5 p-2.5 font-semibold">{m.locked ? "Unlock room" : "Lock room"}</button>}
-            {isHost && <button onClick={() => { if (confirm("End meeting for everyone?")) m.host.end() }} className="rounded-xl bg-red-500/15 p-2.5 font-semibold text-red-300">End meeting</button>}
+            {isHost && <button onClick={() => { if (confirm("End meeting for everyone?")) m.host.end() }} className="rounded-[3px] bg-supari-primary p-2.5 font-semibold text-white">End Meeting</button>}
             <button onClick={() => { setPanel("people"); setMoreOpen(false) }} className="rounded-xl bg-white/5 p-2.5 font-semibold">👥 People</button>
           </div>
-          {!isHost && <p className="mt-2 text-center text-[11px] text-slate-500">Host-only controls are hidden for guests.</p>}
+          {!isHost && <p className="mt-2 text-center text-[11px] font-semibold text-white">We Keep Host Controls With The Host.</p>}
         </div>
       )}
       {invite && <InviteDialog code={code} title={meta?.title || m.room?.title || "ShadowMeet"} onClose={() => setInvite(false)} />}

@@ -20,19 +20,19 @@ export function PollsPanel({ poll, isHost, onCreate, onVote, onClose }) {
   return (
     <div className="flex h-full flex-col p-3">
       {!poll ? (
-        <p className="text-sm text-slate-500">No active poll.</p>
+        <p className="text-sm font-semibold text-white">No Active Poll. We Will Meet And Vote Soon.</p>
       ) : (
-        <div className="mb-3 rounded-xl border border-white/10 bg-white/5 p-3">
+        <div className="mb-3 rounded-[3px] border border-white/20 bg-black p-3">
           <p className="font-semibold text-white">{poll.question}</p>
-          <p className="text-[11px] text-slate-500">{poll.open ? "Open" : "Closed"} · {total} vote(s)</p>
+          <p className="text-[11px] text-white/60">{poll.open ? "Open" : "Closed"} · {total} vote(s)</p>
           <div className="mt-2 space-y-1.5">
             {poll.options.map((o, i) => {
               const c = counts[i] || 0
               const pct = total ? Math.round((c / total) * 100) : 0
               return (
                 <button key={i} disabled={!poll.open} onClick={() => onVote(i)} className="w-full rounded-lg bg-white/5 p-2 text-left text-sm hover:bg-white/10 disabled:opacity-70">
-                  <span className="flex justify-between"><span>{o}</span><span className="text-slate-400">{c} ({pct}%)</span></span>
-                  <span className="mt-1 block h-1.5 overflow-hidden rounded bg-white/10"><span className="block h-full bg-indigo-400" style={{ width: `${pct}%` }} /></span>
+                  <span className="flex justify-between"><span>{o}</span><span className="text-white/70">{c} ({pct}%)</span></span>
+                  <span className="mt-1 block h-1.5 overflow-hidden rounded bg-white/10"><span className="block h-full bg-supari-primary" style={{ width: `${pct}%` }} /></span>
                 </button>
               )
             })}
@@ -42,14 +42,14 @@ export function PollsPanel({ poll, isHost, onCreate, onVote, onClose }) {
       )}
       {isHost && (
         <form onSubmit={create} className="mt-auto space-y-2 border-t border-white/10 pt-3">
-          <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Create poll</p>
+          <p className="font-display text-base text-white">Create Poll</p>
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Question" aria-label="Poll question" className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm" />
           {opts.map((o, i) => (
             <input key={i} value={o} onChange={(e) => setOpts((p) => p.map((v, j) => j === i ? e.target.value : v))} placeholder={`Option ${i + 1}`} aria-label={`Option ${i + 1}`} className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm" />
           ))}
           <div className="flex gap-2">
             {opts.length < 6 && <button type="button" onClick={() => setOpts((p) => [...p, ""])} className="rounded-lg bg-white/10 px-3 py-1.5 text-xs">+ Option</button>}
-            <button className="rounded-lg bg-indigo-500 px-3 py-1.5 text-xs font-bold text-white">Launch</button>
+            <button className="rounded-[80px] bg-supari-secondary px-3 py-1.5 text-xs font-bold text-white">Launch</button>
           </div>
         </form>
       )}

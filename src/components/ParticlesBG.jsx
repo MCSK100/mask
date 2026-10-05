@@ -67,7 +67,7 @@ export default function ParticlesBG() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = "#a855f7";
+        ctx.fillStyle = "#f72b2b";
         ctx.fill();
 
         let dx = p.x - mouse.x;

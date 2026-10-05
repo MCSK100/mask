@@ -35,7 +35,7 @@ export default function JoinMeeting() {
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
           <AuroraBadge prefix="No account" strong="just a code" />
         </motion.div>
-        <h1 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: "clamp(2rem, 4vw, 3rem)", lineHeight: 1.1, letterSpacing: "-0.02em", marginTop: "22px" }}>Join a meeting</h1>
+        <h1 style={{ fontFamily: "''Londrina Solid', sans-serif", fontWeight: 400, fontSize: "clamp(2rem, 4vw, 3rem)", lineHeight: 1.1, letterSpacing: "-0.02em", marginTop: "22px" }}>Join A Meeting</h1>
         <p style={{ marginTop: "12px", fontSize: "15px", color: "rgba(255,255,255,0.6)", maxWidth: "340px" }}>Enter the code your host shared with you.</p>
         <form onSubmit={join} className="aurora-card" style={{ marginTop: "24px", padding: "24px", display: "grid", gap: "14px" }}>
           <div>
@@ -52,7 +52,7 @@ export default function JoinMeeting() {
           </div>
           {err && <p role="alert" style={{ borderRadius: "12px", background: "rgba(255,80,80,0.1)", padding: "12px", fontSize: "13px", color: "#ff9c9c" }}>{err}</p>}
           <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
-            <motion.button disabled={busy} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="aurora-btn-dark">{busy ? "Checking…" : "Get Started"}</motion.button>
+            <motion.button disabled={busy} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="aurora-btn-dark">{busy ? "Checking…" : "Meet Now"}</motion.button>
             <button type="button" onClick={() => navigate("/create")} style={{ background: "none", border: 0, color: "rgba(255,255,255,0.7)", fontSize: "14px", cursor: "pointer" }}>Create instead →</button>
           </div>
         </form>
@@ -61,3 +61,4 @@ export default function JoinMeeting() {
     </AuroraShell>
   )
 }
+

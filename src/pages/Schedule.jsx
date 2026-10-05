@@ -22,16 +22,16 @@ export default function Schedule() {
     <AuroraShell>
       <div style={{ paddingTop: "24vh", paddingLeft: "64px", paddingRight: "24px", maxWidth: "640px" }} className="max-sm:!px-6">
         <AuroraBadge prefix="Scheduled" strong={code} />
-        <h1 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: "clamp(2rem, 4vw, 3rem)", letterSpacing: "-0.02em", marginTop: "22px" }}>Meeting card</h1>
+        <h1 style={{ fontFamily: "''Londrina Solid', sans-serif", fontWeight: 400, fontSize: "clamp(2rem, 4vw, 3rem)", letterSpacing: "-0.02em", marginTop: "22px" }}>Meeting Card</h1>
         {err && <p style={{ marginTop: "12px", borderRadius: "12px", background: "rgba(255,80,80,0.1)", padding: "12px", fontSize: "13px", color: "#ff9c9c" }}>{err}</p>}
         {room && (
           <div className="aurora-card" style={{ marginTop: "24px", padding: "28px", textAlign: "center" }}>
             <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)" }}>{room.roomType} · {room.status}</p>
-            <h2 style={{ marginTop: "4px", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "22px", fontWeight: 600 }}>{room.title}</h2>
+            <h2 style={{ marginTop: "4px", fontFamily: "''Londrina Solid', sans-serif", fontSize: "22px", fontWeight: 600 }}>{room.title}</h2>
             <p style={{ marginTop: "12px", fontFamily: "monospace", fontSize: "36px", fontWeight: 700, letterSpacing: "0.3em" }}>{room.code}</p>
             <p style={{ marginTop: "8px", fontSize: "13px", color: "rgba(255,255,255,0.65)", wordBreak: "break-all" }}>{link}</p>
             <div style={{ marginTop: "20px", display: "flex", gap: "14px", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
-              <button onClick={() => navigate(`/meet/${room.code}`)} className="aurora-btn-dark">Get Started</button>
+              <button onClick={() => navigate(`/meet/${room.code}`)} className="aurora-btn-dark">Meet Now</button>
               <button onClick={() => copy(link)} style={{ width: "44px", height: "44px", borderRadius: "999px", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", color: "#fff", cursor: "pointer" }} aria-label="Copy link">⧉</button>
             </div>
             <div style={{ marginTop: "12px", display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap", fontSize: "13px" }}>
@@ -46,3 +46,4 @@ export default function Schedule() {
     </AuroraShell>
   )
 }
+

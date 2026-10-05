@@ -95,11 +95,11 @@ export function YouTubePanel({ yt, isHost, onSet, onPlay, onPause, onSeek }) {
     <div className="flex h-full flex-col p-3">
       {isHost && (
         <form onSubmit={submit} className="mb-2 flex gap-2">
-          <input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Paste YouTube URL…" aria-label="YouTube URL" className="min-w-0 flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-slate-500" />
-          <button className="rounded-xl bg-red-500 px-4 text-sm font-bold text-white">Play</button>
+          <input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Paste YouTube URL…" aria-label="YouTube URL" className="aurora-input min-w-0 flex-1" />
+          <button className="rounded-[80px] bg-supari-secondary px-4 text-sm font-bold text-white">Play</button>
         </form>
       )}
-      {err && <p className="mb-2 text-xs text-red-300">{err}</p>}
+      {err && <p className="mb-2 text-sm font-bold text-white">{err}</p>}
       {!yt?.videoId ? (
         <div className="grid flex-1 place-items-center rounded-xl border border-dashed border-white/15 text-sm text-slate-500">
           {isHost ? "Paste a YouTube link above to watch together." : "Host hasn't started a video yet."}
@@ -110,7 +110,7 @@ export function YouTubePanel({ yt, isHost, onSet, onPlay, onPause, onSeek }) {
             <div ref={holderRef} className="aspect-video w-full" />
           </div>
           {needGesture && (
-            <button onClick={() => { setNeedGesture(false); syncState() }} className="mt-2 rounded-xl bg-indigo-500 px-3 py-2 text-sm font-bold">▶ Click to start synchronized playback</button>
+            <button onClick={() => { setNeedGesture(false); syncState() }} className="aurora-btn-dark mt-2">Click To Start Synced Playback</button>
           )}
           {isHost && (
             <div className="mt-2 flex gap-2">

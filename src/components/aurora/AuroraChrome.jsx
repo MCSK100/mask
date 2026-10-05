@@ -9,14 +9,14 @@ const socials = [
 
 export function AuroraSocials() {
   return (
-    <div style={{ display: "flex", gap: "10px" }}>
+    <div style={{ display: "flex", gap: "12px" }}>
       {socials.map((s) => (
         <a
           key={s.label}
           href="#"
           aria-label={s.label}
           onClick={(e) => e.preventDefault()}
-          style={{ width: "34px", height: "34px", borderRadius: "999px", border: "1px solid rgba(255,255,255,0.22)", display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.75)" }}
+          style={{ width: "36px", height: "36px", borderRadius: "80px", background: "#000000", border: "3px solid #ffffff", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff" }}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d={s.path} /></svg>
         </a>
@@ -27,10 +27,7 @@ export function AuroraSocials() {
 
 export function AuroraShell({ children, showFooter = true }) {
   return (
-    <div style={{ position: "relative", width: "100%", minHeight: "100svh", background: "#000", color: "#fff", overflow: "hidden" }}>
-      <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.10)", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(0,0,0,0.13) 0%, transparent 22%, transparent 60%, rgba(0,0,0,0.19) 100%)", pointerEvents: "none" }} />
-      <div className="aurora-glow" style={{ position: "absolute", top: "-14%", left: "50%", transform: "translateX(-50%)", width: "1000px", maxWidth: "120vw", height: "720px", pointerEvents: "none" }} />
+    <div className="sup-page" style={{ position: "relative", width: "100%", minHeight: "100svh", overflow: "hidden" }}>
       <AuroraNavbar />
       <div style={{ position: "relative", zIndex: 10 }}>{children}</div>
       {showFooter && <AuroraFooter />}
@@ -41,28 +38,28 @@ export function AuroraShell({ children, showFooter = true }) {
 export function AuroraFooter() {
   const navigate = useNavigate()
   return (
-    <footer style={{ position: "relative", zIndex: 10, padding: "28px 64px 40px", display: "flex", flexWrap: "wrap", gap: "16px", alignItems: "center", justifyContent: "space-between" }}>
+    <footer style={{ position: "relative", zIndex: 10, padding: "48px 80px", display: "flex", flexWrap: "wrap", gap: "24px", alignItems: "center", justifyContent: "space-between", borderTop: "3px solid #ffffff", background: "#000000" }} className="max-sm:!px-6">
       <AuroraSocials />
-      <div style={{ display: "flex", gap: "18px", alignItems: "center", fontSize: "13px", color: "rgba(255,255,255,0.6)", fontFamily: "'Inter', sans-serif" }}>
+      <div style={{ display: "flex", gap: "24px", alignItems: "center", fontSize: "16px", fontWeight: 600, color: "#ffffff", fontFamily: "'Karla', sans-serif" }}>
         <span>© 2026 ShadowMeet</span>
-        <button onClick={() => navigate("/privacy")} style={{ background: "none", border: 0, color: "inherit", cursor: "pointer" }}>Privacy</button>
-        <button onClick={() => navigate("/terms")} style={{ background: "none", border: 0, color: "inherit", cursor: "pointer" }}>Terms</button>
-        <button onClick={() => navigate("/about")} style={{ background: "none", border: 0, color: "inherit", cursor: "pointer" }}>About</button>
+        <button onClick={() => navigate("/privacy")} style={{ background: "none", border: 0, color: "inherit", cursor: "pointer", fontWeight: 600 }}>Privacy</button>
+        <button onClick={() => navigate("/terms")} style={{ background: "none", border: 0, color: "inherit", cursor: "pointer", fontWeight: 600 }}>Terms</button>
+        <button onClick={() => navigate("/about")} style={{ background: "none", border: 0, color: "inherit", cursor: "pointer", fontWeight: 600 }}>About</button>
       </div>
     </footer>
   )
 }
 
-export function AuroraBadge({ strong = "teams worldwide", prefix = "We're trusted by" }) {
+export function AuroraBadge({ strong = "Free To Start", prefix = "We Keep It Simple," }) {
   return (
     <div className="aurora-badge">
       <div style={{ display: "flex" }}>
         {[0, 1, 2].map((i) => (
-          <div key={i} className="aurora-avatar" style={{ marginLeft: i === 0 ? 0 : "-8px" }} />
+          <div key={i} className="aurora-avatar" style={{ marginLeft: i === 0 ? 0 : "-9px" }} />
         ))}
       </div>
-      <span style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.75)", fontFamily: "'Inter', sans-serif" }}>
-        {prefix} <strong style={{ color: "#fff", fontWeight: 600 }}>{strong}</strong>
+      <span style={{ fontSize: "16px", fontWeight: 600, color: "#ffffff", fontFamily: "'Karla', sans-serif" }}>
+        {prefix} <strong style={{ color: "#f72b2b", fontWeight: 700 }}>{strong}</strong>
       </span>
     </div>
   )

@@ -51,7 +51,7 @@ export default function CreateMeeting() {
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
           <AuroraBadge prefix="No signup" strong="ready in seconds" />
         </motion.div>
-        <h1 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: "clamp(2rem, 4vw, 3rem)", lineHeight: 1.1, letterSpacing: "-0.02em", marginTop: "22px" }}>Create a meeting</h1>
+        <h1 style={{ fontFamily: "''Londrina Solid', sans-serif", fontWeight: 400, fontSize: "clamp(2rem, 4vw, 3rem)", lineHeight: 1.1, letterSpacing: "-0.02em", marginTop: "22px" }}>Create A Meeting</h1>
         <p style={{ marginTop: "12px", fontSize: "15px", color: "rgba(255,255,255,0.6)", maxWidth: "420px" }}>One link for meetings, classes, and watch parties.</p>
 
         {!result ? (
@@ -92,23 +92,23 @@ export default function CreateMeeting() {
             </div>
             {err && <p role="alert" style={{ borderRadius: "12px", background: "rgba(255,80,80,0.1)", padding: "12px", fontSize: "13px", color: "#ff9c9c" }}>{err}</p>}
             <div style={{ display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap" }}>
-              <motion.button disabled={busy} onClick={() => create(true)} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="aurora-btn-dark">{busy ? "Creating…" : "Get Started"}</motion.button>
+              <motion.button disabled={busy} onClick={() => create(true)} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="aurora-btn-dark">{busy ? "Creating…" : "Meet Now"}</motion.button>
               <button disabled={busy} onClick={() => create(false)} style={{ background: "none", border: 0, color: "rgba(255,255,255,0.7)", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}>{busy ? "…" : "Create without starting →"}</button>
             </div>
           </div>
         ) : (
           <div className="aurora-card" style={{ marginTop: "24px", padding: "28px", textAlign: "center" }}>
             <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)" }}>Your meeting is ready</p>
-            <h2 style={{ marginTop: "4px", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "24px", fontWeight: 600 }}>{result.title}</h2>
+            <h2 style={{ marginTop: "4px", fontFamily: "''Londrina Solid', sans-serif", fontSize: "24px", fontWeight: 600 }}>{result.title}</h2>
             <p style={{ marginTop: "12px", fontFamily: "monospace", fontSize: "36px", fontWeight: 700, letterSpacing: "0.3em" }}>{result.code}</p>
             <p style={{ marginTop: "8px", fontSize: "13px", color: "rgba(255,255,255,0.65)", wordBreak: "break-all" }}>{link}</p>
             <div style={{ marginTop: "20px", display: "flex", gap: "14px", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
-              <button onClick={() => navigate(`/meet/${result.code}?name=${encodeURIComponent(result.hostName)}&host=1`)} className="aurora-btn-dark">Get Started</button>
+              <button onClick={() => navigate(`/meet/${result.code}?name=${encodeURIComponent(result.hostName)}&host=1`)} className="aurora-btn-dark">Meet Now</button>
               <button onClick={() => copy(link)} style={{ width: "44px", height: "44px", borderRadius: "999px", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", color: "#fff", cursor: "pointer" }} aria-label="Copy link">⧉</button>
             </div>
             <div style={{ marginTop: "12px", display: "flex", gap: "8px", justifyContent: "center", flexWrap: "wrap" }}>
               <button onClick={() => copy(result.code)} style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", background: "none", border: 0, cursor: "pointer" }}>Copy code</button>
-              <button onClick={() => navigate(`/schedule/${result.code}`)} style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", background: "none", border: 0, cursor: "pointer" }}>Meeting card →</button>
+              <button onClick={() => navigate(`/schedule/${result.code}`)} style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", background: "none", border: 0, cursor: "pointer" }}>Meeting Card →</button>
             </div>
             {result.scheduledAt && (
               <div style={{ marginTop: "8px", display: "flex", gap: "8px", justifyContent: "center", flexWrap: "wrap" }}>
@@ -124,3 +124,4 @@ export default function CreateMeeting() {
     </AuroraShell>
   )
 }
+
