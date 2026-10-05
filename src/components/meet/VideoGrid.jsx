@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { VideoTile } from "./VideoTile"
+import { Users } from "lucide-react"
 
 function gridClass(n) {
   if (n <= 1) return "grid-cols-1"
@@ -37,8 +38,8 @@ export function VideoGrid({ local, remotes }) {
         ))
       )}
       {all.length === 0 && (
-        <div className="col-span-full grid place-items-center rounded-[3px] border border-white/20 bg-black p-10 font-semibold text-white">
-          Waiting for others to join…
+        <div className="col-span-full grid place-items-center rounded-[18px] border border-[#14202b22] bg-white p-10 font-semibold text-[#4A6173]">
+          <span className="flex items-center gap-2"><Users size={16} /> Waiting for others to join…</span>
         </div>
       )}
     </div>

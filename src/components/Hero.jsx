@@ -1,6 +1,7 @@
 import { useRef } from "react"
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 import { useNavigate } from "react-router-dom"
+import { ShieldCheck, Zap, Lock } from "lucide-react"
 
 export default function Hero() {
   const navigate = useNavigate()
@@ -52,21 +53,21 @@ export default function Hero() {
       {/* Floating decorative chips (3D depth) */}
       <motion.div
         style={{ x: layer3X, y: layer3Y, z: 40 }}
-        className="pointer-events-none absolute left-[12%] top-[22%] hidden rotate-[-8deg] rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white/70 backdrop-blur-md md:block animate-float"
+        className="pointer-events-none absolute left-[12%] top-[22%] hidden rotate-[-8deg] rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white/70 backdrop-blur-md md:flex md:items-center md:gap-2 animate-float"
       >
-        🎭 100% Anonymous
+        <ShieldCheck size={14} /> 100% Anonymous
       </motion.div>
       <motion.div
         style={{ x: layer2X, y: layer2Y, z: 60 }}
-        className="pointer-events-none absolute right-[10%] top-[30%] hidden rotate-[6deg] rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white/70 backdrop-blur-md md:block animate-float"
+        className="pointer-events-none absolute right-[10%] top-[30%] hidden rotate-[6deg] rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white/70 backdrop-blur-md md:flex md:items-center md:gap-2 animate-float"
       >
-        ⚡ Connect in 3s
+        <Zap size={14} /> Connect in 3s
       </motion.div>
       <motion.div
         style={{ x: layer1X, y: layer1Y, z: 80 }}
-        className="pointer-events-none absolute bottom-[24%] left-[16%] hidden rotate-[4deg] rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white/70 backdrop-blur-md md:block"
+        className="pointer-events-none absolute bottom-[24%] left-[16%] hidden rotate-[4deg] rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white/70 backdrop-blur-md md:flex md:items-center md:gap-2"
       >
-        🔒 Encrypted
+        <Lock size={14} /> Encrypted
       </motion.div>
 
       {/* Eyebrow */}

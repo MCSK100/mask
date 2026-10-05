@@ -1,9 +1,10 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
+import { KeyRound, User, Lock, ArrowRight, LogIn } from "lucide-react"
 import { normalizeCode } from "../utils/meetingCode"
 import { roomsApi } from "../services/api"
-import { AuroraShell, AuroraBadge } from "../components/aurora/AuroraChrome"
+import { AuroraShell, AuroraBadge, SectionTab } from "../components/aurora/AuroraChrome"
 
 export default function JoinMeeting() {
   const navigate = useNavigate()
@@ -31,29 +32,36 @@ export default function JoinMeeting() {
 
   return (
     <AuroraShell>
-      <div style={{ paddingTop: "24vh", paddingLeft: "64px", paddingRight: "24px", maxWidth: "560px" }} className="max-sm:!px-6">
-        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+      <div style={{ paddingTop: "150px", paddingLeft: "34px", paddingRight: "34px", maxWidth: "600px", margin: "0 auto" }}>
+        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
           <AuroraBadge prefix="No account" strong="just a code" />
         </motion.div>
-        <h1 style={{ fontFamily: "''Londrina Solid', sans-serif", fontWeight: 400, fontSize: "clamp(2rem, 4vw, 3rem)", lineHeight: 1.1, letterSpacing: "-0.02em", marginTop: "22px" }}>Join A Meeting</h1>
-        <p style={{ marginTop: "12px", fontSize: "15px", color: "rgba(255,255,255,0.6)", maxWidth: "340px" }}>Enter the code your host shared with you.</p>
-        <form onSubmit={join} className="aurora-card" style={{ marginTop: "24px", padding: "24px", display: "grid", gap: "14px" }}>
-          <div>
-            <label htmlFor="jcode" className="aurora-label">Meeting code</label>
-            <input id="jcode" value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="AB7K92" maxLength={10} className="aurora-input" style={{ fontFamily: "monospace", textAlign: "center", fontSize: "20px", letterSpacing: "0.3em" }} />
-          </div>
-          <div>
-            <label htmlFor="jname" className="aurora-label">Your name</label>
-            <input id="jname" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Santhosh" maxLength={40} className="aurora-input" />
-          </div>
-          <div>
-            <label htmlFor="jpass" className="aurora-label">Password (if required)</label>
-            <input id="jpass" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Optional" className="aurora-input" />
-          </div>
-          {err && <p role="alert" style={{ borderRadius: "12px", background: "rgba(255,80,80,0.1)", padding: "12px", fontSize: "13px", color: "#ff9c9c" }}>{err}</p>}
-          <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
-            <motion.button disabled={busy} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="aurora-btn-dark">{busy ? "Checking…" : "Meet Now"}</motion.button>
-            <button type="button" onClick={() => navigate("/create")} style={{ background: "none", border: 0, color: "rgba(255,255,255,0.7)", fontSize: "14px", cursor: "pointer" }}>Create instead →</button>
+        <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: "clamp(2.4rem,5vw,4rem)", lineHeight: 0.95, letterSpacing: "-0.03em", marginTop: "18px", textTransform: "uppercase" }}>
+          Join a<br />meeting<span style={{ color: "#F0531C" }}>.</span>
+        </h1>
+        <p style={{ marginTop: "12px", fontSize: "16px", color: "#4A6173", maxWidth: "380px" }}>Enter the code your host shared. You will be in within seconds.</p>
+        <form onSubmit={join} style={{ marginTop: "22px" }}>
+          <SectionTab icon={KeyRound} label="join-room.fig" />
+          <div className="aurora-card sel" style={{ marginTop: "-1px", padding: "26px", display: "grid", gap: "14px", borderRadius: "0 18px 18px 18px" }}>
+            <span className="h tl" /><span className="h tr" /><span className="h bl" /><span className="h br" />
+            <span className="dim">560 × auto</span>
+            <div>
+              <label htmlFor="jcode" className="aurora-label">Meeting code</label>
+              <input id="jcode" value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="AB7K92" maxLength={10} className="aurora-input" style={{ fontFamily: "'Space Mono', monospace", textAlign: "center", fontSize: "20px", letterSpacing: "0.3em" }} />
+            </div>
+            <div>
+              <label htmlFor="jname" className="aurora-label"><User size={11} style={{ display: "inline" }} /> Your name</label>
+              <input id="jname" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Santhosh" maxLength={40} className="aurora-input" />
+            </div>
+            <div>
+              <label htmlFor="jpass" className="aurora-label"><Lock size={11} style={{ display: "inline" }} /> Password (if required)</label>
+              <input id="jpass" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Optional" className="aurora-input" />
+            </div>
+            {err && <p role="alert" style={{ borderRadius: "12px", background: "#FFF1EC", border: "1px solid #F0531C44", padding: "12px", fontSize: "13px", color: "#D2410E", fontWeight: 600 }}>{err}</p>}
+            <div style={{ display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap" }}>
+              <motion.button disabled={busy} whileTap={{ scale: 0.97 }} className="aurora-btn-dark"><LogIn size={15} /> {busy ? "Checking…" : "Join Now"}</motion.button>
+              <button type="button" onClick={() => navigate("/create")} style={{ background: "none", border: 0, color: "#4A6173", fontSize: "14px", cursor: "pointer", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: "6px" }}>Create instead <ArrowRight size={14} /></button>
+            </div>
           </div>
         </form>
         <div style={{ height: "60px" }} />
@@ -61,4 +69,3 @@ export default function JoinMeeting() {
     </AuroraShell>
   )
 }
-

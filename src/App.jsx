@@ -17,7 +17,7 @@ function AnimatedRoutes() {
   const location = useLocation()
   return (
     <AnimatePresence mode="wait">
-      <Suspense fallback={<div className="grid min-h-screen place-items-center bg-[#0c090c] font-display text-white">Loading ShadowMeet…</div>}>
+      <Suspense fallback={<div className="grid min-h-screen place-items-center font-display font-bold text-[#14202B]">Loading ShadowMeet…</div>}>
         <motion.div
           key={location.pathname}
           initial={{ opacity: 0, y: 12 }}

@@ -1,12 +1,19 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
+import { Video, Users, MonitorUp, GraduationCap, Presentation, BookOpen, Play, ArrowRight, Link2, Copy, CalendarPlus, RotateCcw, Clock } from "lucide-react"
 import { roomsApi } from "../services/api"
 import { setHostToken } from "../utils/identity"
 import { googleCalendarUrl, icsContent, downloadIcs } from "../utils/calendar"
-import { AuroraShell, AuroraBadge } from "../components/aurora/AuroraChrome"
+import { AuroraShell, AuroraBadge, SectionTab } from "../components/aurora/AuroraChrome"
 
-const TYPES = [["meeting", "Meeting"], ["classroom", "Classroom"], ["webinar", "Webinar"], ["study", "Study Room"], ["watch", "Watch Party"]]
+const TYPES = [
+  { v: "meeting", label: "Meeting", Icon: Video },
+  { v: "classroom", label: "Classroom", Icon: GraduationCap },
+  { v: "webinar", label: "Webinar", Icon: Presentation },
+  { v: "study", label: "Study Room", Icon: BookOpen },
+  { v: "watch", label: "Watch Party", Icon: Play },
+]
 
 export default function CreateMeeting() {
   const navigate = useNavigate()
@@ -47,81 +54,96 @@ export default function CreateMeeting() {
 
   return (
     <AuroraShell>
-      <div style={{ paddingTop: "130px", paddingLeft: "64px", paddingRight: "24px", maxWidth: "860px" }} className="max-sm:!px-6">
-        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+      <div style={{ paddingTop: "150px", paddingLeft: "34px", paddingRight: "34px", maxWidth: "880px", margin: "0 auto" }}>
+        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
           <AuroraBadge prefix="No signup" strong="ready in seconds" />
         </motion.div>
-        <h1 style={{ fontFamily: "''Londrina Solid', sans-serif", fontWeight: 400, fontSize: "clamp(2rem, 4vw, 3rem)", lineHeight: 1.1, letterSpacing: "-0.02em", marginTop: "22px" }}>Create A Meeting</h1>
-        <p style={{ marginTop: "12px", fontSize: "15px", color: "rgba(255,255,255,0.6)", maxWidth: "420px" }}>One link for meetings, classes, and watch parties.</p>
+        <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: "clamp(2.4rem,5vw,4rem)", lineHeight: 0.95, letterSpacing: "-0.03em", marginTop: "18px", textTransform: "uppercase" }}>
+          Create a<br />meeting<span style={{ color: "#F0531C" }}>.</span>
+        </h1>
+        <p style={{ marginTop: "12px", fontSize: "16px", color: "#4A6173", maxWidth: "440px" }}>One link for meetings, classes, and watch parties. Light, modern, instant.</p>
 
         {!result ? (
-          <div className="aurora-card" style={{ marginTop: "24px", padding: "24px", display: "grid", gap: "16px" }}>
-            <div>
-              <label className="aurora-label" htmlFor="mtitle">Meeting title</label>
-              <input id="mtitle" value={form.title} onChange={(e) => set("title", e.target.value)} placeholder="e.g. React Beginners Class" className="aurora-input" maxLength={80} />
-            </div>
-            <div>
-              <label className="aurora-label" htmlFor="hname">Your name (host)</label>
-              <input id="hname" value={form.hostName} onChange={(e) => set("hostName", e.target.value)} placeholder="e.g. Santhosh" className="aurora-input" maxLength={40} />
-            </div>
-            <div>
-              <span className="aurora-label">Room type</span>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                {TYPES.map(([v, label]) => (
-                  <button key={v} type="button" onClick={() => set("roomType", v)} style={{ padding: "10px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 600, background: form.roomType === v ? "#fff" : "rgba(255,255,255,0.08)", color: form.roomType === v ? "#111" : "rgba(255,255,255,0.8)", border: "1px solid rgba(255,255,255,0.15)" }}>{label}</button>
-                ))}
-              </div>
-            </div>
-            <div style={{ display: "grid", gap: "12px", gridTemplateColumns: "1fr 1fr 1fr" }} className="max-sm:!grid-cols-1">
+          <div style={{ marginTop: "22px" }}>
+            <SectionTab icon={Video} label="new-room.fig" />
+            <div className="aurora-card sel" style={{ marginTop: "-1px", padding: "26px", display: "grid", gap: "16px", borderRadius: "0 18px 18px 18px" }}>
+              <span className="h tl" /><span className="h tr" /><span className="h bl" /><span className="h br" />
+              <span className="dim">860 × auto</span>
               <div>
-                <label className="aurora-label" htmlFor="mdate">Date (optional)</label>
-                <input id="mdate" type="date" value={form.date} onChange={(e) => set("date", e.target.value)} className="aurora-input" style={{ colorScheme: "dark" }} />
+                <label className="aurora-label" htmlFor="mtitle">Meeting title</label>
+                <input id="mtitle" value={form.title} onChange={(e) => set("title", e.target.value)} placeholder="e.g. React Beginners Class" className="aurora-input" maxLength={80} />
               </div>
               <div>
-                <label className="aurora-label" htmlFor="mtime">Time (optional)</label>
-                <input id="mtime" type="time" value={form.time} onChange={(e) => set("time", e.target.value)} className="aurora-input" style={{ colorScheme: "dark" }} />
+                <label className="aurora-label" htmlFor="hname">Your name (host)</label>
+                <input id="hname" value={form.hostName} onChange={(e) => set("hostName", e.target.value)} placeholder="e.g. Santhosh" className="aurora-input" maxLength={40} />
               </div>
               <div>
-                <label className="aurora-label" htmlFor="mdur">Duration (min)</label>
-                <input id="mdur" type="number" min={5} max={480} value={form.duration} onChange={(e) => set("duration", e.target.value)} className="aurora-input" />
+                <span className="aurora-label">Room type</span>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {TYPES.map(({ v, label, Icon }) => (
+                    <button key={v} type="button" onClick={() => set("roomType", v)} className={`chip ${form.roomType === v ? "active" : ""}`} style={{ cursor: "pointer" }}>
+                      <Icon size={14} /> {label}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div>
-              <label className="aurora-label" htmlFor="mpass">Password (optional)</label>
-              <input id="mpass" type="password" value={form.password} onChange={(e) => set("password", e.target.value)} placeholder="Leave empty for open room" className="aurora-input" maxLength={64} />
-            </div>
-            {err && <p role="alert" style={{ borderRadius: "12px", background: "rgba(255,80,80,0.1)", padding: "12px", fontSize: "13px", color: "#ff9c9c" }}>{err}</p>}
-            <div style={{ display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap" }}>
-              <motion.button disabled={busy} onClick={() => create(true)} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="aurora-btn-dark">{busy ? "Creating…" : "Meet Now"}</motion.button>
-              <button disabled={busy} onClick={() => create(false)} style={{ background: "none", border: 0, color: "rgba(255,255,255,0.7)", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}>{busy ? "…" : "Create without starting →"}</button>
+              <div style={{ display: "grid", gap: "12px", gridTemplateColumns: "1fr 1fr 1fr" }} className="max-sm:!grid-cols-1">
+                <div>
+                  <label className="aurora-label" htmlFor="mdate">Date (optional)</label>
+                  <input id="mdate" type="date" value={form.date} onChange={(e) => set("date", e.target.value)} className="aurora-input" />
+                </div>
+                <div>
+                  <label className="aurora-label" htmlFor="mtime">Time (optional)</label>
+                  <input id="mtime" type="time" value={form.time} onChange={(e) => set("time", e.target.value)} className="aurora-input" />
+                </div>
+                <div>
+                  <label className="aurora-label" htmlFor="mdur">Duration (min)</label>
+                  <input id="mdur" type="number" min={5} max={480} value={form.duration} onChange={(e) => set("duration", e.target.value)} className="aurora-input" />
+                </div>
+              </div>
+              <div>
+                <label className="aurora-label" htmlFor="mpass">Password (optional)</label>
+                <input id="mpass" type="password" value={form.password} onChange={(e) => set("password", e.target.value)} placeholder="Leave empty for open room" className="aurora-input" maxLength={64} />
+              </div>
+              {err && <p role="alert" style={{ borderRadius: "12px", background: "#FFF1EC", border: "1px solid #F0531C44", padding: "12px", fontSize: "13px", color: "#D2410E", fontWeight: 600 }}>{err}</p>}
+              <div style={{ display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap" }}>
+                <motion.button disabled={busy} onClick={() => create(true)} whileTap={{ scale: 0.97 }} className="aurora-btn-dark"><Video size={15} /> {busy ? "Creating…" : "Meet Now"}</motion.button>
+                <button disabled={busy} onClick={() => create(false)} style={{ background: "none", border: 0, color: "#4A6173", fontSize: "14px", fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px" }}>Create without starting <ArrowRight size={14} /></button>
+              </div>
             </div>
           </div>
         ) : (
-          <div className="aurora-card" style={{ marginTop: "24px", padding: "28px", textAlign: "center" }}>
-            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)" }}>Your meeting is ready</p>
-            <h2 style={{ marginTop: "4px", fontFamily: "''Londrina Solid', sans-serif", fontSize: "24px", fontWeight: 600 }}>{result.title}</h2>
-            <p style={{ marginTop: "12px", fontFamily: "monospace", fontSize: "36px", fontWeight: 700, letterSpacing: "0.3em" }}>{result.code}</p>
-            <p style={{ marginTop: "8px", fontSize: "13px", color: "rgba(255,255,255,0.65)", wordBreak: "break-all" }}>{link}</p>
-            <div style={{ marginTop: "20px", display: "flex", gap: "14px", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
-              <button onClick={() => navigate(`/meet/${result.code}?name=${encodeURIComponent(result.hostName)}&host=1`)} className="aurora-btn-dark">Meet Now</button>
-              <button onClick={() => copy(link)} style={{ width: "44px", height: "44px", borderRadius: "999px", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", color: "#fff", cursor: "pointer" }} aria-label="Copy link">⧉</button>
-            </div>
-            <div style={{ marginTop: "12px", display: "flex", gap: "8px", justifyContent: "center", flexWrap: "wrap" }}>
-              <button onClick={() => copy(result.code)} style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", background: "none", border: 0, cursor: "pointer" }}>Copy code</button>
-              <button onClick={() => navigate(`/schedule/${result.code}`)} style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", background: "none", border: 0, cursor: "pointer" }}>Meeting Card →</button>
-            </div>
-            {result.scheduledAt && (
-              <div style={{ marginTop: "8px", display: "flex", gap: "8px", justifyContent: "center", flexWrap: "wrap" }}>
-                <a href={googleCalendarUrl({ title: result.title, details: `Join: ${link} Code: ${result.code}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000) })} target="_blank" rel="noreferrer" style={{ fontSize: "13px", color: "#fff" }}>Add to Calendar</a>
-                <button onClick={() => downloadIcs(`shadowmeet-${result.code}.ics`, icsContent({ title: result.title, description: `Join: ${link}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000), code: result.code }))} style={{ fontSize: "13px", color: "#fff", background: "none", border: 0, cursor: "pointer" }}>Download .ics</button>
+          <div style={{ marginTop: "22px" }}>
+            <SectionTab icon={Link2} label="room-ready" />
+            <div className="aurora-card" style={{ marginTop: "-1px", padding: "30px", textAlign: "center", borderRadius: "0 18px 18px 18px" }}>
+              <p className="pin-tag" style={{ margin: "0 auto" }}><Clock size={12} /> your meeting is ready</p>
+              <h2 style={{ marginTop: "14px", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "26px", fontWeight: 700 }}>{result.title}</h2>
+              <p style={{ marginTop: "12px", fontFamily: "'Space Mono', monospace", fontSize: "36px", fontWeight: 700, letterSpacing: "0.25em" }}>{result.code}</p>
+              <p style={{ marginTop: "8px", fontSize: "13px", color: "#4A6173", wordBreak: "break-all" }}>{link}</p>
+              <div style={{ marginTop: "20px", display: "flex", gap: "10px", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
+                <button onClick={() => navigate(`/meet/${result.code}?name=${encodeURIComponent(result.hostName)}&host=1`)} className="aurora-btn-dark"><Video size={15} /> Meet Now</button>
+                <button onClick={() => copy(link)} style={{ width: "44px", height: "44px", borderRadius: "50%", background: "#fff", border: "1.5px solid rgba(20,32,43,.13)", color: "#14202B", cursor: "pointer", display: "grid", placeItems: "center" }} aria-label="Copy link"><Copy size={16} /></button>
+                <button onClick={() => copy(result.code)} style={{ height: "44px", borderRadius: "999px", background: "#F1F6FA", border: "1px solid rgba(20,32,43,.08)", padding: "0 18px", fontWeight: 700, fontSize: "13px", cursor: "pointer" }}>Copy code</button>
               </div>
-            )}
-            <button onClick={() => setResult(null)} style={{ marginTop: "12px", fontSize: "13px", color: "rgba(255,255,255,0.45)", background: "none", border: 0, cursor: "pointer" }}>Create another</button>
+              <div style={{ marginTop: "12px", display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+                <button onClick={() => navigate(`/schedule/${result.code}`)} style={{ fontSize: "13px", color: "#4A6173", background: "none", border: 0, cursor: "pointer", fontWeight: 600 }}>Meeting Card <ArrowRight size={13} style={{ display: "inline" }} /></button>
+              </div>
+              {result.scheduledAt && (
+                <div style={{ marginTop: "10px", display: "flex", gap: "10px", justifyContent: "center", flexWrap: "wrap" }}>
+                  <a href={googleCalendarUrl({ title: result.title, details: `Join: ${link} Code: ${result.code}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000) })} target="_blank" rel="noreferrer" style={{ fontSize: "13px", fontWeight: 700, color: "#0D99FF", display: "inline-flex", alignItems: "center", gap: "6px" }}><CalendarPlus size={14} /> Add to Calendar</a>
+                  <button onClick={() => downloadIcs(`shadowmeet-${result.code}.ics`, icsContent({ title: result.title, description: `Join: ${link}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000), code: result.code }))} style={{ fontSize: "13px", fontWeight: 700, color: "#0D99FF", background: "none", border: 0, cursor: "pointer" }}>Download .ics</button>
+                </div>
+              )}
+              <button onClick={() => setResult(null)} style={{ marginTop: "14px", fontSize: "13px", color: "#8AA6B8", background: "none", border: 0, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px" }}><RotateCcw size={13} /> Create another</button>
+            </div>
           </div>
         )}
         <div style={{ height: "40px" }} />
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", fontSize: "13px", color: "#4A6173", fontWeight: 600 }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}><Users size={14} /> Works for teams & classes</span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}><MonitorUp size={14} /> Screen + whiteboard built in</span>
+        </div>
       </div>
     </AuroraShell>
   )
 }
-

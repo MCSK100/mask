@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react"
 import { socket } from "../../lib/socket"
+import { PenTool, Eraser, Minus, MoveUpRight, Square, Circle, Type, Download, Trash2 } from "lucide-react"
 
 /** Real-time collaborative canvas. Emits incremental strokes via wb_op. */
 export function Whiteboard({ onOp, canDraw }) {
   const canvasRef = useRef(null)
   const [tool, setTool] = useState("pen")
-  const [color, setColor] = useState("#f72b2b")
+  const [color, setColor] = useState("#F0531C")
   const [size, setSize] = useState(3)
   const drawing = useRef(null)
   const undoStack = useRef([])
@@ -128,18 +129,20 @@ export function Whiteboard({ onOp, canDraw }) {
   }
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex flex-wrap items-center gap-1.5 border-b border-white/10 p-2">
-        {[["pen", "✏️"], ["erase", "🧽"], ["line", "📏"], ["arrow", "➡️"], ["rect", "▭"], ["circle", "⭕"], ["text", "T"]].map(([t, icon]) => (
-          <button key={t} onClick={() => setTool(t)} aria-label={t} className={`rounded-[3px] px-2.5 py-1.5 text-sm font-bold ${tool === t ? "bg-supari-primary text-white" : "bg-white/5 text-white"}`}>{icon}</button>
+    <div className="flex h-full flex-col bg-white">
+      <div className="flex flex-wrap items-center gap-1.5 border-b border-[#14202b12] bg-[#F8FAFC] p-2">
+        {[
+          ["pen", PenTool], ["erase", Eraser], ["line", Minus], ["arrow", MoveUpRight], ["rect", Square], ["circle", Circle], ["text", Type]
+        ].map(([t, Icon]) => (
+          <button key={t} onClick={() => setTool(t)} aria-label={t} title={t} className={`flex h-8 w-8 items-center justify-center rounded-[10px] border ${tool === t ? "bg-[#F0531C] border-[#F0531C] text-white" : "bg-white border-[#14202b12] text-[#14202B]"}`}><Icon size={15} /></button>
         ))}
         <input type="color" value={color} onChange={(e) => setColor(e.target.value)} aria-label="Color" className="h-8 w-10 cursor-pointer rounded bg-transparent" />
-        <input type="range" min={1} max={12} value={size} onChange={(e) => setSize(Number(e.target.value))} aria-label="Brush size" className="w-20" />
-        <button onClick={() => { undoStack.current = []; canvasRef.current.getContext("2d").clearRect(0, 0, 9999, 9999) }} className="rounded-lg bg-white/5 px-2 py-1 text-xs">Clear view</button>
-        <button onClick={savePng} className="rounded-lg bg-white/5 px-2 py-1 text-xs">PNG</button>
-        {!canDraw && <span className="text-[11px] font-bold text-white">Drawing Paused By Host</span>}
+        <input type="range" min={1} max={12} value={size} onChange={(e) => setSize(Number(e.target.value))} aria-label="Brush size" className="w-20 accent-[#F0531C]" />
+        <button onClick={() => { undoStack.current = []; canvasRef.current.getContext("2d").clearRect(0, 0, 9999, 9999) }} className="flex items-center gap-1 rounded-full bg-[#F1F6FA] border px-2.5 py-1.5 text-xs font-semibold"><Trash2 size={12} /> Clear</button>
+        <button onClick={savePng} className="flex items-center gap-1 rounded-full bg-[#F1F6FA] border px-2.5 py-1.5 text-xs font-semibold"><Download size={12} /> PNG</button>
+        {!canDraw && <span className="text-[11px] font-bold text-[#8AA6B8]">Drawing paused by host</span>}
       </div>
-      <div className="relative flex-1 touch-none overflow-hidden bg-black">
+      <div className="relative flex-1 touch-none overflow-hidden bg-white" style={{ backgroundImage: "radial-gradient(#14202b14 1px, transparent 1px)", backgroundSize: "22px 22px" }}>
         <canvas
           ref={canvasRef}
           className="touch-none cursor-crosshair"

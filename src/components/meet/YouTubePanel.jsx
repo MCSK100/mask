@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import { Play, Pause, RotateCcw, RotateCw } from "lucide-react"
 import { extractYouTubeId } from "../../utils/youtube"
 
 let apiLoaded = false
@@ -92,35 +93,35 @@ export function YouTubePanel({ yt, isHost, onSet, onPlay, onPause, onSeek }) {
   }
 
   return (
-    <div className="flex h-full flex-col p-3">
+    <div className="flex h-full flex-col bg-white p-3">
       {isHost && (
         <form onSubmit={submit} className="mb-2 flex gap-2">
-          <input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Paste YouTube URL…" aria-label="YouTube URL" className="aurora-input min-w-0 flex-1" />
-          <button className="rounded-[80px] bg-supari-secondary px-4 text-sm font-bold text-white">Play</button>
+          <input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Paste YouTube URL…" aria-label="YouTube URL" className="meet-input min-w-0 flex-1" />
+          <button className="flex items-center gap-1.5 rounded-full bg-[#F0531C] px-4 text-sm font-bold text-white"><Play size={14} /> Play</button>
         </form>
       )}
-      {err && <p className="mb-2 text-sm font-bold text-white">{err}</p>}
+      {err && <p className="mb-2 text-sm font-bold text-[#D2410E]">{err}</p>}
       {!yt?.videoId ? (
-        <div className="grid flex-1 place-items-center rounded-xl border border-dashed border-white/15 text-sm text-slate-500">
+        <div className="grid flex-1 place-items-center rounded-xl border border-dashed border-[#14202b22] bg-[#F8FAFC] p-6 text-sm text-[#8AA6B8]">
           {isHost ? "Paste a YouTube link above to watch together." : "Host hasn't started a video yet."}
         </div>
       ) : (
         <>
-          <div className="overflow-hidden rounded-xl bg-black">
+          <div className="overflow-hidden rounded-xl bg-[#14202B]">
             <div ref={holderRef} className="aspect-video w-full" />
           </div>
           {needGesture && (
-            <button onClick={() => { setNeedGesture(false); syncState() }} className="aurora-btn-dark mt-2">Click To Start Synced Playback</button>
+            <button onClick={() => { setNeedGesture(false); syncState() }} className="btn mt-2 justify-center"><Play size={14} /> Start synced playback</button>
           )}
           {isHost && (
             <div className="mt-2 flex gap-2">
-              <button onClick={() => onPlay(playerRef.current?.getCurrentTime?.() || 0)} className="rounded-lg bg-white/10 px-3 py-1.5 text-xs font-bold">Play</button>
-              <button onClick={() => onPause(playerRef.current?.getCurrentTime?.() || 0)} className="rounded-lg bg-white/10 px-3 py-1.5 text-xs font-bold">Pause</button>
-              <button onClick={() => { const t = (playerRef.current?.getCurrentTime?.() || 0) - 10; playerRef.current?.seekTo(Math.max(0, t), true); onSeek(Math.max(0, t)) }} className="rounded-lg bg-white/10 px-3 py-1.5 text-xs font-bold">-10s</button>
-              <button onClick={() => { const t = (playerRef.current?.getCurrentTime?.() || 0) + 10; playerRef.current?.seekTo(t, true); onSeek(t) }} className="rounded-lg bg-white/10 px-3 py-1.5 text-xs font-bold">+10s</button>
+              <button onClick={() => onPlay(playerRef.current?.getCurrentTime?.() || 0)} className="flex items-center gap-1 rounded-full bg-[#F1F6FA] border px-3 py-1.5 text-xs font-bold"><Play size={12} /> Play</button>
+              <button onClick={() => onPause(playerRef.current?.getCurrentTime?.() || 0)} className="flex items-center gap-1 rounded-full bg-[#F1F6FA] border px-3 py-1.5 text-xs font-bold"><Pause size={12} /> Pause</button>
+              <button onClick={() => { const t = (playerRef.current?.getCurrentTime?.() || 0) - 10; playerRef.current?.seekTo(Math.max(0, t), true); onSeek(Math.max(0, t)) }} className="flex items-center gap-1 rounded-full bg-[#F1F6FA] border px-3 py-1.5 text-xs font-bold"><RotateCcw size={12} /> 10s</button>
+              <button onClick={() => { const t = (playerRef.current?.getCurrentTime?.() || 0) + 10; playerRef.current?.seekTo(t, true); onSeek(t) }} className="flex items-center gap-1 rounded-full bg-[#F1F6FA] border px-3 py-1.5 text-xs font-bold"><RotateCw size={12} /> 10s</button>
             </div>
           )}
-          <p className="mt-2 text-[11px] text-slate-500">Embedded YouTube playback — no downloading. Sync follows the host.</p>
+          <p className="mt-2 text-[11px] text-[#8AA6B8]">Embedded YouTube playback — no downloading. Sync follows the host.</p>
         </>
       )}
     </div>
