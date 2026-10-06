@@ -52,7 +52,12 @@ export default function CreateMeeting() {
       try { sessionStorage.setItem("sm_last_create", JSON.stringify(payload)) } catch { /* best-effort only */ }
       if (startNow) navigate(`/meet/${data.code}?name=${encodeURIComponent(form.hostName.trim())}&host=1`)
     } catch (e) {
-      setErr(e.message)
+      // Network/CORS failures carry no status — explain instead of "Failed to fetch".
+      setErr(
+        e?.status
+          ? e.message
+          : "Can't reach the meeting server. If it just woke up, wait ~30 seconds and retry — or check that the backend allows this site (CORS)."
+      )
     } finally { setBusy(false) }
   }
 

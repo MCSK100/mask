@@ -723,6 +723,10 @@ export default function Meeting() {
     else if (id === "chat") { setPanel("chat"); setRightTab("chat") }
   }
 
+  // Tool tabs share one stage column in BOTH layouts. classroomMode only
+  // switches the video side (grid vs featured + strip) — it never hides tools.
+  const showTools = ["board", "watch", "music", "polls"].includes(activeTab)
+
   return (
     <div className="classroom-bg flex h-dvh flex-col overflow-hidden" style={{ position: "relative" }}>
       <Seo title={`${meta?.title || `Meeting ${code}`} | OneSpace Live`} description="Private live meeting room." path={`/meet/${code}`} noindex />
@@ -838,12 +842,17 @@ export default function Meeting() {
             />
             <div className="flex min-h-0 flex-1" style={{ background: "#16283A" }}>
               <div className="flex min-w-0 flex-1 gap-2 p-2 sm:p-2.5">
-                {!classroomMode ? (
+                {!classroomMode && !showTools ? (
                   <div className="min-w-0 flex-1">
                     <ParticipantGrid participants={participants} layout="grid" />
                   </div>
                 ) : (
                   <>
+                    {!classroomMode ? (
+                      <div className="min-w-0 flex-[1.1]">
+                        <ParticipantGrid participants={participants} layout="grid" />
+                      </div>
+                    ) : (
                     <div className="min-w-0 flex-[1.1]">
                       <div className="relative h-full min-h-[280px]">
                         {featured ? <ParticipantTile info={featured} large /> : (
@@ -862,6 +871,7 @@ export default function Meeting() {
                         )}
                       </div>
                     </div>
+                    )}
                     <div className="flex min-w-0 flex-[1.4] flex-col overflow-hidden rounded-[14px] bg-white">
                       {activeTab === "watch" && FEATURES.YOUTUBE ? (
                         <YouTubePanel yt={youtube} isHost={isHost} onSet={ytSet} onPlay={ytPlay} onPause={ytPause} onSeek={ytSeek} />
@@ -875,6 +885,7 @@ export default function Meeting() {
                         <div className="grid h-full place-items-center p-6 text-sm text-[#8AA6B8]">Whiteboard is disabled.</div>
                       )}
                     </div>
+                    {classroomMode && (
                     <div className="hidden w-[150px] flex-none flex-col gap-2 overflow-y-auto sm:flex">
                       {strip.map((x) => (
                         <div key={x.identity} className="h-[118px] flex-none">
@@ -890,6 +901,7 @@ export default function Meeting() {
                         <button onClick={toggleShare} className="rounded-xl bg-[#E8382F] py-2 text-[11px] font-bold text-white">Stop Sharing</button>
                       )}
                     </div>
+                    )}
                   </>
                 )}
               </div>
