@@ -207,7 +207,7 @@ export default function Meeting() {
       }
       case TOPICS.MUSIC: {
         if (msg.type !== "music" || !senderIsHost) return
-        setMusic({ track: msg.track, playing: msg.playing, position: msg.position || 0, updatedAt: msg.timestamp || Date.now() })
+        setMusic({ track: msg.track, title: msg.title || null, artwork: msg.artwork || null, artist: msg.artist || null, playing: msg.playing, position: msg.position || 0, updatedAt: msg.timestamp || Date.now() })
         break
       }
       case TOPICS.CLASSROOM: {
@@ -465,25 +465,26 @@ export default function Meeting() {
     sendData(youtubeState({ videoId: youtube.videoId, playing: youtube.playing, position: time }), TOPICS.YOUTUBE)
   }
 
-  const musicSet = (track) => {
+  const musicSet = (track, meta = {}) => {
     if (!isHost) return
-    setMusic({ track, playing: true, position: 0, updatedAt: Date.now() })
-    sendData({ type: "music", track, playing: true, position: 0, timestamp: Date.now() }, TOPICS.MUSIC)
+    const { title = null, artwork = null, artist = null } = meta || {}
+    setMusic({ track, title, artwork, artist, playing: true, position: 0, updatedAt: Date.now() })
+    sendData({ type: "music", track, title, artwork, artist, playing: true, position: 0, timestamp: Date.now() }, TOPICS.MUSIC)
   }
   const musicPlay = (position) => {
     if (!isHost) return
     setMusic((m) => ({ ...m, playing: true, position, updatedAt: Date.now() }))
-    sendData({ type: "music", track: music.track, playing: true, position, timestamp: Date.now() }, TOPICS.MUSIC)
+    sendData({ type: "music", track: music.track, title: music.title, artwork: music.artwork, artist: music.artist, playing: true, position, timestamp: Date.now() }, TOPICS.MUSIC)
   }
   const musicPause = (position) => {
     if (!isHost) return
     setMusic((m) => ({ ...m, playing: false, position, updatedAt: Date.now() }))
-    sendData({ type: "music", track: music.track, playing: false, position, timestamp: Date.now() }, TOPICS.MUSIC)
+    sendData({ type: "music", track: music.track, title: music.title, artwork: music.artwork, artist: music.artist, playing: false, position, timestamp: Date.now() }, TOPICS.MUSIC)
   }
   const musicSeek = (position) => {
     if (!isHost) return
     setMusic((m) => ({ ...m, position, updatedAt: Date.now() }))
-    sendData({ type: "music", track: music.track, playing: music.playing, position, timestamp: Date.now() }, TOPICS.MUSIC)
+    sendData({ type: "music", track: music.track, title: music.title, artwork: music.artwork, artist: music.artist, playing: music.playing, position, timestamp: Date.now() }, TOPICS.MUSIC)
   }
 
   const pollCreate = (question, options) => {
@@ -725,6 +726,8 @@ export default function Meeting() {
 
   // Tool tabs share one stage column in BOTH layouts. classroomMode only
   // switches the video side (grid vs featured + strip) — it never hides tools.
+  // "stage" is video-only: no tools column.
+  const isStage = activeTab === "stage"
   const showTools = ["board", "watch", "music", "polls"].includes(activeTab)
 
   return (
@@ -740,99 +743,8 @@ export default function Meeting() {
       {locked && <div className="relative z-30 flex items-center justify-center gap-1.5 bg-[#16283A] px-4 py-1 text-center text-[11px] font-semibold text-white"><Lock size={11} /> Room Locked</div>}
 
       <div className="relative z-10 mx-auto flex min-h-0 w-full max-w-[1440px] flex-1 gap-3 p-2 sm:p-3">
-        {/* LEFT rail */}
-        <div className="hidden w-[212px] flex-none flex-col gap-3 overflow-y-auto xl:flex">
-          <div className="classroom-float p-3">
-            <p className="flex items-center gap-2 text-[13px] font-bold text-[#16283A]">
-              <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#f5f2ff] text-[#724aee]"><Users size={16} /></span>
-              Breakout Rooms
-            </p>
-            <div className="mt-2 space-y-1.5">
-              {["Room 1", "Room 2", "Room 3", "Room 4"].map((r, i) => (
-                <div key={r} className="flex items-center justify-between rounded-xl bg-[#F7FAFF] px-2.5 py-2 text-[12px]">
-                  <span className="flex items-center gap-2 font-semibold text-[#33475F]">
-                    <span className="h-2 w-2 rounded-full" style={{ background: ["#724aee", "#22B573", "#7C5CFF", "#F5A3A3"][i] }} />
-                    {r}
-                  </span>
-                  <span className="text-[#8AA6B8]">{Math.max(1, Math.floor(Math.max(presentCount, 1) / 4))} students</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="classroom-float p-3">
-            <p className="flex items-center gap-2 text-[13px] font-bold text-[#16283A]">
-              <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#f5f2ff] text-[#724aee]"><BarChart3 size={16} /></span>
-              Attendance
-            </p>
-            <p className="mt-2 text-[22px] font-bold text-[#16283A]">{presentCount} <span className="text-[13px] font-semibold text-[#8AA6B8]">present · {connLabel}</span></p>
-            <div className="mt-1.5 flex items-center">
-              {participants.slice(0, 3).map((t) => (
-                <span key={t.identity} className="grid h-8 w-8 place-items-center rounded-full border-2 border-white text-[11px] font-bold text-white" style={{ background: "linear-gradient(135deg,#724aee,#7C5CFF)", marginLeft: "-6px" }}>
-                  {(t.name || "?").slice(0, 1).toUpperCase()}
-                </span>
-              ))}
-              {presentCount > 3 && (
-                <span className="grid h-8 w-8 place-items-center rounded-full border-2 border-white bg-[#f5f2ff] text-[10px] font-bold text-[#5f36e0]" style={{ marginLeft: "-6px" }}>
-                  +{presentCount - 3}
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className="classroom-float p-3">
-            <p className="flex items-center gap-2 text-[13px] font-bold text-[#16283A]">
-              <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#f5f2ff] text-[#724aee]"><Hand size={16} /></span>
-              Raise Hand
-            </p>
-            <div className="mt-2 space-y-1.5">
-              {raisedList.length === 0 && <p className="text-[12px] text-[#8AA6B8]">No hands up right now.</p>}
-              {raisedList.slice(0, 4).map((h, i) => (
-                <div key={`${h.name}-${i}`} className="flex items-center justify-between rounded-xl bg-[#F7FAFF] px-2.5 py-2 text-[12px] font-semibold text-[#33475F]">
-                  <span className="flex items-center gap-2">
-                    <span className="grid h-6 w-6 place-items-center rounded-full bg-[#E3ECF7] text-[10px] font-bold text-[#33475F]">
-                      {(h.name || "?").slice(0, 1).toUpperCase()}
-                    </span>
-                    {h.name}
-                  </span>
-                  <HandMetal size={15} color="#F5B301" />
-                </div>
-              ))}
-            </div>
-            <button onClick={() => raiseHand(!handRaised)} className="mt-2 w-full rounded-xl bg-[#724aee] py-2 text-[12px] font-bold text-white hover:bg-[#5f36e0]">
-              {handRaised ? "Lower hand" : "Raise hand"}
-            </button>
-          </div>
-        </div>
-
         {/* CENTER */}
         <div className="flex min-w-0 flex-1 flex-col gap-2">
-          <div className="hidden justify-center gap-3 lg:flex">
-            <div className="classroom-float flex items-center gap-2.5 px-4 py-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#f5f2ff] text-[#724aee]"><MonitorUp size={18} /></span>
-              <span>
-                <span className="block text-[13px] font-bold text-[#16283A]">Screen Share</span>
-                <span className="block text-[12px] text-[#5B7290]">Share your screen with one click</span>
-              </span>
-              <button onClick={toggleShare} className="ml-2 rounded-full bg-[#724aee] px-3 py-1.5 text-[11px] font-bold text-white">
-                {lk.screenShareEnabled ? "Stop" : "Share"}
-              </button>
-            </div>
-            <div className="classroom-float w-[300px] px-4 py-2.5">
-              <p className="flex items-center gap-2 text-[13px] font-bold text-[#16283A]">
-                <BarChart3 size={15} color="#724aee" /> Polls & Quizzes
-              </p>
-              {poll ? (
-                <div className="mt-1">
-                  <p className="truncate text-[12px] font-semibold text-[#33475F]">{poll.question}</p>
-                  <p className="text-[11px] text-[#8AA6B8]">{pollTotal} vote(s) · {poll.open ? "open" : "closed"}</p>
-                </div>
-              ) : (
-                <p className="mt-0.5 text-[12px] text-[#5B7290]">Get instant feedback <button onClick={() => handleTab("polls")} className="font-bold text-[#724aee]">Launch a poll</button></p>
-              )}
-            </div>
-          </div>
-
           <div className="classroom-window flex min-h-0 flex-1 flex-col">
             <TopBar
               title={meta?.title || "Algebra 101"} code={code} count={presentCount}
@@ -842,7 +754,49 @@ export default function Meeting() {
             />
             <div className="flex min-h-0 flex-1" style={{ background: "#16283A" }}>
               <div className="flex min-w-0 flex-1 gap-2 p-2 sm:p-2.5">
-                {!classroomMode && !showTools ? (
+                {isStage ? (
+                  !classroomMode ? (
+                    <div className="min-w-0 flex-1">
+                      <ParticipantGrid participants={participants} layout="grid" />
+                    </div>
+                  ) : (
+                    <>
+                      <div className="min-w-0 flex-1">
+                        <div className="relative h-full min-h-[280px]">
+                          {featured ? <ParticipantTile info={featured} large /> : (
+                            <div className="grid h-full place-items-center rounded-[14px] border border-dashed border-white/20 text-[12px] text-white/60">
+                              {lk.connectionState === "connected" ? "Waiting for media…" : "Connecting…"}
+                            </div>
+                          )}
+                          {reactions.length > 0 && (
+                            <div className="pointer-events-none absolute left-2 top-2 flex flex-col gap-1">
+                              {reactions.slice(-4).map((r) => (
+                                <span key={r.id} className="rounded-full bg-black/55 px-2.5 py-1 text-[13px] text-white backdrop-blur">
+                                  {REACTION_GLYPH[r.kind] || ""} {r.name}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="hidden w-[150px] flex-none flex-col gap-2 overflow-y-auto sm:flex">
+                        {strip.map((x) => (
+                          <div key={x.identity} className="h-[118px] flex-none">
+                            <ParticipantTile info={x} />
+                          </div>
+                        ))}
+                        {strip.length === 0 && (
+                          <div className="grid h-[118px] place-items-center rounded-xl border border-dashed border-white/20 text-center text-[11px] text-white/60">
+                            Others will<br />appear here
+                          </div>
+                        )}
+                        {lk.screenShareEnabled && (
+                          <button onClick={toggleShare} className="rounded-xl bg-[#E8382F] py-2 text-[11px] font-bold text-white">Stop Sharing</button>
+                        )}
+                      </div>
+                    </>
+                  )
+                ) : !classroomMode && !showTools ? (
                   <div className="min-w-0 flex-1">
                     <ParticipantGrid participants={participants} layout="grid" />
                   </div>
