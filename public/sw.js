@@ -1,9 +1,9 @@
 /**
- * Shadowchaty Service Worker
+ * OneSpace Live Service Worker
  * Enables PWA install + lightweight offline caching.
  */
 
-const CACHE_VERSION = "shadowchaty-v2"
+const CACHE_VERSION = "onespace-live-v3"
 const STATIC_CACHE = `${CACHE_VERSION}-static`
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`
 
@@ -11,8 +11,9 @@ const PRECACHE_URLS = [
   "/",
   "/index.html",
   "/manifest.webmanifest",
-  "/shadowchaty-favicon.jpg",
-  "/shadowchaty-logo.png",
+  "/onespace-live-favicon.jpg",
+  "/onespace-live-logo.png",
+  "/og-cover.jpg",
   "/favicon.png",
   "/favicon.svg"
 ]

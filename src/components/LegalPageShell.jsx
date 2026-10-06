@@ -1,24 +1,15 @@
-import { useEffect } from "react"
+import { useLocation } from "react-router-dom"
 import { WannaShell, WannaBadge } from "./wanna/WannaChrome"
-
-const defaultTitle = "ShadowMeet — Meet. Teach. Share. Play. Together."
+import Seo from "./Seo"
 
 export default function LegalPageShell({ title, description, children }) {
-  useEffect(() => {
-    document.title = `${title} | ShadowMeet`
-    const meta = document.querySelector('meta[name="description"]')
-    const prev = meta?.getAttribute("content")
-    if (meta && description) meta.setAttribute("content", description)
-    return () => {
-      document.title = defaultTitle
-      if (meta && prev) meta.setAttribute("content", prev)
-    }
-  }, [title, description])
+  const { pathname } = useLocation()
 
   return (
     <WannaShell>
+      <Seo title={`${title} | OneSpace Live`} description={description} path={pathname} />
       <div style={{ maxWidth: "820px", margin: "0 auto", padding: "30px 0 20px" }}>
-        <WannaBadge prefix="ShadowMeet" strong="no signup" />
+        <WannaBadge prefix="OneSpace Live" strong="no signup" />
         <h1 className="wz-title">{title}</h1>
         <div className="wz-card" style={{ marginTop: "22px" }}>
           <article className="wz-article" style={{ display: "grid", gap: "14px", fontSize: "15px", lineHeight: 1.7 }}>{children}</article>

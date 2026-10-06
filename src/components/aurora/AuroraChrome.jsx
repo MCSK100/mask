@@ -62,7 +62,7 @@ export function AuroraFooter() {
               <Video size={18} color="#fff" />
             </span>
             <div>
-              <p style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: "17px", lineHeight: 1 }}>ShadowMeet</p>
+              <p style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: "17px", lineHeight: 1 }}>OneSpace Live</p>
               <p style={{ fontFamily: "'Space Mono', monospace", fontSize: "11px", color: "#8AA6B8" }}>© 2026 · made for modern teams</p>
             </div>
           </div>

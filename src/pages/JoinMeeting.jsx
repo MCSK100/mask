@@ -5,6 +5,7 @@ import { User, Lock, ArrowRight, LogIn } from "lucide-react"
 import { normalizeCode } from "../utils/meetingCode"
 import { roomsApi, meetingsApi } from "../services/api"
 import { WannaShell, WannaBadge } from "../components/wanna/WannaChrome"
+import Seo from "../components/Seo"
 
 export default function JoinMeeting() {
   const navigate = useNavigate()
@@ -41,6 +42,11 @@ export default function JoinMeeting() {
 
   return (
     <WannaShell>
+      <Seo
+        title="Join a Meeting | OneSpace Live"
+        description="Join a OneSpace Live video meeting with just a code — no signup, no download. Enter the code and you're in within seconds."
+        path="/join"
+      />
       <div style={{ maxWidth: "600px", margin: "0 auto", padding: "30px 0 20px" }}>
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
           <WannaBadge prefix="No account" strong="just a code" />

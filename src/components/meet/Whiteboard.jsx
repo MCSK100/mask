@@ -258,7 +258,7 @@ export const Whiteboard = forwardRef(function Whiteboard({ onOp, canDraw, remote
         </button>
         <button onClick={() => {
           const a = document.createElement("a")
-          a.download = "shadowmeet-board.png"
+          a.download = "onespace-live-board.png"
           a.href = canvasRef.current.toDataURL("image/png")
           a.click()
         }} className="classroom-rail-btn" style={{ width: "30px", height: "30px" }} title="Save PNG">

@@ -1,36 +1,36 @@
 import { Link } from "react-router-dom"
 import LegalPageShell from "../components/LegalPageShell"
 
-const contactEmail = "contact.shadowchaty@gmail.com"
+const contactEmail = "contact.onespacelive@gmail.com"
 
 export default function AboutContact() {
   return (
     <LegalPageShell
       title="About & Contact"
-      description="About Shadowchaty — anonymous stranger text and video chat. Contact and site information."
+      description="About OneSpace Live — no-signup video meetings, live classrooms and watch parties. Contact and site information."
     >
-      <h1 className="text-2xl font-semibold text-white sm:text-3xl">About Shadowchaty</h1>
-      <p className="text-sm text-slate-400 mb-8">Shadowchaty — anonymous stranger chat</p>
+      <h2 className="text-2xl font-semibold text-white sm:text-3xl">About OneSpace Live</h2>
+      <p className="text-sm text-slate-400 mb-8">OneSpace Live — no-signup video meetings</p>
       <p className="text-lg text-slate-300 leading-relaxed mb-8">
-        Shadowchaty is a next-generation random video chat platform designed to connect people globally. 
-        Our goal is to provide a safe, fast, and modern alternative to traditional chat platforms like Omegle.
+        OneSpace Live is a next-generation video meeting platform designed to connect people globally. 
+        Our goal is to provide a fast, private, and modern room for meetings, classes and watch parties.
       </p>
 
-      <h1 className="text-2xl font-semibold text-white sm:text-3xl">About / Contact</h1>
-      <p className="text-sm text-slate-400">Shadowchaty — anonymous stranger chat</p>
+      <h2 className="text-2xl font-semibold text-white sm:text-3xl">About / Contact</h2>
+      <p className="text-sm text-slate-400">OneSpace Live — no-signup video meetings</p>
 
       <section className="space-y-4 text-sm leading-relaxed text-slate-300 sm:text-base">
-        <h2 className="text-lg font-semibold text-white">What is Shadowchaty?</h2>
+        <h2 className="text-lg font-semibold text-white">What is OneSpace Live?</h2>
         <p>
-          Shadowchaty is a lightweight way to meet strangers for text or video conversations without creating an account.
-          Matches are random; you can skip to the next person when you want a new chat.
+          OneSpace Live is a lightweight way to meet for video, classroom sessions or watch parties without creating an account.
+          Share a code and anyone can join instantly from the browser.
         </p>
 
         <h2 className="pt-2 text-lg font-semibold text-white">Safety</h2>
         <p>
-          Treat others respectfully. Do not share personal data you are not comfortable exposing to strangers. If
-          someone makes you uncomfortable, use "Next Stranger" and leave the chat. Parents and guardians
-          should know Shadowchaty is intended for adults 18+.
+          Treat others respectfully. Do not share personal data you are not comfortable exposing in a meeting. If
+          someone makes you uncomfortable, leave the room or ask the host to remove them. Parents and guardians
+          should know OneSpace Live is intended for adults 18+.
         </p>
 
         <h2 className="pt-2 text-lg font-semibold text-white">Technology</h2>

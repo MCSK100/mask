@@ -115,7 +115,7 @@ export default function Hero() {
         transition={{ duration: 0.6, delay: 0.2 }}
         className="mb-8 max-w-xl text-sm text-gray-400 sm:text-base"
       >
-        ShadowChat is a modern anonymous chat platform designed for people who value privacy and authentic connections. Join instantly, chat freely, and meet new people without revealing your identity.
+        OneSpace Live is a modern no-signup video meeting platform designed for people who value speed and simplicity. Join instantly, meet freely, and collaborate without creating an account.
       </motion.p>
 
       {/* CTA */}
@@ -149,7 +149,7 @@ export default function Hero() {
         transition={{ duration: 0.6, delay: 0.8 }}
         className="mt-6 text-xs font-medium uppercase tracking-widest text-slate-500 sm:text-sm"
       >
-        shadowchaty.vercel.app
+        onespace-live.vercel.app
       </motion.span>
 
       {/* Scroll indicator */}

@@ -40,8 +40,8 @@ export default function Navbar() {
       <nav className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 sm:px-6 sm:gap-3">
         <Link to="/" className="flex min-w-0 items-center gap-2">
           <img
-            src="/shadowchaty-logo.png"
-            alt="Shadowchaty — anonymous chat"
+            src="/onespace-live-logo.png"
+            alt="OneSpace Live — no-signup video meetings"
             className="h-9 w-auto drop-shadow-[0_0_18px_rgba(168,85,247,0.35)]"
             width={120}
             height={44}

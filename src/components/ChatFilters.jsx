@@ -10,7 +10,7 @@ const INTEREST_TAGS = [
   { id: 'music', label: 'Music', emoji: '🎵' }
 ]
 
-const STORAGE_KEY = 'shadowchaty_filters'
+const STORAGE_KEY = 'onespace_live_filters'
 
 export default function ChatFilters({ onChange }) {
   const enabled = isEnabled('ENABLE_FILTERS')

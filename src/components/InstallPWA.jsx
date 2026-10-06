@@ -96,7 +96,7 @@ export default function InstallPWA({ className = "" }) {
           setOpen(true)
         }}
         className={`inline-flex items-center gap-1.5 rounded-xl border border-emerald-400/40 bg-emerald-500/10 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-emerald-200 shadow-[0_0_18px_rgba(16,185,129,0.25)] backdrop-blur-md transition hover:border-emerald-300/60 hover:bg-emerald-500/20 sm:text-sm ${className}`}
-        aria-label="Install Shadowchaty app"
+        aria-label="Install OneSpace Live app"
       >
         <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden>
           <path
@@ -133,7 +133,7 @@ export default function InstallPWA({ className = "" }) {
           <div className="min-w-0 flex-1">
             <p className="text-base font-semibold text-white">Update available</p>
             <p className="mt-1 text-xs text-slate-300 sm:text-sm">
-              A new version of Shadowchaty is ready. Reload to get the latest features.
+              A new version of OneSpace Live is ready. Reload to get the latest features.
             </p>
           </div>
           <button
@@ -177,7 +177,7 @@ export default function InstallPWA({ className = "" }) {
   return (
     <div
       role="dialog"
-      aria-label="Install Shadowchaty"
+      aria-label="Install OneSpace Live"
       aria-modal="true"
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
       onClick={() => {
@@ -191,14 +191,14 @@ export default function InstallPWA({ className = "" }) {
       >
       <div className="flex items-start gap-3">
         <img
-          src="/shadowchaty-favicon.jpg"
+          src="/onespace-live-favicon.jpg"
           alt=""
           className="h-12 w-12 shrink-0 rounded-xl border border-white/10 object-cover"
         />
         <div className="min-w-0 flex-1">
-          <p className="text-base font-semibold text-white">Install Shadowchaty</p>
+          <p className="text-base font-semibold text-white">Install OneSpace Live</p>
           <p className="mt-1 text-xs text-slate-300 sm:text-sm">
-            Add Shadowchaty to your home screen for one-tap anonymous chat. No app store needed.
+            Add OneSpace Live to your home screen for one-tap meetings. No app store needed.
           </p>
         </div>
         <button

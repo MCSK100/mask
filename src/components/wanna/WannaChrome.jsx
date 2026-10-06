@@ -9,8 +9,8 @@ export function WannaNavbar() {
   return (
     <div className="wz-main">
       <header className="wz-header">
-        <button className="wz-brand" onClick={() => navigate("/")} aria-label="ShadowMeet home">
-          <span className="wz-logo">ShadowMeet</span>
+        <button className="wz-brand" onClick={() => navigate("/")} aria-label="OneSpace Live home">
+          <span className="wz-logo">OneSpace Live</span>
           <span className="wz-by">by</span>
           <span className="wz-mark"><Video size={18} /></span>
         </button>
@@ -23,30 +23,29 @@ export function WannaNavbar() {
 }
 
 export function WannaFooter() {
-  const navigate = useNavigate()
   return (
     <footer className="wz-footer">
       <div className="wz-fo">
         <div className="col">
-          <button className="wz-logo fl" style={{ color: "#fff" }} onClick={() => navigate("/")}>ShadowMeet</button>
+          <a className="wz-logo fl" style={{ color: "#fff" }} href="/">OneSpace Live</a>
           <span style={{ color: "rgba(255,255,255,.7)" }}>Live meetings for modern teams.</span>
         </div>
         <div className="col">
           <span className="t">Product</span>
-          <button className="fl" onClick={() => navigate("/create")}>Meetings</button>
-          <button className="fl" onClick={() => navigate("/create")}>Classroom</button>
-          <button className="fl" onClick={() => navigate("/create")}>Watch Party</button>
-          <button className="fl" onClick={() => navigate("/blog")}>Blog</button>
+          <a className="fl" href="/create">Meetings</a>
+          <a className="fl" href="/create">Classroom</a>
+          <a className="fl" href="/create">Watch Party</a>
+          <a className="fl" href="/blog">Blog</a>
         </div>
         <div className="col">
           <span className="t">Info</span>
-          <button className="fl" onClick={() => navigate("/privacy")}>Privacy</button>
-          <button className="fl" onClick={() => navigate("/terms")}>Terms</button>
-          <button className="fl" onClick={() => navigate("/about")}>About</button>
-          <a href="mailto:hello@shadowmeet.app">Contact</a>
+          <a className="fl" href="/privacy">Privacy</a>
+          <a className="fl" href="/terms">Terms</a>
+          <a className="fl" href="/about">About</a>
+          <a href="mailto:hello@onespace.live">Contact</a>
         </div>
       </div>
-      <p className="wz-copy">© 2026 ShadowMeet · All Rights Reserved</p>
+      <p className="wz-copy">© 2026 OneSpace Live · All Rights Reserved</p>
     </footer>
   )
 }
@@ -61,7 +60,7 @@ export function WannaShell({ children }) {
   )
 }
 
-export function WannaBadge({ prefix = "ShadowMeet", strong = "no signup" }) {
+export function WannaBadge({ prefix = "OneSpace Live", strong = "no signup" }) {
   return (
     <span className="wz-badge">
       {prefix} <strong>{strong}</strong>

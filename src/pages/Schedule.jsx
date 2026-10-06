@@ -4,6 +4,7 @@ import { Copy, Video, CalendarPlus, Download } from "lucide-react"
 import { roomsApi, meetingsApi } from "../services/api"
 import { googleCalendarUrl, icsContent, downloadIcs } from "../utils/calendar"
 import { WannaShell, WannaBadge } from "../components/wanna/WannaChrome"
+import Seo from "../components/Seo"
 
 export default function Schedule() {
   const { roomId } = useParams()
@@ -31,6 +32,7 @@ export default function Schedule() {
 
   return (
     <WannaShell>
+      <Seo title={`Meeting Card ${code} | OneSpace Live`} description="Private meeting card — share the code to invite people." path={`/schedule/${code}`} noindex />
       <div style={{ maxWidth: "640px", margin: "0 auto", padding: "30px 0 20px" }}>
         <WannaBadge prefix="Scheduled" strong={code} />
         <h1 className="wz-title">Meeting card.</h1>
@@ -48,7 +50,7 @@ export default function Schedule() {
               </div>
               <div style={{ marginTop: "14px", display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
                 <button onClick={() => copy(room.code)} className="wz-link"><Copy size={13} /> Copy code</button>
-                {room.scheduledAt && <button onClick={() => downloadIcs(`shadowmeet-${room.code}.ics`, icsContent({ title: room.title, description: `Join: ${link}`, start: room.scheduledAt, end: new Date(new Date(room.scheduledAt).getTime() + (room.durationMin || 60) * 60000), code: room.code }))} className="wz-link" style={{ color: "#724aee" }}><Download size={13} /> .ics</button>}
+                {room.scheduledAt && <button onClick={() => downloadIcs(`onespace-live-${room.code}.ics`, icsContent({ title: room.title, description: `Join: ${link}`, start: room.scheduledAt, end: new Date(new Date(room.scheduledAt).getTime() + (room.durationMin || 60) * 60000), code: room.code }))} className="wz-link" style={{ color: "#724aee" }}><Download size={13} /> .ics</button>}
                 {room.scheduledAt && <a style={{ color: "#724aee", display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "14px", fontWeight: 500 }} target="_blank" rel="noreferrer" href={googleCalendarUrl({ title: room.title, details: `Join: ${link}`, start: room.scheduledAt, end: new Date(new Date(room.scheduledAt).getTime() + (room.durationMin || 60) * 60000) })}><CalendarPlus size={13} /> Google Calendar</a>}
               </div>
             </div>

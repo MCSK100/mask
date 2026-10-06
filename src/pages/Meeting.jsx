@@ -23,6 +23,7 @@ import { MusicPanel } from "../components/meet/MusicPanel"
 import { ParticipantTile } from "../components/livekit/ParticipantTile"
 import { ParticipantGrid } from "../components/livekit/ParticipantGrid"
 import { WannaShell, WannaBadge } from "../components/wanna/WannaChrome"
+import Seo from "../components/Seo"
 import {
   Mic, MicOff, Video as VideoIcon, VideoOff, LogIn, Lock, Users, UserPlus, Hand, ShieldCheck, PhoneOff, X,
   MonitorUp, RotateCcw, BarChart3, MessageSquare, CircleHelp, Send, ChevronRight,
@@ -392,7 +393,7 @@ export default function Meeting() {
         const blob = new Blob(recChunks.current, { type: "video/webm" })
         const url = URL.createObjectURL(blob)
         const a = document.createElement("a")
-        a.href = url; a.download = `shadowmeet-${code}-local.webm`; a.click()
+        a.href = url; a.download = `onespace-live-${code}-local.webm`; a.click()
         setTimeout(() => URL.revokeObjectURL(url), 5000)
         setToast("Recording saved locally.")
       }
@@ -571,6 +572,7 @@ export default function Meeting() {
   if (lobby) {
     return (
       <WannaShell>
+        <Seo title={`${meta?.title || `Meeting ${code}`} | OneSpace Live`} description="Private meeting lobby — check your camera and mic, then join. No signup needed." path={`/meet/${code}`} noindex />
         <div style={{ maxWidth: "1024px", margin: "0 auto", padding: "30px 0 20px" }}>
           <WannaBadge prefix="Code" strong={`${code}${meta?.hasPassword ? " · locked" : " · open"}`} />
           <h1 className="wz-title">{meta?.title || `Meeting ${code}`}</h1>
@@ -651,6 +653,7 @@ export default function Meeting() {
   if (waiting && !joined) {
     return (
       <WannaShell>
+        <Seo title={`Waiting to Join ${code} | OneSpace Live`} description="Private meeting waiting room." path={`/meet/${code}`} noindex />
         <div style={{ maxWidth: "480px", margin: "40px auto", padding: "10px 0 20px" }}>
           <div className="wz-card" style={{ textAlign: "center", padding: "36px" }}>
             <WannaBadge prefix="Waiting" strong="for host" />
@@ -669,6 +672,7 @@ export default function Meeting() {
   if (ended || lk.error) {
     return (
       <WannaShell>
+        <Seo title="Meeting Ended | OneSpace Live" description="This meeting has ended." path={`/meet/${code}`} noindex />
         <div style={{ maxWidth: "480px", margin: "40px auto", padding: "10px 0 20px" }}>
           <div className="wz-card" style={{ textAlign: "center", padding: "36px" }}>
             <h1 className="wz-title" style={{ textAlign: "center", marginTop: 0 }}>{ended ? "Meeting ended" : "Could not join"}</h1>
@@ -721,6 +725,7 @@ export default function Meeting() {
 
   return (
     <div className="classroom-bg flex h-dvh flex-col overflow-hidden" style={{ position: "relative" }}>
+      <Seo title={`${meta?.title || `Meeting ${code}`} | OneSpace Live`} description="Private live meeting room." path={`/meet/${code}`} noindex />
       <div className="classroom-dots pointer-events-none absolute left-[8%] top-[6%] h-28 w-40 opacity-60" />
       <div className="classroom-dots pointer-events-none absolute bottom-[10%] right-[4%] h-32 w-44 opacity-50" />
       <div className="pointer-events-none absolute -left-24 top-1/3 h-96 w-96 rounded-full bg-white/50 blur-3xl" />
@@ -1000,7 +1005,7 @@ export default function Meeting() {
           {!FEATURES.STREAMING && <p className="mt-2 text-center text-[11px] font-semibold text-[#8AA6B8]">Live streaming is not configured yet.</p>}
         </div>
       )}
-      {invite && <InviteDialog code={code} title={meta?.title || "ShadowMeet"} onClose={() => setInvite(false)} />}
+      {invite && <InviteDialog code={code} title={meta?.title || "OneSpace Live"} onClose={() => setInvite(false)} />}
     </div>
   )
 }

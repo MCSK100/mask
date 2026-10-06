@@ -1,5 +1,5 @@
 /**
- * ShadowMeet feature flags (env-overridable).
+ * OneSpace Live feature flags (env-overridable).
  * VITE_FEATURE_* wins over defaults.
  */
 function envBool(key, fallback) {

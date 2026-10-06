@@ -1,4 +1,4 @@
--- ShadowMeet meetings schema (Supabase / PostgreSQL).
+-- OneSpace Live meetings schema (Supabase / PostgreSQL).
 -- The Express backend currently uses an in-memory store with the same shape;
 -- point DATABASE_URL here and swap the store layer without changing APIs.
 -- Never store raw passwords/secrets: only sha256 hashes (see server/livekit.js).
@@ -7,7 +7,7 @@ create table if not exists meetings (
   id uuid primary key default gen_random_uuid(),
   room_id text unique not null,
   meeting_code text unique not null,
-  title text not null default 'ShadowMeet Room',
+  title text not null default 'OneSpace Live Room',
   room_type text not null default 'meeting'
     check (room_type in ('meeting','classroom','webinar','study','watch')),
   host_id text not null,

@@ -7,7 +7,7 @@ export function InviteDialog({ code, title, onClose }) {
     try { await navigator.clipboard.writeText(t) } catch {}
   }
   const share = async () => {
-    const data = { title: `Join ${title}`, text: `Join "${title}" on ShadowMeet. Code: ${code}`, url: link }
+    const data = { title: `Join ${title}`, text: `Join "${title}" on OneSpace Live. Code: ${code}`, url: link }
     if (navigator.share) { try { await navigator.share(data) } catch {} }
     else copy(link)
   }
@@ -31,7 +31,7 @@ export function InviteDialog({ code, title, onClose }) {
           <button onClick={() => copy(link)} className="flex items-center justify-center gap-1.5 rounded-full bg-[#F0531C] px-3 py-2.5 text-sm font-bold text-white"><Copy size={14} /> Copy Link</button>
           <button onClick={() => copy(code)} className="flex items-center justify-center gap-1.5 rounded-full border-[1.5px] border-[#14202B] px-3 py-2.5 text-sm font-bold"><Copy size={14} /> Copy Code</button>
           <button onClick={share} className="flex items-center justify-center gap-1.5 rounded-full border-[1.5px] border-[#14202b22] bg-[#F1F6FA] px-3 py-2.5 text-sm font-bold"><Share2 size={14} /> Share</button>
-          <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`Join ${title} on ShadowMeet: ${link} (code ${code})`)}`, "_blank")} className="flex items-center justify-center gap-1.5 rounded-full border-[1.5px] border-[#14202b22] bg-[#F1F6FA] px-3 py-2.5 text-sm font-bold"><MessageCircle size={14} /> WhatsApp</button>
+          <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`Join ${title} on OneSpace Live: ${link} (code ${code})`)}`, "_blank")} className="flex items-center justify-center gap-1.5 rounded-full border-[1.5px] border-[#14202b22] bg-[#F1F6FA] px-3 py-2.5 text-sm font-bold"><MessageCircle size={14} /> WhatsApp</button>
         </div>
         <button onClick={onClose} className="mt-3 w-full rounded-full border border-[#14202b22] py-2.5 text-sm font-semibold text-[#4A6173]">Close</button>
       </div>

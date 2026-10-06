@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom"
 import { Home, LogIn } from "lucide-react"
 import { WannaShell } from "../components/wanna/WannaChrome"
+import Seo from "../components/Seo"
 
 export default function NotFound() {
   const navigate = useNavigate()
   return (
     <WannaShell>
+      <Seo title="Page Not Found | OneSpace Live" description="This page doesn't exist. Create or join a OneSpace Live meeting instead." path="/404" noindex />
       <div style={{ display: "grid", placeItems: "center", padding: "60px 24px", textAlign: "center" }}>
         <div className="wz-card" style={{ padding: "44px", maxWidth: "460px" }}>
           <p style={{ fontSize: "64px", fontWeight: 500, letterSpacing: "-2px", margin: 0 }}>404</p>

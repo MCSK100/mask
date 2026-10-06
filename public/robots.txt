@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://shadowchaty.vercel.app/sitemap.xml
+# Private meeting rooms must never be indexed
+Disallow: /meet/
+Disallow: /schedule/
+
+Sitemap: https://onespace-live.vercel.app/sitemap.xml

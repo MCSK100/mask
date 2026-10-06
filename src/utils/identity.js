@@ -1,4 +1,4 @@
-const KEY = "shadowmeet_pid"
+const KEY = "onespace_live_pid"
 
 export function getParticipantId() {
   try {

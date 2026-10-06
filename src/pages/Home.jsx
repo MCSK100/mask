@@ -6,6 +6,7 @@ import {
   Sparkles, GraduationCap, Zap, MessageSquare, Users, Clock, ShieldCheck
 } from "lucide-react"
 import { normalizeCode } from "../utils/meetingCode"
+import Seo from "../components/Seo"
 import "./Home.css"
 
 const TOOLS = [
@@ -187,11 +188,12 @@ export default function Home() {
 
   return (
     <div className="wn-">
+      <Seo path="/" />
       {/* header */}
       <div className="wn-pad"><div className="wn-wrap">
         <header className="wn-header">
           <div className="wn-header-left">
-            <button className="wn-logo" onClick={() => navigate("/")}>ShadowMeet</button>
+            <button className="wn-logo" onClick={() => navigate("/")}>OneSpace Live</button>
             <span className="wn-by">by</span>
             <span className="wn-mark"><Video size={18} /></span>
           </div>
@@ -220,7 +222,7 @@ export default function Home() {
             className="wn-hero-h1"
             initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.08 }}
           >
-            Meetings that start<br />in <em>seconds.</em>
+            Video meetings that start<br />in <em>seconds.</em>
           </motion.h1>
           <motion.p
             className="wn-hero-sub"
@@ -270,7 +272,7 @@ export default function Home() {
               </div>
               <div className="wn-browser-bar" aria-hidden>
                 <span /><span /><span />
-                <em>shadowmeet · live room · 1080p</em>
+                <em>onespace-live · live room · 1080p</em>
               </div>
               <HeroRoom />
             </div>
@@ -512,7 +514,7 @@ export default function Home() {
         <div className="wn-custom">
           <span style={{ width: "90px", height: "90px", borderRadius: "6px", background: "#fff", display: "grid", placeItems: "center", marginBottom: "10px" }}><Users size={40} color="#724aee" /></span>
           <h3 style={{ color: "#fff", fontSize: "32px", fontWeight: 500, margin: "10px 0" }}>Got a team in mind? Let us talk!</h3>
-          <a href="mailto:hello@shadowmeet.app" style={{ color: "#fff", fontSize: "18px" }}>hello@shadowmeet.app</a>
+          <a href="mailto:hello@onespace.live" style={{ color: "#fff", fontSize: "18px" }}>hello@onespace.live</a>
         </div>
       </section>
 
@@ -520,7 +522,7 @@ export default function Home() {
       <footer className="wn-footer">
         <div className="wn-fo">
           <div className="col">
-            <button className="wn-logo" style={{ color: "#fff" }} onClick={() => navigate("/")}>ShadowMeet</button>
+            <button className="wn-logo" style={{ color: "#fff" }} onClick={() => navigate("/")}>OneSpace Live</button>
             <span style={{ color: "rgba(255,255,255,.7)" }}>Live meetings for modern teams.</span>
           </div>
           <div className="col">
@@ -529,10 +531,10 @@ export default function Home() {
           </div>
           <div className="col">
             <span className="t">Info</span>
-            <a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/about">About</a><a href="mailto:hello@shadowmeet.app">Contact</a>
+            <a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/about">About</a><a href="mailto:hello@onespace.live">Contact</a>
           </div>
         </div>
-        <p className="wn-copy">© 2026 ShadowMeet · All Rights Reserved</p>
+        <p className="wn-copy">© 2026 OneSpace Live · All Rights Reserved</p>
       </footer>
     </div>
   )

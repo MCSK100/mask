@@ -21,7 +21,7 @@ export function AuroraMark() {
 function Ruler() {
   return (
     <div className="omd-ruler" aria-hidden>
-      <div className="r-logo"><b />SHADOWMEET</div>
+      <div className="r-logo"><b />ONESPACE LIVE</div>
       <div className="ticks" />
       <div className="r-zoom"><span className="dot" />100% · LIVE</div>
     </div>
@@ -60,7 +60,7 @@ export default function AuroraNavbar() {
         <nav className="pill nav-pill" aria-label="Primary">
           <button onClick={() => navigate("/")} className="nav-link hide-m" style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: 700 }}>
             <AuroraMark />
-            <span>ShadowMeet</span>
+            <span>OneSpace Live</span>
           </button>
           {links.slice(1).map((l) => (
             <button key={l.id} onClick={() => go(l.to)} className="nav-link hide-m">

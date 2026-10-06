@@ -2,7 +2,7 @@ export function googleCalendarUrl({ title, details, start, end }) {
   const fmt = (d) => new Date(d).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
   const params = new URLSearchParams({
     action: "TEMPLATE",
-    text: title || "ShadowMeet",
+    text: title || "OneSpace Live",
     details: details || "",
     dates: `${fmt(start)}/${fmt(end)}`
   })
@@ -11,17 +11,17 @@ export function googleCalendarUrl({ title, details, start, end }) {
 
 export function icsContent({ title, description, start, end, code }) {
   const fmt = (d) => new Date(d).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
-  const uid = `${code || "meet"}@shadowmeet`
+  const uid = `${code || "meet"}@onespace-live`
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//ShadowMeet//EN",
+    "PRODID:-//OneSpace Live//EN",
     "BEGIN:VEVENT",
     `UID:${uid}`,
     `DTSTAMP:${fmt(new Date())}`,
     `DTSTART:${fmt(start)}`,
     `DTEND:${fmt(end)}`,
-    `SUMMARY:${title || "ShadowMeet"}`,
+    `SUMMARY:${title || "OneSpace Live"}`,
     `DESCRIPTION:${(description || "")} Code: ${code || ""}`.slice(0, 200),
     "END:VEVENT",
     "END:VCALENDAR"

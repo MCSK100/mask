@@ -6,6 +6,7 @@ import { roomsApi, meetingsApi } from "../services/api"
 import { setHostToken } from "../utils/identity"
 import { googleCalendarUrl, icsContent, downloadIcs } from "../utils/calendar"
 import { WannaShell, WannaBadge } from "../components/wanna/WannaChrome"
+import Seo from "../components/Seo"
 
 export default function CreateMeeting() {
   const navigate = useNavigate()
@@ -60,6 +61,11 @@ export default function CreateMeeting() {
 
   return (
     <WannaShell>
+      <Seo
+        title="Create a Meeting | OneSpace Live"
+        description="Create a no-signup video meeting room in seconds — with whiteboard, screen share, polls and classroom mode. Free in the browser."
+        path="/create"
+      />
       <div style={{ maxWidth: "880px", margin: "0 auto", padding: "30px 0 20px" }}>
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
           <WannaBadge prefix="No signup" strong="ready in seconds" />
@@ -107,7 +113,7 @@ export default function CreateMeeting() {
               {result.scheduledAt && (
                 <div style={{ marginTop: "10px", display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
                   <a href={googleCalendarUrl({ title: result.title, details: `Join: ${link} Code: ${result.code}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000) })} target="_blank" rel="noreferrer" className="wz-link" style={{ color: "#724aee" }}><CalendarPlus size={14} /> Add to Calendar</a>
-                  <button onClick={() => downloadIcs(`shadowmeet-${result.code}.ics`, icsContent({ title: result.title, description: `Join: ${link}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000), code: result.code }))} className="wz-link" style={{ color: "#724aee" }}>Download .ics</button>
+                  <button onClick={() => downloadIcs(`onespace-live-${result.code}.ics`, icsContent({ title: result.title, description: `Join: ${link}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000), code: result.code }))} className="wz-link" style={{ color: "#724aee" }}>Download .ics</button>
                 </div>
               )}
               <button onClick={() => setResult(null)} className="wz-link" style={{ marginTop: "14px" }}><RotateCcw size={13} /> Create another</button>

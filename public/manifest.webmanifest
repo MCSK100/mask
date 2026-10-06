@@ -1,7 +1,7 @@
 {
   "id": "/",
-  "name": "ShadowMeet — Meet. Teach. Share. Play. Together.",
-  "short_name": "ShadowMeet",
+  "name": "OneSpace Live — Meet. Teach. Share. Play. Together.",
+  "short_name": "OneSpace",
   "description": "No-signup video meetings, classrooms, whiteboard, watch parties and polls — right in the browser.",
   "start_url": "/?source=pwa",
   "scope": "/",
@@ -16,19 +16,19 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/shadowchaty-logo.png",
+      "src": "/onespace-live-logo.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/shadowchaty-logo.png",
+      "src": "/onespace-live-logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/shadowchaty-logo.png",
+      "src": "/onespace-live-logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -38,16 +38,16 @@
     {
       "name": "Create Meeting",
       "short_name": "Create",
-      "description": "Create a ShadowMeet room instantly",
+      "description": "Create a OneSpace Live room instantly",
       "url": "/create?source=shortcut",
-      "icons": [{ "src": "/shadowchaty-logo.png", "sizes": "96x96", "type": "image/png" }]
+      "icons": [{ "src": "/onespace-live-logo.png", "sizes": "96x96", "type": "image/png" }]
     },
     {
       "name": "Join Meeting",
       "short_name": "Join",
       "description": "Join with a meeting code",
       "url": "/join?source=shortcut",
-      "icons": [{ "src": "/shadowchaty-logo.png", "sizes": "96x96", "type": "image/png" }]
+      "icons": [{ "src": "/onespace-live-logo.png", "sizes": "96x96", "type": "image/png" }]
     }
   ]
 }
