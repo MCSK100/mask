@@ -331,3 +331,33 @@
   .wn-deck-panel.ctrl { grid-column: 1 / -1; }
   .wn-chipf.c1, .wn-chipf.c2, .wn-chipf.c3 { display: none; }
 }
+
+/* ===== floating 3D persons — desktop-only decor merged into template ===== */
+.toon-float { display: none; }
+.toon-bob { animation: toon-bob 5.5s ease-in-out infinite; }
+@keyframes toon-bob { 0%,100% { margin-top: 0; } 50% { margin-top: -14px; } }
+@media (min-width: 992px) {
+  .toon-float { display: block; }
+}
+
+/* ===== ambient background upgrades (same tokens, no layout change) ===== */
+.wn-glow-blob { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 0; }
+.wn-purple { position: relative; }
+.wn-purple::before {
+  content: ""; position: absolute; top: -230px; left: 50%; transform: translateX(-50%);
+  width: 920px; height: 460px; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(255,255,255,.20), transparent 70%);
+  filter: blur(30px);
+}
+.wn-purple .wn-wrap { position: relative; z-index: 1; }
+.wn-cta-sec { position: relative; overflow: hidden; }
+.wn-cta-sec::before {
+  content: ""; position: absolute; top: -230px; left: 50%; transform: translateX(-50%);
+  width: 920px; height: 460px; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(255,255,255,.20), transparent 70%);
+  filter: blur(30px);
+}
+.wn-cta-sec > * { position: relative; z-index: 1; }
+.wn-preview-sec { position: relative; overflow: clip; }
+.wn-cell { transition: transform .18s ease, box-shadow .18s ease; }
+.wn-cell:hover { transform: translate(-2px, -3px); box-shadow: 6px 9px 0 #000; }
