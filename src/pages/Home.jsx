@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import {
   Video, MonitorUp, PenTool, Play, BarChart3, Lock, ArrowRight, Check,
-  Sparkles, GraduationCap, Zap, MessageSquare, Users, Clock, ShieldCheck
+  Sparkles, Zap, Users, Clock, ShieldCheck
 } from "lucide-react"
 import { normalizeCode } from "../utils/meetingCode"
 import Seo from "../components/Seo"
@@ -19,11 +19,98 @@ const TOOLS = [
   { name: "Private Rooms", icon: Lock, tag: "Codes, locks and host controls.", stat: "private · by design" },
 ]
 
-const SLIDES = [
-  { n: "1. Instant Join", cls: "orange", title: "No accounts, no downloads — share a code and you are in.", bg: "#FFF3E8" },
-  { n: "2. Live Collaboration", cls: "blue", title: "Video, whiteboard, chat and polls in one fast room.", bg: "#ECE9FF" },
-  { n: "3. Classroom Mode", cls: "green", title: "Teach with a stage, raise hands and quiz the class.", bg: "#E4FAF4" },
+const MODES = [
+  {
+    n: "01", title: "Instant meetings",
+    copy: "No accounts, no downloads — share a code and the whole team is in within seconds.",
+    bg: "#FFF3E8", accent: "#F4845F", toon: "/toons/toon-1.webp",
+    chips: ["3-second join", "No download", "Host controls"],
+    tags: ["1080p · adaptive", "4 here"], cta: "Create a room", to: "/create",
+  },
+  {
+    n: "02", title: "Live classrooms",
+    copy: "Teach on a stage with hand raises, live polls and a shared whiteboard.",
+    bg: "#E4FAF4", accent: "#6BBF7A", toon: "/toons/toon-2.webp",
+    chips: ["Stage + strip", "Raise hand", "Quizzes"],
+    tags: ["HANDS UP · 2", "Polls · live"], cta: "Teach now", to: "/create",
+  },
+  {
+    n: "03", title: "Watch parties",
+    copy: "Press play at the same time — YouTube in sync, with chat and reactions on the side.",
+    bg: "#FDEDF6", accent: "#E882B4", toon: "/toons/toon-3.webp",
+    chips: ["YouTube in sync", "Live chat", "Reactions"],
+    tags: ["IN SYNC", "Chat · live"], cta: "Start watching", to: "/create",
+  },
 ]
+
+const BENTO = [
+  { tool: 0, span: "span-big", visual: "tiles", bg: "#f5f2ff" },
+  { tool: 3, span: "span-wide", visual: "watch", bg: "#FFF3E8" },
+  { tool: 2, span: "span-std", visual: "board", bg: "#E4FAF4" },
+  { tool: 4, span: "span-std", visual: "polls", bg: "#ECE9FF" },
+  { tool: 1, span: "span-wide", visual: "share", bg: "#FFF3E8" },
+  { tool: 5, span: "span-wide", visual: "lock", bg: "#f5f2ff" },
+]
+
+const RIBBON = ["NO SIGNUP", "FREE TO START", "1080P VIDEO", "WHITEBOARD", "LIVE POLLS", "WATCH PARTY", "3-SECOND JOIN", "PRIVATE BY DESIGN"]
+
+function BentoVisual({ kind }) {
+  if (kind === "tiles") {
+    const tiles = [
+      { n: "A", c: "linear-gradient(135deg,#724aee,#2a166e)" },
+      { n: "M", c: "linear-gradient(135deg,#ff8655,#b34a1f)" },
+      { n: "J", c: "linear-gradient(135deg,#1c3a5a,#0a1626)" },
+      { n: "Z", c: "linear-gradient(135deg,#12b899,#0a4a40)" },
+    ]
+    return (
+      <div className="mini-tiles">
+        {tiles.map((t) => (
+          <div key={t.n} className="mini-tile" style={{ background: t.c }}><span>{t.n}</span></div>
+        ))}
+        <span className="mini-live">LIVE</span>
+      </div>
+    )
+  }
+  if (kind === "watch") {
+    return (
+      <div className="mini-watch">
+        <span className="mini-play" aria-hidden><i /></span>
+        <div className="mini-progress"><i style={{ width: "62%" }} /></div>
+        <p>02:14 · In sync</p>
+      </div>
+    )
+  }
+  if (kind === "board") {
+    return (
+      <div className="mini-board">
+        <svg viewBox="0 0 200 120"><path d="M10 100 Q 60 10 100 60 T 190 50" stroke="#724aee" strokeWidth="6" fill="none" strokeLinecap="round" /><circle cx="150" cy="35" r="14" stroke="#ff8655" fill="none" strokeWidth="6" /></svg>
+      </div>
+    )
+  }
+  if (kind === "polls") {
+    return (
+      <div className="mini-polls">
+        {[["A", "78%"], ["B", "45%"], ["C", "62%"]].map(([o, w]) => (
+          <div key={o} className="mini-poll-row"><span>{o}</span><div className="mini-poll-bar"><i style={{ width: w }} /></div></div>
+        ))}
+      </div>
+    )
+  }
+  if (kind === "share") {
+    return (
+      <div className="mini-share">
+        <div className="mini-browser"><i /><i /><i /><em>mia-s-screen · 1080p</em></div>
+        <div className="mini-screen"><MonitorUp size={30} color="#724aee" /></div>
+      </div>
+    )
+  }
+  return (
+    <div className="mini-lock">
+      <span className="mini-lock-icon"><Lock size={26} color="#fff" /></span>
+      <p className="mini-code">RX82KP</p>
+    </div>
+  )
+}
 
 function HeroRoom() {
   const tiles = [
@@ -74,30 +161,9 @@ function HeroRoom() {
   )
 }
 
-function ToolVisual({ tool }) {
-  const Icon = tool.icon
-  return (
-    <div className="wn-pose-card">
-      <div style={{ background: "#fff", borderRadius: "10px", padding: "34px", boxShadow: "0 24px 60px -20px rgba(0,0,0,.35)", border: "2px solid #000" }}>
-        <div style={{ width: "56px", height: "56px", borderRadius: "8px", background: "#724aee", display: "grid", placeItems: "center", color: "#fff" }}>
-          <Icon size={26} />
-        </div>
-        <h3 style={{ fontSize: "38px", fontWeight: 500, letterSpacing: "-1px", margin: "18px 0 6px", color: "#000" }}>{tool.name}</h3>
-        <p style={{ fontSize: "17px", color: "rgba(0,0,0,.6)", margin: 0 }}>{tool.tag}</p>
-        <p style={{ display: "inline-block", marginTop: "16px", background: "#f5f2ff", color: "#7251eb", borderRadius: "6px", padding: "8px 18px", fontSize: "14px", fontWeight: 500 }}>{tool.stat}</p>
-      </div>
-    </div>
-  )
-}
-
 export default function Home() {
   const navigate = useNavigate()
   const [code, setCode] = useState("")
-  const [activeTool, setActiveTool] = useState(0)
-  const toolListRef = useRef(null)
-  const slideSecRef = useRef(null)
-  const slideTrackRef = useRef(null)
-  const slideBarRef = useRef(null)
   const heroSecRef = useRef(null)
   const heroTiltRef = useRef(null)
 
@@ -106,41 +172,6 @@ export default function Home() {
     const c = normalizeCode(code)
     if (c) navigate(`/meet/${c}`)
   }
-
-  // poses-style scroll spy
-  useEffect(() => {
-    const el = toolListRef.current
-    if (!el) return
-    const onScroll = () => {
-      const items = el.querySelectorAll("[data-tool]")
-      let best = 0
-      let bestDist = Infinity
-      items.forEach((it, i) => {
-        const d = Math.abs(it.offsetTop - el.scrollTop - 200)
-        if (d < bestDist) { bestDist = d; best = i }
-      })
-      setActiveTool(best)
-    }
-    el.addEventListener("scroll", onScroll, { passive: true })
-    return () => el.removeEventListener("scroll", onScroll)
-  }, [])
-
-  // sticky horizontal slider progress
-  useEffect(() => {
-    const onScroll = () => {
-      const sec = slideSecRef.current
-      const track = slideTrackRef.current
-      if (!sec || !track) return
-      const rect = sec.getBoundingClientRect()
-      const total = sec.offsetHeight - window.innerHeight
-      const p = Math.min(Math.max(-rect.top / total, 0), 1)
-      track.style.transform = `translateX(${-p * 200}vw)`
-      if (slideBarRef.current) slideBarRef.current.style.transform = `scaleX(${p})`
-    }
-    window.addEventListener("scroll", onScroll, { passive: true })
-    onScroll()
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
 
   // cinematic hero: 3D tilt + scroll parallax + depth layers
   useEffect(() => {
@@ -179,13 +210,6 @@ export default function Home() {
       cancelAnimationFrame(raf)
     }
   }, [])
-
-  const pickTool = (i) => {
-    const el = toolListRef.current
-    const item = el?.querySelectorAll("[data-tool]")?.[i]
-    if (item) el.scrollTo({ top: item.offsetTop - 220, behavior: "smooth" })
-    else setActiveTool(i)
-  }
 
   return (
     <div className="wn-">
@@ -281,217 +305,137 @@ export default function Home() {
         </section>
       </div></div>
 
-      {/* tools / poses */}
-      <section style={{ marginTop: "40px", position: "relative", overflow: "clip" }}>
-        <div className="wn-glow-blob" aria-hidden style={{ width: "560px", height: "560px", left: "50%", top: "-160px", transform: "translateX(-50%)", background: "radial-gradient(closest-side, rgba(228,223,255,.9), transparent 70%)" }} />
-        <div className="wn-pad"><div className="wn-wrap" style={{ display: "flex", justifyContent: "center", position: "relative", zIndex: 1 }}>
-          <div style={{ maxWidth: "600px", textAlign: "center" }}>
-            <h2 className="wn-title center">Everything happens in one room</h2>
-            <p className="wn-sub">Six live tools — scroll to preview each one in action.</p>
-          </div>
-        </div></div>
-        <div className="wn-poses">
-          <div className="wn-poses-l">
-            <ToonFloat active={activeTool} height={300} speed={0.05} style={{ right: "1%", bottom: "-26px", zIndex: 0 }} />
-            <span className="wn-pose-num">0{activeTool + 1}.</span>
-            <motion.div
-              key={activeTool}
-              className="wn-pose-motion"
-              initial={{ opacity: 0, x: 60, rotateY: -12 }}
-              animate={{ opacity: 1, x: 0, rotateY: 0 }}
-              transition={{ duration: 0.45, ease: "easeOut" }}
-            >
-              <ToolVisual tool={TOOLS[activeTool]} />
-            </motion.div>
-          </div>
-          <div className="wn-poses-r">
-            <div className="wn-selector" aria-hidden>
-              <div className="wn-fade top" />
-              <div className="wn-pill">{TOOLS[activeTool].name}</div>
-              <div className="wn-fade btm" />
-            </div>
-            <div className="wn-tool-scroll" ref={toolListRef}>
-              <div style={{ height: "240px" }} />
-              {TOOLS.map((t, i) => (
-                <button key={t.name} data-tool className="wn-tool-name" onClick={() => pickTool(i)} style={{ opacity: i === activeTool ? 1 : 0.35, display: "block" }}>
-                  {t.name}
-                </button>
+      {/* marquee ribbon */}
+      <div className="marquee" aria-hidden>
+        <div className="marquee-track">
+          {[0, 1].map((k) => (
+            <div key={k} className="marquee-chunk">
+              {RIBBON.map((w) => (
+                <span key={`${k}-${w}`} className="marquee-item">{w}<i>✦</i></span>
               ))}
-              <div style={{ height: "240px" }} />
             </div>
-          </div>
+          ))}
         </div>
-        <div className="wn-pad wn-mtools"><div className="wn-wrap" style={{ display: "grid", gap: "16px", paddingBottom: "80px" }}>
-          {TOOLS.map((t) => {
-            const Icon = t.icon
-            return (
-              <div key={t.name} style={{ border: "2px solid #000", borderRadius: "10px", padding: "24px", display: "flex", gap: "16px", alignItems: "center" }}>
-                <span style={{ width: "48px", height: "48px", borderRadius: "8px", background: "#724aee", display: "grid", placeItems: "center", color: "#fff", flex: "none" }}><Icon size={22} /></span>
-                <span><strong style={{ fontSize: "20px", fontWeight: 500 }}>{t.name}</strong><br /><span style={{ color: "rgba(0,0,0,.55)" }}>{t.tag}</span></span>
-              </div>
-            )
-          })}
-        </div></div>
-      </section>
+      </div>
 
-      {/* purple features */}
-      <section className="wn-purple">
-        <ToonFloat active={2} height={170} speed={0.1} style={{ left: "2%", top: "110px" }} />
-        <ToonFloat active={3} height={195} speed={-0.08} style={{ right: "2.5%", bottom: "70px" }} />
-        <div className="wn-wrap">
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <h2 className="wn-title center white" style={{ maxWidth: "620px" }}>One room. Beautiful and instant.</h2>
-          </div>
-          <div className="wn-stage">
-            <div style={{ background: "#fff", borderRadius: "6px", padding: "26px", width: "min(880px, 92vw)", position: "relative", zIndex: 1 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
-                <span style={{ background: "#000", color: "#fff", borderRadius: "6px", padding: "6px 14px", fontSize: "13px" }}>Algebra 101</span>
-                <span style={{ background: "#E8382F", color: "#fff", borderRadius: "8px", padding: "4px 10px", fontSize: "12px", fontWeight: 700 }}>LIVE</span>
-                <span style={{ marginLeft: "auto", display: "flex", gap: "8px", alignItems: "center", color: "rgba(0,0,0,.5)", fontSize: "13px" }}><Clock size={14} /> 00:42:18 <Users size={14} /> 6 here</span>
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "12px" }}>
-                <div style={{ borderRadius: "8px", background: "linear-gradient(135deg,#2B4A6B,#16283A)", minHeight: "240px", display: "grid", placeItems: "center", color: "#fff", fontSize: "60px", fontWeight: 300 }}>A</div>
-                <div style={{ borderRadius: "8px", background: "#f5f2ff", padding: "20px", minHeight: "240px" }}>
-                  <p style={{ fontWeight: 500, margin: "0 0 8px" }}>Whiteboard</p>
-                  <svg viewBox="0 0 200 120" style={{ width: "100%", height: "150px" }}><path d="M10 100 Q 60 10 100 60 T 190 50" stroke="#724aee" strokeWidth="5" fill="none" strokeLinecap="round" /><circle cx="150" cy="35" r="14" stroke="#ff8655" fill="none" strokeWidth="5" /></svg>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="wn-curve" aria-hidden />
-          <p className="wn-sub white">One fast room for the whole class. Here are a few features of the crew:</p>
-          <div className="wn-feats">
-            <motion.div className="wn-feat-1" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.5 }}>
-              <div style={{ display: "flex", gap: "10px" }}>
-                <span style={{ width: "52px", height: "52px", borderRadius: "8px", background: "#724aee", display: "grid", placeItems: "center", color: "#fff" }}><Zap size={24} /></span>
-                <span style={{ width: "52px", height: "52px", borderRadius: "8px", background: "#fff", display: "grid", placeItems: "center", color: "#724aee" }}><ShieldCheck size={24} /></span>
-              </div>
-              <div style={{ marginTop: "60px" }}>
-                <h4 className="wn-h4">High attention to detail.</h4>
-                <p className="wn-small">Just have a look at this stage!</p>
-              </div>
-            </motion.div>
-            <motion.div className="wn-feat-2" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.5, delay: 0.1 }}>
-              <div style={{ display: "flex", gap: "12px" }}>
-                {["A", "M", "J"].map((c) => (
-                  <span key={c} style={{ width: "52px", height: "52px", borderRadius: "6px", background: "#000", color: "#fff", display: "grid", placeItems: "center", fontSize: "20px" }}>{c}</span>
-                ))}
-              </div>
-              <div style={{ marginTop: "60px" }}>
-                <h4 className="wn-h4">Separate tracks.</h4>
-                <p className="wn-small">Turn camera or mic on or off — either way it looks great!</p>
-              </div>
-            </motion.div>
-          </div>
-          <motion.div className="wn-feat-wide" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.5 }}>
-            <div className="txt">
-              <h3>Adaptive quality with LiveKit, satisfying for every network.</h3>
-              <p className="wn-small-2" style={{ marginTop: "30px" }}>The room is like an eyeball magnet!</p>
-            </div>
-            <div className="vis">
-              <div style={{ background: "#fff", borderRadius: "10px 10px 0 0", padding: "24px", display: "flex", gap: "10px", alignItems: "center" }}>
-                <MessageSquare size={20} color="#724aee" />
-                <span style={{ fontWeight: 500 }}>Chat is live. Say hello to the class.</span>
-              </div>
-              <div style={{ background: "#e4dfff", borderRadius: "0 0 10px 10px", padding: "24px", display: "flex", gap: "10px" }}>
-                <span style={{ background: "#724aee", color: "#fff", borderRadius: "6px", padding: "8px 18px", fontSize: "14px" }}>Polls</span>
-                <span style={{ background: "#fff", color: "#000", borderRadius: "6px", padding: "8px 18px", fontSize: "14px" }}>Raise hand</span>
-                <span style={{ background: "#000", color: "#fff", borderRadius: "6px", padding: "8px 18px", fontSize: "14px" }}>Record</span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* sticky slider */}
-      <section>
-        <div className="wn-pad"><div className="wn-wrap" style={{ display: "flex", justifyContent: "center", marginTop: "120px" }}>
-          <h2 className="wn-title center">From hello to done in three steps</h2>
+      {/* modes — sticky stacking cards with 3D crew */}
+      <section className="wn-modes">
+        <div className="wn-pad"><div className="wn-wrap modes-head">
+          <p className="wn-eyebrow-tag">PICK YOUR ROOM</p>
+          <h2 className="wn-title center">One link.<br />Three ways to meet.</h2>
+          <p className="wn-sub">Scroll — each room stacks in with its own crew and toolkit.</p>
         </div></div>
-        <div className="wn-hscroll" ref={slideSecRef}>
-          <div className="wn-hsticky">
-            <div className="wn-htrack" ref={slideTrackRef}>
-              {SLIDES.map((s) => (
-                <div className="wn-slide" key={s.n}>
-                  <div className="wn-slide-title">
-                    <p className={`wn-slide-tag ${s.cls}`}>{s.n}</p>
-                    <h4 className="wn-h4">{s.title}</h4>
+        <div className="wn-pad"><div className="wn-wrap">
+          <div className="stack">
+            {MODES.map((m, i) => (
+              <div key={m.n} className="stack-item" style={{ top: `${92 + i * 30}px`, zIndex: i + 1 }}>
+                <motion.article
+                  className="stack-card"
+                  style={{ background: m.bg }}
+                  initial={{ opacity: 0, y: 80 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.55, ease: "easeOut" }}
+                >
+                  <div className="stack-text">
+                    <p className="stack-num">{m.n}</p>
+                    <h3 className="stack-title">{m.title}</h3>
+                    <p className="stack-copy">{m.copy}</p>
+                    <div className="stack-chips">
+                      {m.chips.map((c) => (<span key={c} className="stack-chip">{c}</span>))}
+                    </div>
+                    <button className="wn-btn" onClick={() => navigate(m.to)}><span>{m.cta}</span><ArrowRight size={18} color="#fff" /></button>
                   </div>
-                  <div className="wn-slide-vis">
-                    <div style={{ background: s.bg, borderRadius: "6px", padding: "48px", minHeight: "340px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <span style={{ background: "#fff", borderRadius: "10px", padding: "26px 34px", fontSize: "20px", fontWeight: 500, boxShadow: "0 20px 50px -20px rgba(0,0,0,.25)" }}>{s.n}</span>
+                  <div className="stack-visual" style={{ background: m.accent }}>
+                    <img src={m.toon} alt="" aria-hidden draggable={false} className="stack-toon" loading="lazy" />
+                    <div className="stack-tags" aria-hidden>
+                      {m.tags.map((t, ti) => (<span key={t} className={`stack-tag t${ti}`}>{t}</span>))}
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-            <div className="wn-progress" aria-hidden><span ref={slideBarRef} /></div>
+                </motion.article>
+              </div>
+            ))}
           </div>
+        </div></div>
+      </section>
+
+      {/* dark immersive band */}
+      <section className="wn-dark">
+        <ToonFloat active={0} height={260} speed={0.1} style={{ left: "3%", bottom: "30px" }} />
+        <ToonFloat active={3} height={300} speed={-0.09} style={{ right: "3%", top: "50px" }} />
+        <div className="wn-orb orb-a" aria-hidden />
+        <div className="wn-orb orb-b" aria-hidden />
+        <div className="wn-wrap dark-inner">
+          <motion.p
+            className="dark-eyebrow"
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.5 }} transition={{ duration: 0.45 }}
+          >
+            WHY ONESPACE LIVE
+          </motion.p>
+          <motion.h2
+            className="dark-giant"
+            initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.6 }}
+          >
+            One room.<br /><span className="outline">Every mode.</span>
+          </motion.h2>
+          <div className="dark-stats">
+            {[
+              ["3s", "to join — no signup, no download"],
+              ["1080p", "adaptive video on any network"],
+              ["50", "seats in every live room"],
+            ].map(([v, l], i) => (
+              <motion.div
+                key={l} className="dark-stat"
+                initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.45, delay: i * 0.1 }}
+              >
+                <p className="v">{v}</p>
+                <p className="l">{l}</p>
+              </motion.div>
+            ))}
+          </div>
+          <button className="wn-btn big light" onClick={() => navigate("/create")}><span>Start free</span><ArrowRight size={18} color="#724aee" /></button>
         </div>
       </section>
 
-      {/* showcase */}
-      <section className="wn-purple">
-        <ToonFloat active={1} height={205} speed={0.09} style={{ right: "3%", top: "170px" }} />
-        <div className="wn-wrap">
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <h2 className="wn-title center white" style={{ maxWidth: "620px" }}>Created specifically for meetings, classes and watch parties</h2>
-          </div>
-          <div className="wn-cases-1">
-            <div className="wn-shot" style={{ background: "#fff", padding: "22px", width: "240px" }}>
-              <p style={{ fontWeight: 500, margin: "0 0 10px" }}>Breakout Rooms</p>
-              {["Room 1", "Room 2", "Room 3"].map((r) => (
-                <p key={r} style={{ background: "#f5f2ff", borderRadius: "6px", padding: "8px 12px", fontSize: "13px", margin: "0 0 6px" }}>{r}</p>
-              ))}
-            </div>
-            <div className="wn-shot" style={{ background: "#fff", padding: "22px", flex: 1, maxWidth: "640px" }}>
-              <p style={{ fontWeight: 500, margin: "0 0 10px" }}>Attendance · 6 present</p>
-              <div style={{ display: "flex", gap: "8px" }}>{["A", "M", "J", "E", "+2"].map((c) => (
-                <span key={c} style={{ width: "44px", height: "44px", borderRadius: "6px", background: "#724aee", color: "#fff", display: "grid", placeItems: "center" }}>{c}</span>
-              ))}</div>
-            </div>
-          </div>
-          <div className="wn-cases-2">
-            <div className="wn-shot" style={{ background: "#fff", padding: "22px", width: "300px" }}>
-              <p style={{ fontWeight: 500, margin: "0 0 10px" }}>Raise Hand</p>
-              {["Daniel", "Aisha"].map((n) => (
-                <p key={n} style={{ background: "#f5f2ff", borderRadius: "6px", padding: "8px 12px", fontSize: "13px", margin: "0 0 6px" }}>{n}</p>
-              ))}
-            </div>
-            <div className="wn-shot" style={{ background: "#fff", padding: "22px", flex: 1, maxWidth: "560px" }}>
-              <p style={{ fontWeight: 500, margin: "0 0 10px" }}>Chat · Q&A · People</p>
-              <p style={{ background: "#f5f2ff", borderRadius: "6px", padding: "10px 14px", fontSize: "14px" }}>Sarah: That makes sense!</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* preview grid */}
-      <section className="wn-preview-sec">
+      {/* bento toolkit */}
+      <section className="wn-bento-sec">
         <div className="wn-glow-blob" aria-hidden style={{ width: "520px", height: "520px", left: "-140px", top: "120px", background: "radial-gradient(closest-side, rgba(255,243,232,.95), transparent 70%)" }} />
         <div className="wn-glow-blob" aria-hidden style={{ width: "620px", height: "620px", right: "-180px", top: "420px", background: "radial-gradient(closest-side, rgba(228,250,244,.95), transparent 70%)" }} />
-        <div className="wn-wrap" style={{ position: "relative" }}>
+        <div className="wn-pad"><div className="wn-wrap" style={{ position: "relative" }}>
           <div style={{ textAlign: "center" }}>
-            <p className="wn-sub" style={{ margin: 0 }}>Full Preview</p>
-            <h2 className="wn-title center" style={{ fontSize: "90px", letterSpacing: "-4px", marginTop: "10px" }}>Every tool, one click away</h2>
+            <p className="wn-eyebrow-tag">THE TOOLKIT</p>
+            <h2 className="wn-title center">Six tools. Zero downloads.</h2>
+            <p className="wn-sub">Everything lives inside the room — hover a card to feel the depth.</p>
           </div>
-          <div className="wn-grid">
-            {[...TOOLS, { name: "Classroom Mode", icon: GraduationCap, tag: "Stage, strip and teacher controls.", stat: "teach · live" }, { name: "No Signup", icon: Zap, tag: "Join in 3 seconds flat.", stat: "free · instant" }].map((t, i) => {
+          <div className="wn-bento">
+            {BENTO.map((b, i) => {
+              const t = TOOLS[b.tool]
               const Icon = t.icon
-              const bgs = ["#f5f2ff", "#FFF3E8", "#E4FAF4", "#ECE9FF"]
               return (
-                <motion.div key={t.name} className="wn-cell" style={{ background: bgs[i % 4] }}
-                  initial={{ opacity: 0, scale: 0.9, rotate: i % 2 ? -2 : 2 }} whileInView={{ opacity: 1, scale: 1, rotate: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.45, delay: (i % 4) * 0.06 }}>
-                  <span style={{ width: "48px", height: "48px", borderRadius: "8px", background: "#000", display: "grid", placeItems: "center", color: "#fff" }}><Icon size={22} /></span>
-                  <span><p className="t">{t.name}</p><p className="d">{t.tag}</p></span>
-                </motion.div>
+                <motion.article
+                  key={t.name}
+                  className={`bento-cell ${b.span}`}
+                  style={{ background: b.bg }}
+                  initial={{ opacity: 0, y: 44 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.5, delay: (i % 4) * 0.07 }}
+                >
+                  <div className="bento-top">
+                    <span className="bento-icon"><Icon size={22} /></span>
+                    <p className="bento-stat">{t.stat}</p>
+                  </div>
+                  <div className="bento-vis"><BentoVisual kind={b.visual} /></div>
+                  <h3 className="bento-name">{t.name}</h3>
+                  <p className="bento-tag">{t.tag}</p>
+                </motion.article>
               )
             })}
           </div>
           <div className="wn-more">
             <button className="wn-btn big" onClick={() => navigate("/create")}><span>Start a meeting</span><ArrowRight size={18} color="#fff" /></button>
           </div>
-        </div>
+        </div></div>
       </section>
 
       {/* cta */}

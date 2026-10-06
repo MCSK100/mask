@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react"
 
 const TOON_IMAGES = [
-  { src: "https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/1.02464a56.png", bg: "#F4845F", label: "Live Video" },
-  { src: "https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/2.b977faab.png", bg: "#6BBF7A", label: "Classroom" },
-  { src: "https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/3.4df853b4.png", bg: "#E882B4", label: "Watch Party" },
-  { src: "https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/4.4457fbce.png", bg: "#6EB5FF", label: "Whiteboard" },
+  { src: "/toons/toon-1.webp", bg: "#F4845F", label: "Live Video" },
+  { src: "/toons/toon-2.webp", bg: "#6BBF7A", label: "Classroom" },
+  { src: "/toons/toon-3.webp", bg: "#E882B4", label: "Watch Party" },
+  { src: "/toons/toon-4.webp", bg: "#6EB5FF", label: "Whiteboard" },
 ]
 
 function preloadToons() {
