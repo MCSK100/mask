@@ -7,6 +7,7 @@ import {
 } from "lucide-react"
 import { normalizeCode } from "../utils/meetingCode"
 import Seo from "../components/Seo"
+import ToonHero from "../components/ToonHero"
 import "./Home.css"
 
 const TOOLS = [
@@ -23,55 +24,6 @@ const SLIDES = [
   { n: "2. Live Collaboration", cls: "blue", title: "Video, whiteboard, chat and polls in one fast room.", bg: "#ECE9FF" },
   { n: "3. Classroom Mode", cls: "green", title: "Teach with a stage, raise hands and quiz the class.", bg: "#E4FAF4" },
 ]
-
-function HeroRoom() {
-  const tiles = [
-    { n: "Aarav · Host", c: "linear-gradient(135deg,#724aee,#2a166e)", you: true },
-    { n: "Mia", c: "linear-gradient(135deg,#724aee,#2a166e)" },
-    { n: "Leo", c: "linear-gradient(135deg,#1c3a5a,#0a1626)" },
-    { n: "Zara", c: "linear-gradient(135deg,#12b899,#0a4a40)" },
-  ]
-  return (
-    <div className="wn-deck">
-      <div className="wn-deck-stack" aria-hidden />
-      <div className="wn-deck-top">
-        <span className="wn-deck-dots"><i /><i /><i /></span>
-        <span className="wn-deck-title">React Beginners · RX82KP</span>
-        <span className="wn-deck-live">LIVE</span>
-        <span className="wn-deck-count">4 here</span>
-      </div>
-      <div className="wn-deck-main">
-        {tiles.map((t) => (
-          <div key={t.n} className={`wn-tile ${t.you ? "you" : ""}`} style={{ background: t.c }}>
-            <span className="wn-tile-scan" aria-hidden />
-            <span className="wn-tile-initial">{t.n.slice(0, 1)}</span>
-            <span className="wn-tile-tag">{t.n}{t.you ? " · YOU" : ""}</span>
-            <span className={`wn-tile-mic ${t.you ? "on" : ""}`} aria-hidden />
-          </div>
-        ))}
-      </div>
-      <div className="wn-deck-bottom">
-        <div className="wn-deck-panel board">
-          <p>Whiteboard · Live</p>
-          <svg viewBox="0 0 200 60"><path d="M5 50 Q 40 5 70 30 T 130 25 T 195 40" stroke="#724aee" strokeWidth="4" fill="none" strokeLinecap="square" /><rect x="142" y="10" width="16" height="16" stroke="#ff8655" fill="none" strokeWidth="4" /></svg>
-        </div>
-        <div className="wn-deck-panel chat">
-          <p className="h">Chat</p>
-          <p className="m"><strong>Mia:</strong> All clear</p>
-          <p className="m"><strong>Leo:</strong> +1</p>
-        </div>
-        <div className="wn-deck-panel ctrl">
-          <p className="h">Controls</p>
-          <div className="wn-ctrl-row">
-            <span className="k on">MIC</span>
-            <span className="k on">CAM</span>
-            <span className="k">SHARE</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
 
 function ToolVisual({ tool }) {
   const Icon = tool.icon
@@ -97,8 +49,6 @@ export default function Home() {
   const slideSecRef = useRef(null)
   const slideTrackRef = useRef(null)
   const slideBarRef = useRef(null)
-  const heroSecRef = useRef(null)
-  const heroTiltRef = useRef(null)
 
   const quickJoin = (e) => {
     e?.preventDefault()
@@ -141,44 +91,6 @@ export default function Home() {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  // cinematic hero: 3D tilt + scroll parallax + depth layers
-  useEffect(() => {
-    const sec = heroSecRef.current
-    const tilt = heroTiltRef.current
-    if (!sec || !tilt) return
-    let raf = 0
-    let tx = 0, ty = 0
-    const render = () => {
-      raf = 0
-      const y = window.scrollY
-      tilt.style.transform = `translateY(${y * 0.06}px) rotateX(${ty}deg) rotateY(${tx}deg)`
-      sec.querySelectorAll("[data-depth]").forEach((el) => {
-        const d = Number(el.dataset.depth) || 16
-        el.style.translate = `${tx * d * 0.6}px ${y * 0.02 * (d / 16) + ty * d * 0.6}px`
-      })
-      sec.querySelectorAll("[data-speed]").forEach((el) => {
-        el.style.translate = `0px ${y * Number(el.dataset.speed || 0.1)}px`
-      })
-    }
-    const onMove = (e) => {
-      const r = sec.getBoundingClientRect()
-      tx = (((e.clientX - r.left) / r.width) - 0.5) * 10
-      ty = -(((e.clientY - r.top) / r.height) - 0.5) * 8
-      if (!raf) raf = requestAnimationFrame(render)
-    }
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(render) }
-    const onLeave = () => { tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(render) }
-    sec.addEventListener("mousemove", onMove)
-    sec.addEventListener("mouseleave", onLeave)
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => {
-      sec.removeEventListener("mousemove", onMove)
-      sec.removeEventListener("mouseleave", onLeave)
-      window.removeEventListener("scroll", onScroll)
-      cancelAnimationFrame(raf)
-    }
-  }, [])
-
   const pickTool = (i) => {
     const el = toolListRef.current
     const item = el?.querySelectorAll("[data-tool]")?.[i]
@@ -189,103 +101,32 @@ export default function Home() {
   return (
     <div className="wn-">
       <Seo path="/" />
-      {/* header */}
-      <div className="wn-pad"><div className="wn-wrap">
-        <header className="wn-header">
-          <div className="wn-header-left">
-            <button className="wn-logo" onClick={() => navigate("/")}>OneSpace Live</button>
-            <span className="wn-by">by</span>
-            <span className="wn-mark"><Video size={18} /></span>
-          </div>
-          <button className="wn-btn" onClick={() => navigate("/create")}>
-            <span>Meet Now</span><Video size={18} color="#fff" />
-          </button>
-        </header>
-      </div></div>
+      {/* 3D full-viewport hero — OneSpace Live carousel */}
+      <ToonHero />
 
-      {/* hero — centered minimal, cinematic 3D */}
+      {/* quick join strip — kept from previous hero so codes still work */}
       <div className="wn-pad"><div className="wn-wrap">
-        <section className="wn-hero wn-hero-min" ref={heroSecRef}>
-          <div className="wn-hero-bg" aria-hidden>
-            <div className="wn-gridlines" />
-            <div className="wn-shard s1" data-speed="0.12" />
-            <div className="wn-shard s2" data-speed="0.2" />
-            <div className="wn-beam" data-speed="0.07" />
-          </div>
-          <motion.p
-            className="wn-hero-pill"
-            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
-          >
-            <span className="wn-hero-dot" /> No signup · Free to start
-          </motion.p>
-          <motion.h1
-            className="wn-hero-h1"
-            initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.08 }}
-          >
-            Video meetings that start<br />in <em>seconds.</em>
-          </motion.h1>
-          <motion.p
-            className="wn-hero-sub"
-            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.16 }}
-          >
-            Video, whiteboard, polls and watch parties in one fast room — right in your browser.
-          </motion.p>
-          <motion.div
-            className="wn-hero-cta"
-            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.24 }}
-          >
-            <button className="wn-btn big" onClick={() => navigate("/create")}><span>Meet Now</span><ArrowRight size={18} color="#fff" /></button>
-            <button className="wn-btn big light" onClick={() => navigate("/join")}><span>Join with code</span></button>
-          </motion.div>
-          <motion.form
-            className="wn-join wn-join-min"
-            onSubmit={quickJoin}
-            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.3 }}
-          >
-            <input value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="ENTER CODE" aria-label="Meeting code" maxLength={10} />
-            <button className="wn-btn big dark" type="submit"><span>Join</span></button>
-          </motion.form>
-          <motion.div
-            className="wn-hero-trust"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.38 }}
-          >
-            <span><ShieldCheck size={14} /> Private by design</span>
-            <span><Zap size={14} /> 3-second join</span>
-            <span><Clock size={14} /> No downloads</span>
-          </motion.div>
-          <motion.div
-            className="wn-hero-frame"
-            initial={{ opacity: 0, y: 48 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.32 }}
-          >
-            <div className="wn-tilt" ref={heroTiltRef}>
-              <div className="wn-chipf c1" data-depth="26" aria-hidden>
-                <p style={{ margin: 0, fontWeight: 500, fontSize: "14px" }}>Polls · Live results</p>
-                <p style={{ margin: "8px 0 0", fontSize: "12px", background: "#e4dfff", borderRadius: "4px", padding: "6px 10px" }}>A = ½bh — 78% correct</p>
-                <p style={{ margin: "6px 0 0", fontSize: "12px", fontWeight: 700, color: "#7251eb" }}>24 votes in</p>
-              </div>
-              <div className="wn-chipf c2" data-depth="16" aria-hidden>
-                <p style={{ margin: 0, fontSize: "13px" }}><strong>SCREEN</strong> · Mia is sharing</p>
-              </div>
-              <div className="wn-chipf c3" data-depth="34" aria-hidden>
-                <p style={{ margin: 0, fontSize: "13px", fontWeight: 500 }}>HANDS UP · 2</p>
-                <p style={{ margin: "6px 0 0", fontSize: "12px", color: "rgba(0,0,0,.55)" }}>Daniel · Aisha</p>
-              </div>
-              <div className="wn-browser-bar" aria-hidden>
-                <span /><span /><span />
-                <em>onespace-live · live room · 1080p</em>
-              </div>
-              <HeroRoom />
-            </div>
-          </motion.div>
-        </section>
+        <form
+          className="wn-join wn-join-min"
+          onSubmit={quickJoin}
+          style={{ marginTop: "-8px", paddingBottom: "8px" }}
+        >
+          <input value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="ENTER CODE" aria-label="Meeting code" maxLength={10} />
+          <button className="wn-btn big dark" type="submit"><span>Join</span></button>
+        </form>
+        <div className="wn-hero-trust" style={{ paddingBottom: "12px" }}>
+          <span><ShieldCheck size={14} /> Private by design</span>
+          <span><Zap size={14} /> 3-second join</span>
+          <span><Clock size={14} /> No downloads</span>
+        </div>
       </div></div>
 
       {/* tools / poses */}
       <section style={{ marginTop: "40px" }}>
         <div className="wn-pad"><div className="wn-wrap" style={{ display: "flex", justifyContent: "center" }}>
           <div style={{ maxWidth: "600px", textAlign: "center" }}>
-            <h2 className="wn-title center">6 Tools for different scenarios</h2>
-            <p className="wn-sub">Scroll the list to enjoy the tool variations!</p>
+            <h2 className="wn-title center">Everything happens in one room</h2>
+            <p className="wn-sub">Six live tools — scroll to preview each one in action.</p>
           </div>
         </div></div>
         <div className="wn-poses">
@@ -335,7 +176,7 @@ export default function Home() {
       <section className="wn-purple">
         <div className="wn-wrap">
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <h2 className="wn-title center white" style={{ maxWidth: "620px" }}>One room. Beautiful and modern.</h2>
+            <h2 className="wn-title center white" style={{ maxWidth: "620px" }}>One room. Beautiful and instant.</h2>
           </div>
           <div className="wn-stage">
             <div style={{ background: "#fff", borderRadius: "6px", padding: "26px", width: "min(880px, 92vw)", position: "relative", zIndex: 1 }}>
@@ -401,7 +242,7 @@ export default function Home() {
       {/* sticky slider */}
       <section>
         <div className="wn-pad"><div className="wn-wrap" style={{ display: "flex", justifyContent: "center", marginTop: "120px" }}>
-          <h2 className="wn-title center">How meetings improve your workflow?</h2>
+          <h2 className="wn-title center">From hello to done in three steps</h2>
         </div></div>
         <div className="wn-hscroll" ref={slideSecRef}>
           <div className="wn-hsticky">
@@ -465,7 +306,7 @@ export default function Home() {
         <div className="wn-wrap">
           <div style={{ textAlign: "center" }}>
             <p className="wn-sub" style={{ margin: 0 }}>Full Preview</p>
-            <h2 className="wn-title center" style={{ fontSize: "90px", letterSpacing: "-4px", marginTop: "10px" }}>Every tool</h2>
+            <h2 className="wn-title center" style={{ fontSize: "90px", letterSpacing: "-4px", marginTop: "10px" }}>Every tool, one click away</h2>
           </div>
           <div className="wn-grid">
             {[...TOOLS, { name: "Classroom Mode", icon: GraduationCap, tag: "Stage, strip and teacher controls.", stat: "teach · live" }, { name: "No Signup", icon: Zap, tag: "Join in 3 seconds flat.", stat: "free · instant" }].map((t, i) => {
@@ -490,7 +331,7 @@ export default function Home() {
       <section className="wn-cta-sec">
         <div className="wn-cta-wrap">
           <div className="wn-cta-1">
-            <p className="wn-title white" style={{ fontSize: "40px" }}>Full pack</p>
+            <p className="wn-title white" style={{ fontSize: "40px" }}>The full pack</p>
             <div style={{ width: "100%", maxWidth: "340px" }}>
               {[["6 realtime tools", "Live video, screen, board"], ["Classroom mode", "Stage + strip + polls"], ["Private by design", "Codes + host controls"], ["No signup", "Join in 3 seconds"], ["In the browser", "Nothing to install"]].map(([a, b]) => (
                 <p className="wn-check" key={a}><Check size={18} /> <span><strong>{a}</strong><br /><span style={{ color: "rgba(255,255,255,.7)", fontSize: "14px" }}>{b}</span></span></p>
