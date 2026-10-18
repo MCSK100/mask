@@ -41,8 +41,8 @@ export default function Home() {
       <section className="sp-hero">
         {/* floating coins */}
         <div className="sp-coins" aria-hidden>
-          {Array.from({ length: 12 }).map((_, i) => (
-            <span key={i} className={`sp-coin sp-coin-${i + 1}`} />
+          {["🎥","📹","🎙️","💬","📺","🖥️","📊","🔒","🎵","📋","✋","📡"].map((e, i) => (
+            <span key={i} className={`sp-coin sp-coin-${i + 1}`}>{e}</span>
           ))}
         </div>
         <div className="sp-wrap sp-hero-inner">
