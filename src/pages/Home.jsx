@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import {
   Video, MonitorUp, PenTool, Play, BarChart3, Lock, ArrowRight, Check,
-  Sparkles, Zap, Users, Clock, ShieldCheck
+  Sparkles, Zap, Users, Clock, ShieldCheck, Music
 } from "lucide-react"
 import { normalizeCode } from "../utils/meetingCode"
 import Seo from "../components/Seo"
@@ -11,35 +11,36 @@ import ToonFloat from "../components/ToonFloats"
 import "./Home.css"
 
 const TOOLS = [
-  { name: "Live Video", icon: Video, tag: "Crystal-clear faces, big and bright.", stat: "1080p · adaptive" },
-  { name: "Screen Share", icon: MonitorUp, tag: "Share any tab in one click.", stat: "1-click · no plugins" },
-  { name: "Whiteboard", icon: PenTool, tag: "Sketch together, strokes saved.", stat: "live · synced" },
-  { name: "Watch Together", icon: Play, tag: "Press play at the same time.", stat: "YouTube · in sync" },
-  { name: "Polls", icon: BarChart3, tag: "Answers in seconds, live results.", stat: "instant · realtime" },
-  { name: "Private Rooms", icon: Lock, tag: "Codes, locks and host controls.", stat: "private · by design" },
+  { name: "Live Video", icon: Video, tag: "Crystal-clear faces, big and bright.", stat: "1080p adaptive" },
+  { name: "Screen Share", icon: MonitorUp, tag: "Share any tab in one click.", stat: "1 click, no plugins" },
+  { name: "Whiteboard", icon: PenTool, tag: "Sketch together, strokes saved.", stat: "live, synced" },
+  { name: "Watch Together", icon: Play, tag: "Press play at the same time.", stat: "YouTube, in sync" },
+  { name: "Polls", icon: BarChart3, tag: "Answers in seconds, live results.", stat: "instant, realtime" },
+  { name: "Private Rooms", icon: Lock, tag: "Codes, locks and host controls.", stat: "private by design" },
+  { name: "Shared Music", icon: Music, tag: "Play a track for the whole room.", stat: "synced playback" },
 ]
 
 const MODES = [
   {
     n: "01", title: "Instant meetings",
-    copy: "No accounts, no downloads — share a code and the whole team is in within seconds.",
+    copy: "No accounts, no downloads. Share a code and the whole team is in within seconds.",
     bg: "#FFF3E8", accent: "#F4845F", toon: "/toons/toon-1.webp",
     chips: ["3-second join", "No download", "Host controls"],
-    tags: ["1080p · adaptive", "4 here"], cta: "Create a room", to: "/create",
+    tags: ["1080p adaptive", "4 here"], cta: "Create a room", to: "/create",
   },
   {
     n: "02", title: "Live classrooms",
     copy: "Teach on a stage with hand raises, live polls and a shared whiteboard.",
     bg: "#E4FAF4", accent: "#6BBF7A", toon: "/toons/toon-2.webp",
     chips: ["Stage + strip", "Raise hand", "Quizzes"],
-    tags: ["HANDS UP · 2", "Polls · live"], cta: "Teach now", to: "/create",
+    tags: ["HANDS UP: 2", "Polls live"], cta: "Teach now", to: "/create",
   },
   {
     n: "03", title: "Watch parties",
-    copy: "Press play at the same time — YouTube in sync, with chat and reactions on the side.",
+    copy: "Press play at the same time. YouTube in sync, with chat and reactions on the side.",
     bg: "#FDEDF6", accent: "#E882B4", toon: "/toons/toon-3.webp",
     chips: ["YouTube in sync", "Live chat", "Reactions"],
-    tags: ["IN SYNC", "Chat · live"], cta: "Start watching", to: "/create",
+    tags: ["IN SYNC", "Chat live"], cta: "Start watching", to: "/create",
   },
 ]
 
@@ -49,10 +50,10 @@ const BENTO = [
   { tool: 2, span: "span-std", visual: "board", bg: "#E4FAF4" },
   { tool: 4, span: "span-std", visual: "polls", bg: "#ECE9FF" },
   { tool: 1, span: "span-wide", visual: "share", bg: "#FFF3E8" },
-  { tool: 5, span: "span-wide", visual: "lock", bg: "#f5f2ff" },
+  { tool: 6, span: "span-wide", visual: "lock", bg: "#f5f2ff" },
 ]
 
-const RIBBON = ["NO SIGNUP", "FREE TO START", "1080P VIDEO", "WHITEBOARD", "LIVE POLLS", "WATCH PARTY", "3-SECOND JOIN", "PRIVATE BY DESIGN"]
+const RIBBON = ["NO SIGNUP", "FREE TO START", "1080P VIDEO", "WHITEBOARD", "LIVE POLLS", "WATCH PARTY", "SHARED MUSIC", "3-SECOND JOIN", "PRIVATE BY DESIGN"]
 
 function BentoVisual({ kind }) {
   if (kind === "tiles") {
@@ -76,7 +77,7 @@ function BentoVisual({ kind }) {
       <div className="mini-watch">
         <span className="mini-play" aria-hidden><i /></span>
         <div className="mini-progress"><i style={{ width: "62%" }} /></div>
-        <p>02:14 · In sync</p>
+        <p>02:14 in sync</p>
       </div>
     )
   }
@@ -99,7 +100,7 @@ function BentoVisual({ kind }) {
   if (kind === "share") {
     return (
       <div className="mini-share">
-        <div className="mini-browser"><i /><i /><i /><em>mia-s-screen · 1080p</em></div>
+        <div className="mini-browser"><i /><i /><i /><em>mia-screen 1080p</em></div>
         <div className="mini-screen"><MonitorUp size={30} color="#724aee" /></div>
       </div>
     )
@@ -114,7 +115,7 @@ function BentoVisual({ kind }) {
 
 function HeroRoom() {
   const tiles = [
-    { n: "Aarav · Host", c: "linear-gradient(135deg,#724aee,#2a166e)", you: true },
+    { n: "Aarav - Host", c: "linear-gradient(135deg,#724aee,#2a166e)", you: true },
     { n: "Mia", c: "linear-gradient(135deg,#724aee,#2a166e)" },
     { n: "Leo", c: "linear-gradient(135deg,#1c3a5a,#0a1626)" },
     { n: "Zara", c: "linear-gradient(135deg,#12b899,#0a4a40)" },
@@ -124,7 +125,7 @@ function HeroRoom() {
       <div className="wn-deck-stack" aria-hidden />
       <div className="wn-deck-top">
         <span className="wn-deck-dots"><i /><i /><i /></span>
-        <span className="wn-deck-title">React Beginners · RX82KP</span>
+        <span className="wn-deck-title">React Beginners - RX82KP</span>
         <span className="wn-deck-live">LIVE</span>
         <span className="wn-deck-count">4 here</span>
       </div>
@@ -133,14 +134,14 @@ function HeroRoom() {
           <div key={t.n} className={`wn-tile ${t.you ? "you" : ""}`} style={{ background: t.c }}>
             <span className="wn-tile-scan" aria-hidden />
             <span className="wn-tile-initial">{t.n.slice(0, 1)}</span>
-            <span className="wn-tile-tag">{t.n}{t.you ? " · YOU" : ""}</span>
+            <span className="wn-tile-tag">{t.n}{t.you ? " - YOU" : ""}</span>
             <span className={`wn-tile-mic ${t.you ? "on" : ""}`} aria-hidden />
           </div>
         ))}
       </div>
       <div className="wn-deck-bottom">
         <div className="wn-deck-panel board">
-          <p>Whiteboard · Live</p>
+          <p>Whiteboard - Live</p>
           <svg viewBox="0 0 200 60"><path d="M5 50 Q 40 5 70 30 T 130 25 T 195 40" stroke="#724aee" strokeWidth="4" fill="none" strokeLinecap="square" /><rect x="142" y="10" width="16" height="16" stroke="#ff8655" fill="none" strokeWidth="4" /></svg>
         </div>
         <div className="wn-deck-panel chat">
@@ -173,7 +174,6 @@ export default function Home() {
     if (c) navigate(`/meet/${c}`)
   }
 
-  // cinematic hero: 3D tilt + scroll parallax + depth layers
   useEffect(() => {
     const sec = heroSecRef.current
     const tilt = heroTiltRef.current
@@ -214,7 +214,6 @@ export default function Home() {
   return (
     <div className="wn-">
       <Seo path="/" />
-      {/* header */}
       <div className="wn-pad"><div className="wn-wrap">
         <header className="wn-header">
           <div className="wn-header-left">
@@ -228,7 +227,6 @@ export default function Home() {
         </header>
       </div></div>
 
-      {/* hero — centered minimal, cinematic 3D */}
       <div className="wn-pad"><div className="wn-wrap">
         <section className="wn-hero wn-hero-min" ref={heroSecRef}>
           <div className="wn-hero-bg" aria-hidden>
@@ -241,7 +239,7 @@ export default function Home() {
             className="wn-hero-pill"
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
           >
-            <span className="wn-hero-dot" /> No signup · Free to start
+            <span className="wn-hero-dot" /> No signup, free to start
           </motion.p>
           <motion.h1
             className="wn-hero-h1"
@@ -253,7 +251,7 @@ export default function Home() {
             className="wn-hero-sub"
             initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.16 }}
           >
-            Video, whiteboard, polls and watch parties in one fast room — right in your browser.
+            Video, whiteboard, polls, watch parties and shared music in one fast room, right in your browser.
           </motion.p>
           <motion.div
             className="wn-hero-cta"
@@ -284,20 +282,20 @@ export default function Home() {
           >
             <div className="wn-tilt" ref={heroTiltRef}>
               <div className="wn-chipf c1" data-depth="26" aria-hidden>
-                <p style={{ margin: 0, fontWeight: 500, fontSize: "14px" }}>Polls · Live results</p>
-                <p style={{ margin: "8px 0 0", fontSize: "12px", background: "#e4dfff", borderRadius: "4px", padding: "6px 10px" }}>A = ½bh — 78% correct</p>
+                <p style={{ margin: 0, fontWeight: 500, fontSize: "14px" }}>Polls - Live results</p>
+                <p style={{ margin: "8px 0 0", fontSize: "12px", background: "#e4dfff", borderRadius: "4px", padding: "6px 10px" }}>A = 78% correct</p>
                 <p style={{ margin: "6px 0 0", fontSize: "12px", fontWeight: 700, color: "#7251eb" }}>24 votes in</p>
               </div>
               <div className="wn-chipf c2" data-depth="16" aria-hidden>
-                <p style={{ margin: 0, fontSize: "13px" }}><strong>SCREEN</strong> · Mia is sharing</p>
+                <p style={{ margin: 0, fontSize: "13px" }}><strong>SCREEN</strong> - Mia is sharing</p>
               </div>
               <div className="wn-chipf c3" data-depth="34" aria-hidden>
-                <p style={{ margin: 0, fontSize: "13px", fontWeight: 500 }}>HANDS UP · 2</p>
-                <p style={{ margin: "6px 0 0", fontSize: "12px", color: "rgba(0,0,0,.55)" }}>Daniel · Aisha</p>
+                <p style={{ margin: 0, fontSize: "13px", fontWeight: 500 }}>HANDS UP: 2</p>
+                <p style={{ margin: "6px 0 0", fontSize: "12px", color: "rgba(0,0,0,.55)" }}>Daniel, Aisha</p>
               </div>
               <div className="wn-browser-bar" aria-hidden>
                 <span /><span /><span />
-                <em>onespace-live · live room · 1080p</em>
+                <em>onespace-live - live room - 1080p</em>
               </div>
               <HeroRoom />
             </div>
@@ -305,25 +303,23 @@ export default function Home() {
         </section>
       </div></div>
 
-      {/* marquee ribbon */}
       <div className="marquee" aria-hidden>
         <div className="marquee-track">
           {[0, 1].map((k) => (
             <div key={k} className="marquee-chunk">
               {RIBBON.map((w) => (
-                <span key={`${k}-${w}`} className="marquee-item">{w}<i>✦</i></span>
+                <span key={`${k}-${w}`} className="marquee-item">{w}<i>*</i></span>
               ))}
             </div>
           ))}
         </div>
       </div>
 
-      {/* modes — sticky stacking cards with 3D crew */}
       <section className="wn-modes">
         <div className="wn-pad"><div className="wn-wrap modes-head">
           <p className="wn-eyebrow-tag">PICK YOUR ROOM</p>
           <h2 className="wn-title center">One link.<br />Three ways to meet.</h2>
-          <p className="wn-sub">Scroll — each room stacks in with its own crew and toolkit.</p>
+          <p className="wn-sub">Scroll - each room stacks in with its own crew and toolkit.</p>
         </div></div>
         <div className="wn-pad"><div className="wn-wrap">
           <div className="stack">
@@ -359,7 +355,6 @@ export default function Home() {
         </div></div>
       </section>
 
-      {/* dark immersive band */}
       <section className="wn-dark">
         <ToonFloat active={0} height={260} speed={0.1} style={{ left: "3%", bottom: "30px" }} />
         <ToonFloat active={3} height={300} speed={-0.09} style={{ right: "3%", top: "50px" }} />
@@ -380,7 +375,7 @@ export default function Home() {
           </motion.h2>
           <div className="dark-stats">
             {[
-              ["3s", "to join — no signup, no download"],
+              ["3s", "to join - no signup, no download"],
               ["1080p", "adaptive video on any network"],
               ["50", "seats in every live room"],
             ].map(([v, l], i) => (
@@ -397,7 +392,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* bento toolkit */}
       <section className="wn-bento-sec">
         <div className="wn-glow-blob" aria-hidden style={{ width: "520px", height: "520px", left: "-140px", top: "120px", background: "radial-gradient(closest-side, rgba(255,243,232,.95), transparent 70%)" }} />
         <div className="wn-glow-blob" aria-hidden style={{ width: "620px", height: "620px", right: "-180px", top: "420px", background: "radial-gradient(closest-side, rgba(228,250,244,.95), transparent 70%)" }} />
@@ -405,7 +399,7 @@ export default function Home() {
           <div style={{ textAlign: "center" }}>
             <p className="wn-eyebrow-tag">THE TOOLKIT</p>
             <h2 className="wn-title center">Six tools. Zero downloads.</h2>
-            <p className="wn-sub">Everything lives inside the room — hover a card to feel the depth.</p>
+            <p className="wn-sub">Everything lives inside the room - hover a card to feel the depth.</p>
           </div>
           <div className="wn-bento">
             {BENTO.map((b, i) => {
@@ -438,7 +432,6 @@ export default function Home() {
         </div></div>
       </section>
 
-      {/* cta */}
       <section className="wn-cta-sec">
         <ToonFloat active={0} height={225} speed={0.07} style={{ left: "1.5%", top: "130px" }} />
         <div className="wn-cta-wrap">
@@ -466,12 +459,11 @@ export default function Home() {
         </div>
         <div className="wn-custom">
           <span style={{ width: "90px", height: "90px", borderRadius: "6px", background: "#fff", display: "grid", placeItems: "center", marginBottom: "10px" }}><Users size={40} color="#724aee" /></span>
-          <h3 style={{ color: "#fff", fontSize: "32px", fontWeight: 500, margin: "10px 0" }}>Got a team in mind? Let us talk!</h3>
+          <h3 style={{ color: "#fff", fontSize: "32px", fontWeight: 500, margin: "10px 0" }}>Got a team in mind? Let us talk.</h3>
           <a href="mailto:hello@onespace.live" style={{ color: "#fff", fontSize: "18px" }}>hello@onespace.live</a>
         </div>
       </section>
 
-      {/* footer */}
       <footer className="wn-footer">
         <div className="wn-fo">
           <div className="col">
@@ -487,7 +479,7 @@ export default function Home() {
             <a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/about">About</a><a href="mailto:hello@onespace.live">Contact</a>
           </div>
         </div>
-        <p className="wn-copy">© 2026 OneSpace Live · All Rights Reserved</p>
+        <p className="wn-copy">2026 OneSpace Live - All Rights Reserved</p>
       </footer>
     </div>
   )

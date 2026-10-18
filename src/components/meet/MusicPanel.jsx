@@ -28,7 +28,21 @@ export function MusicPanel({ music, isHost, onSet, onPlay, onPause, onSeek }) {
   const [searching, setSearching] = useState(false)
   const [searchErr, setSearchErr] = useState(null)
   const [searched, setSearched] = useState(false)
+  const [featured, setFeatured] = useState([])
+  const [loadingFeatured, setLoadingFeatured] = useState(false)
   const audioRef = useRef(null)
+
+  // Load trending tracks as realistic quick picks
+  useEffect(() => {
+    let cancelled = false
+    setLoadingFeatured(true)
+    fetch(`${API}/tracks/trending?limit=8&app_name=${APP_NAME}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`Trending failed (${r.status})`))))
+      .then((json) => { if (!cancelled) setFeatured(Array.isArray(json?.data) ? json.data : []) })
+      .catch(() => { if (!cancelled) setFeatured([]) })
+      .finally(() => { if (!cancelled) setLoadingFeatured(false) })
+    return () => { cancelled = true }
+  }, [])
 
   // Follow host state
   useEffect(() => {
@@ -186,9 +200,49 @@ export function MusicPanel({ music, isHost, onSet, onPlay, onPause, onSeek }) {
           {!searching && searched && results.length === 0 && !searchErr && (
             <p className="rounded-xl bg-[#F7FAFF] p-3 text-center text-[12px] text-[#8AA6B8]">No tracks found. Try another search.</p>
           )}
-          {!searching && !searched && !music?.track && (
+          {!searching && !searched && featured.length > 0 && (
+            <div className="mb-2">
+              <p className="mb-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#8AA6B8]">Trending now</p>
+              <div className="space-y-1.5">
+                {featured.map((t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => playTrack(t)}
+                    className="flex w-full items-center gap-2.5 rounded-xl p-2 text-left hover:bg-[#F7FAFF]"
+                  >
+                    {t.artwork?.["150x150"] ? (
+                      <img src={t.artwork["150x150"]} alt="" loading="lazy" className="h-10 w-10 flex-none rounded-lg object-cover" />
+                    ) : (
+                      <span className="grid h-10 w-10 flex-none place-items-center rounded-lg bg-[#E3ECF7] text-[#724aee]"><Music size={16} /></span>
+                    )}
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-[13px] font-semibold text-[#16283A]">{t.title}</span>
+                      <span className="block truncate text-[11px] text-[#8AA6B8]">
+                        {t.user?.name || "Unknown"} {t.duration ? `· ${fmtDuration(t.duration)}` : ""}
+                      </span>
+                    </span>
+                    <span className="grid h-8 w-8 flex-none place-items-center rounded-full bg-[#724aee] text-white"><Play size={14} /></span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          {loadingFeatured && !searched && (
+            <div className="mb-2 space-y-2">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="flex animate-pulse items-center gap-2.5 rounded-xl bg-[#F7FAFF] p-2.5">
+                  <div className="h-10 w-10 rounded-lg bg-[#E3ECF7]" />
+                  <div className="flex-1 space-y-1.5">
+                    <div className="h-3 w-2/3 rounded bg-[#E3ECF7]" />
+                    <div className="h-2.5 w-1/3 rounded bg-[#E3ECF7]" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {!searching && !searched && !music?.track && featured.length === 0 && (
             <div className="rounded-xl border border-dashed border-[#E3ECF7] bg-[#F7FAFF] p-4 text-center text-[13px] text-[#8AA6B8]">
-              Search above to load a track — tapping play starts it for everyone in the room, Discord-style.
+              Search above to load a track - tapping play starts it for everyone in the room, Discord-style.
             </div>
           )}
 
@@ -203,7 +257,7 @@ export function MusicPanel({ music, isHost, onSet, onPlay, onPause, onSeek }) {
 
       {!isHost && !music?.track && (
         <div className="grid flex-1 place-items-center rounded-xl border border-dashed border-[#E3ECF7] bg-[#F7FAFF] p-6 text-center text-[13px] text-[#8AA6B8]">
-          Host hasn't started music yet.
+          Host hasn&apos;t started music yet.
         </div>
       )}
     </div>
