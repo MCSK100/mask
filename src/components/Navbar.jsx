@@ -33,7 +33,7 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
         scrolled
-          ? "border-b border-white/10 bg-slate-950/70 backdrop-blur-xl shadow-[0_8px_30px_-12px_rgba(0,0,0,0.8)]"
+          ? "border-b border-black/10 bg-white/80 backdrop-blur-xl shadow-[0_8px_30px_-12px_rgba(0,0,0,0.12)]"
           : "border-b border-transparent bg-transparent"
       }`}
     >
