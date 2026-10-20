@@ -98,7 +98,7 @@ export function MusicPanel({ music, isHost, onSet, onPlay, onPause, onSeek }) {
   const label = music?.title || (typeof music?.track === "string" ? music.track : "Audio")
 
   return (
-    <div className="flex h-full flex-col bg-white p-3">
+    <div className="os-room-panel flex h-full flex-col p-3">
       <p className="flex items-center gap-2 text-[14px] font-bold text-[#16283A]">
         <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#f5f2ff] text-[#724aee]"><Music size={16} /></span>
         Music

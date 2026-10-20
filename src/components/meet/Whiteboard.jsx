@@ -231,14 +231,14 @@ export const Whiteboard = forwardRef(function Whiteboard({ onOp, canDraw, remote
         )}
       </div>
       {/* bottom toolbar like reference */}
-      <div className="flex items-center justify-center gap-2 border-t border-[#EAF0F7] bg-white px-3 py-2">
+      <div className="flex items-center justify-center gap-2 border-t border-white/10 bg-[#111820] px-3 py-2">
         <button className="classroom-rail-btn" style={{ width: "30px", height: "30px" }} title="Undo" onClick={() => setTool("pen")}>
           <Undo2 size={14} />
         </button>
         <button className="classroom-rail-btn" style={{ width: "30px", height: "30px" }} title="Redo" onClick={() => setTool("pen")}>
           <Redo2 size={14} />
         </button>
-        <span className="mx-1 h-5 w-px bg-[#E3ECF7]" />
+        <span className="mx-1 h-5 w-px bg-white/15" />
         {COLORS.map((c) => (
           <button
             key={c}
@@ -246,13 +246,13 @@ export const Whiteboard = forwardRef(function Whiteboard({ onOp, canDraw, remote
             aria-label={`Color ${c}`}
             style={{
               width: "22px", height: "22px", borderRadius: "50%", background: c, cursor: "pointer",
-              border: color === c ? "2px solid #724aee" : "2px solid #fff",
-              boxShadow: "0 0 0 1px rgba(30,70,140,.15)",
+              border: color === c ? "2px solid var(--os-accent)" : "2px solid #fff",
+              boxShadow: "0 0 0 1px rgba(255,255,255,.2)",
             }}
           />
         ))}
         <input type="color" value={color} onChange={(e) => setColor(e.target.value)} aria-label="Custom color" className="h-6 w-8 cursor-pointer" style={{ background: "none", border: "none" }} />
-        <span className="mx-1 h-5 w-px bg-[#E3ECF7]" />
+        <span className="mx-1 h-5 w-px bg-white/15" />
         <button onClick={clearAll} className="classroom-rail-btn" style={{ width: "30px", height: "30px" }} title="Clear">
           <Trash2 size={14} />
         </button>

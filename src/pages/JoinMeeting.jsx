@@ -19,7 +19,7 @@ export default function JoinMeeting() {
     e?.preventDefault()
     setErr(null)
     const c = normalizeCode(code)
-    if (!c) { setErr("Enter the meeting code."); return }
+    if (!c) { setErr("Enter your room code."); return }
     if (!name.trim()) { setErr("Enter your display name."); return }
     setBusy(true)
     try {
@@ -49,14 +49,14 @@ export default function JoinMeeting() {
       />
       <div style={{ maxWidth: "600px", margin: "0 auto", padding: "30px 0 20px" }}>
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-          <WannaBadge prefix="No account" strong="just a code" />
+          <WannaBadge prefix="OneSpace Live" strong="join with a room code" />
         </motion.div>
-        <h1 className="wz-title">Join a meeting.</h1>
-        <p className="wz-sub">Enter the code your host shared. You will be in within seconds.</p>
+          <h1 className="wz-title">Ready to join?</h1>
+          <p className="wz-sub">Enter your room code or use the invitation link to connect with your session.</p>
         <form onSubmit={join} style={{ marginTop: "24px" }}>
           <div className="wz-card" style={{ display: "grid", gap: "14px" }}>
             <div>
-              <label htmlFor="jcode" className="wz-label">Meeting code</label>
+              <label htmlFor="jcode" className="wz-label">Room code</label>
               <input id="jcode" value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="AB7K92" maxLength={10} className="wz-input" style={{ textAlign: "center", fontSize: "20px", letterSpacing: "0.3em" }} />
             </div>
             <div>
@@ -69,7 +69,7 @@ export default function JoinMeeting() {
             </div>
             {err && <p role="alert" className="wz-alert">{err}</p>}
             <div style={{ display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap" }}>
-              <motion.button disabled={busy} whileTap={{ scale: 0.97 }} className="wz-btn big"><LogIn size={18} color="#fff" /> {busy ? "Checking…" : "Join Now"}</motion.button>
+              <motion.button disabled={busy} whileTap={{ scale: 0.97 }} className="wz-btn big"><LogIn size={18} color="var(--os-accent-ink)" /> {busy ? "Checking…" : "Join Now"}</motion.button>
               <button type="button" onClick={() => navigate("/create")} className="wz-link">Create instead <ArrowRight size={14} /></button>
             </div>
           </div>

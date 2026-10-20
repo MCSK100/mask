@@ -599,7 +599,7 @@ export default function Meeting() {
                   <div className="wz-stage-fallback">{media.error || "Starting camera…"}</div>
                 )}
               </div>
-              {media.error && <p style={{ marginTop: "8px", fontSize: "13px", fontWeight: 600, color: "rgba(0,0,0,.55)" }}>{media.error} You can still join with camera off.</p>}
+              {media.error && <p style={{ marginTop: "8px", fontSize: "13px", fontWeight: 600, color: "var(--os-muted)" }}>{media.error} You can still join with camera off.</p>}
               <div style={{ marginTop: "12px", display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
                 <button onClick={media.toggleMute} className="wz-chip">{media.muted ? <MicOff size={14} /> : <Mic size={14} />} {media.muted ? "Unmute" : "Mute"}</button>
                 <button onClick={media.toggleCamera} className="wz-chip">{media.cameraOff ? <VideoIcon size={14} /> : <VideoOff size={14} />} {media.cameraOff ? "Camera on" : "Camera off"}</button>
@@ -622,7 +622,7 @@ export default function Meeting() {
             </div>
             <div className="wz-card">
               <h2 style={{ fontSize: "24px", fontWeight: 500, letterSpacing: "-1px", margin: 0 }}>Ready to join?</h2>
-              <p style={{ fontSize: "13px", color: "rgba(0,0,0,.55)", marginTop: "4px" }}>Camera and mic stay in your browser until you join.</p>
+              <p style={{ fontSize: "13px", color: "var(--os-muted)", marginTop: "4px" }}>Camera and mic stay in your browser until you join.</p>
               <label htmlFor="lname" className="wz-label" style={{ marginTop: "16px" }}>Your name</label>
               <input id="lname" value={name} onChange={(e) => setName(e.target.value)} placeholder="Display name" maxLength={40} className="wz-input" />
               {meta?.hasPassword && (
@@ -634,9 +634,9 @@ export default function Meeting() {
               <button onClick={doJoin} disabled={!name.trim() || joining} className="wz-btn big" style={{ marginTop: "16px", width: "100%" }}>
                 <LogIn size={18} color="#fff" /> {joining ? "Joining…" : hostToken ? "Start meeting" : "Join now"}
               </button>
-              <p style={{ marginTop: "10px", textAlign: "center", fontSize: "12px", color: "rgba(0,0,0,.55)", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}><ShieldCheck size={12} /> Private by design · no signup</p>
+              <p style={{ marginTop: "10px", textAlign: "center", fontSize: "12px", color: "var(--os-muted)", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}><ShieldCheck size={12} /> Join with a display name · no signup</p>
               {waiting && (
-                <div style={{ marginTop: "12px", borderRadius: "8px", background: "#f5f2ff", border: "2px solid #000", padding: "12px", textAlign: "center" }}>
+                <div style={{ marginTop: "12px", borderRadius: "8px", background: "var(--os-surface-raised)", border: "1px solid var(--os-border)", padding: "12px", textAlign: "center" }}>
                   <p style={{ fontSize: "13px", fontWeight: 500, margin: 0 }}>Waiting for the host to let you in…</p>
                   <button onClick={doJoin} disabled={joining} className="wz-link" style={{ marginTop: "8px" }}>Retry now</button>
                 </div>
@@ -739,7 +739,7 @@ export default function Meeting() {
       <div className="pointer-events-none absolute -right-24 top-10 h-80 w-80 rounded-full bg-white/60 blur-3xl" />
 
       {toast && <div className="relative z-30 bg-[#16283A] px-4 py-1.5 text-center text-xs font-bold text-white">{toast}</div>}
-      {lk.connectionState === "reconnecting" && <div className="relative z-30 bg-[#F5B301] px-4 py-1.5 text-center text-xs font-bold text-[#16283A]">Reconnecting… LiveKit is restoring your media automatically.</div>}
+      {lk.connectionState === "reconnecting" && <div className="relative z-30 border-b border-[#b9dceb33] bg-[#18222c] px-4 py-1.5 text-center text-xs font-semibold text-[#d7eaf2]">Reconnecting… LiveKit is restoring your media automatically.</div>}
       {locked && <div className="relative z-30 flex items-center justify-center gap-1.5 bg-[#16283A] px-4 py-1 text-center text-[11px] font-semibold text-white"><Lock size={11} /> Room Locked</div>}
 
       <div className="relative z-10 mx-auto flex min-h-0 w-full max-w-[1440px] flex-1 gap-3 p-2 sm:p-3">
@@ -752,7 +752,7 @@ export default function Meeting() {
               recording={recording}
               activeTab={activeTab} onTab={handleTab}
             />
-            <div className="flex min-h-0 flex-1" style={{ background: "#16283A" }}>
+            <div className="flex min-h-0 flex-1" style={{ background: "var(--os-background)" }}>
               <div className="flex min-w-0 flex-1 gap-2 p-2 sm:p-2.5">
                 {isStage ? (
                   !classroomMode ? (
@@ -826,7 +826,7 @@ export default function Meeting() {
                       </div>
                     </div>
                     )}
-                    <div className="flex min-w-0 flex-[1.4] flex-col overflow-hidden rounded-[14px] bg-white">
+                    <div className="flex min-w-0 flex-[1.4] flex-col overflow-hidden rounded-[12px] border border-white/10 bg-[#111820]">
                       {activeTab === "watch" && FEATURES.YOUTUBE ? (
                         <YouTubePanel yt={youtube} isHost={isHost} onSet={ytSet} onPlay={ytPlay} onPause={ytPause} onSeek={ytSeek} />
                       ) : activeTab === "polls" && FEATURES.POLLS ? (
@@ -894,25 +894,25 @@ export default function Meeting() {
               ].map(({ id, label, Icon }) => (
                 <button
                   key={id} onClick={() => setRightTab(id)}
-                  className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-[12px] font-bold ${rightTab === id ? "bg-[#16283A] text-white" : "text-[#5B7290] hover:bg-[#F1F6FA]"}`}
+                  className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-[12px] font-semibold ${rightTab === id ? "bg-[#b9dceb] text-[#0c171e]" : "text-[#aab2ba] hover:bg-white/5"}`}
                 >
                   <Icon size={13} /> {label}
                 </button>
               ))}
-              <button onClick={() => setInvite(true)} aria-label="Invite" className="rounded-xl p-2 text-[#5B7290] hover:bg-[#F1F6FA]">
+              <button onClick={() => setInvite(true)} aria-label="Invite" className="rounded-lg p-2 text-[#aab2ba] hover:bg-white/5">
                 <ChevronRight size={15} />
               </button>
             </div>
             <div className="min-h-0 flex-1">
               {rightTab === "chat" && <ChatPanel messages={chat} system={system} onSend={onChatSend} />}
               {rightTab === "qa" && (
-                <div className="flex h-full flex-col bg-white p-3">
-                  <p className="text-[12px] font-bold text-[#16283A]">Questions ({qaMessages.length})</p>
+                <div className="flex h-full flex-col bg-[#111820] p-3 text-[#f3f1ed]">
+                  <p className="text-[12px] font-bold text-[#f3f1ed]">Questions ({qaMessages.length})</p>
                   <div className="mt-2 min-h-0 flex-1 space-y-2.5 overflow-y-auto">
-                    {qaMessages.length === 0 && <p className="rounded-xl bg-[#F4F8FF] p-3 text-[13px] text-[#5B7290]">No questions yet. End a message with ? to ask.</p>}
+                    {qaMessages.length === 0 && <p className="rounded-lg border border-white/10 bg-[#18222c] p-3 text-[13px] text-[#aab2ba]">No questions yet. End a message with ? to ask.</p>}
                     {qaMessages.map((q) => (
-                      <div key={q.id} className="rounded-xl bg-[#F7FAFF] p-2.5 text-[13px] text-[#33475F]">
-                        <p className="font-bold text-[#16283A]">{q.name}</p>
+                      <div key={q.id} className="rounded-lg border border-white/10 bg-[#0d1319] p-2.5 text-[13px] text-[#d0d8dc]">
+                        <p className="font-bold text-[#f3f1ed]">{q.name}</p>
                         <p>{q.text}</p>
                       </div>
                     ))}
@@ -930,9 +930,9 @@ export default function Meeting() {
       </div>
 
       {panel !== null && (
-        <div className="fixed inset-y-0 right-0 z-40 flex w-[88vw] max-w-[340px] flex-col bg-white shadow-2xl lg:hidden">
-          <div className="flex items-center justify-between border-b border-[#EAF0F7] px-3 py-2">
-            <p className="text-sm font-bold capitalize text-[#16283A]">{{ chat: "Chat", people: "People", board: "Whiteboard", tube: "Watch", polls: "Polls", music: "Music" }[panel] || panel}</p>
+        <div className="fixed inset-y-0 right-0 z-40 flex w-[88vw] max-w-[340px] flex-col border-l border-white/10 bg-[#111820] shadow-2xl lg:hidden">
+          <div className="flex items-center justify-between border-b border-white/10 px-3 py-2">
+            <p className="text-sm font-bold capitalize text-[#f3f1ed]">{{ chat: "Chat", people: "People", board: "Whiteboard", tube: "Watch", polls: "Polls", music: "Music" }[panel] || panel}</p>
             <button onClick={() => setPanel(null)} aria-label="Close panel" className="classroom-rail-btn" style={{ height: "30px", width: "30px" }}><X size={14} /></button>
           </div>
           <div className="min-h-0 flex-1">
@@ -951,24 +951,24 @@ export default function Meeting() {
       )}
 
       {moreOpen && (
-        <div className="fixed bottom-24 left-1/2 z-40 w-[92vw] max-w-sm -translate-x-1/2 rounded-[18px] border border-[#E3ECF7] bg-white p-3 shadow-2xl">
-          <div className="grid grid-cols-2 gap-2 text-sm text-[#16283A]">
-            <button onClick={() => { setInvite(true); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-xl bg-[#F1F6FA] p-2.5 font-semibold"><UserPlus size={14} /> Invite</button>
-            <button onClick={() => { setPanel("chat"); setRightTab("chat"); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-xl bg-[#F1F6FA] p-2.5 font-semibold"><MessageSquare size={14} /> Chat</button>
-            <button onClick={() => { setActiveTab("watch"); setPanel("tube"); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-xl bg-[#F1F6FA] p-2.5 font-semibold"><Play size={14} /> Watch</button>
-            <button onClick={() => { setActiveTab("music"); setPanel("music"); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-xl bg-[#F1F6FA] p-2.5 font-semibold"><MusicIcon size={14} /> Music</button>
-            <button onClick={() => { raiseHand(!handRaised); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-xl bg-[#F1F6FA] p-2.5 font-semibold"><Hand size={14} /> {handRaised ? "Lower hand" : "Raise hand"}</button>
+        <div className="fixed bottom-24 left-1/2 z-40 w-[92vw] max-w-sm -translate-x-1/2 rounded-xl border border-white/15 bg-[#111820] p-3 text-[#f3f1ed] shadow-2xl">
+          <div className="grid grid-cols-2 gap-2 text-sm">
+            <button onClick={() => { setInvite(true); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-lg bg-[#18222c] p-2.5 font-semibold"><UserPlus size={14} /> Invite</button>
+            <button onClick={() => { setPanel("chat"); setRightTab("chat"); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-lg bg-[#18222c] p-2.5 font-semibold"><MessageSquare size={14} /> Chat</button>
+            <button onClick={() => { setActiveTab("watch"); setPanel("tube"); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-lg bg-[#18222c] p-2.5 font-semibold"><Play size={14} /> Watch</button>
+            <button onClick={() => { setActiveTab("music"); setPanel("music"); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-lg bg-[#18222c] p-2.5 font-semibold"><MusicIcon size={14} /> Music</button>
+            <button onClick={() => { raiseHand(!handRaised); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-lg bg-[#18222c] p-2.5 font-semibold"><Hand size={14} /> {handRaised ? "Lower hand" : "Raise hand"}</button>
             {isHost && (
-              <button onClick={() => { const v = !classroomMode; hostSettings({ classroomMode: v }, { type: "classroom", classroomMode: v }); setMoreOpen(false) }} className="rounded-xl bg-[#F1F6FA] p-2.5 font-semibold">{classroomMode ? "Meeting mode" : "Classroom mode"}</button>
+              <button onClick={() => { const v = !classroomMode; hostSettings({ classroomMode: v }, { type: "classroom", classroomMode: v }); setMoreOpen(false) }} className="rounded-lg bg-[#18222c] p-2.5 font-semibold">{classroomMode ? "Meeting mode" : "Classroom mode"}</button>
             )}
-            {isHost && <button onClick={() => { hostMuteAll(); setMoreOpen(false) }} className="rounded-xl bg-[#F1F6FA] p-2.5 font-semibold">Mute all</button>}
-            {isHost && <button onClick={() => { hostLock(!locked); setMoreOpen(false) }} className="rounded-xl bg-[#F1F6FA] p-2.5 font-semibold">{locked ? "Unlock room" : "Lock room"}</button>}
-            {isHost && <button onClick={() => { hostWaiting(true); setToast("Waiting room enabled."); setMoreOpen(false) }} className="rounded-xl bg-[#F1F6FA] p-2.5 font-semibold">Waiting room</button>}
-            {isHost && <button onClick={() => { hostSettings({ whiteboardEnabled: !whiteboardEnabled }, hostCommand({ action: "whiteboard", value: !whiteboardEnabled })); setMoreOpen(false) }} className="rounded-xl bg-[#F1F6FA] p-2.5 font-semibold">{whiteboardEnabled ? "Lock board" : "Unlock board"}</button>}
-            {isHost && <button onClick={() => { hostEnd(); setMoreOpen(false) }} className="rounded-xl bg-[#E8382F] p-2.5 font-semibold text-white">End Meeting</button>}
-            <button onClick={() => { setInvite(true); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-xl bg-[#724aee] p-2.5 font-semibold text-white"><Send size={14} /> Invite link</button>
+            {isHost && <button onClick={() => { hostMuteAll(); setMoreOpen(false) }} className="rounded-lg bg-[#18222c] p-2.5 font-semibold">Mute all</button>}
+            {isHost && <button onClick={() => { hostLock(!locked); setMoreOpen(false) }} className="rounded-lg bg-[#18222c] p-2.5 font-semibold">{locked ? "Unlock room" : "Lock room"}</button>}
+            {isHost && <button onClick={() => { hostWaiting(true); setToast("Waiting room enabled."); setMoreOpen(false) }} className="rounded-lg bg-[#18222c] p-2.5 font-semibold">Waiting room</button>}
+            {isHost && <button onClick={() => { hostSettings({ whiteboardEnabled: !whiteboardEnabled }, hostCommand({ action: "whiteboard", value: !whiteboardEnabled })); setMoreOpen(false) }} className="rounded-lg bg-[#18222c] p-2.5 font-semibold">{whiteboardEnabled ? "Lock board" : "Unlock board"}</button>}
+            {isHost && <button onClick={() => { hostEnd(); setMoreOpen(false) }} className="rounded-lg bg-[#dc746d] p-2.5 font-semibold text-white">End Meeting</button>}
+            <button onClick={() => { setInvite(true); setMoreOpen(false) }} className="flex items-center justify-center gap-1.5 rounded-lg bg-[#b9dceb] p-2.5 font-semibold text-[#0c171e]"><Send size={14} /> Invite link</button>
           </div>
-          {!FEATURES.STREAMING && <p className="mt-2 text-center text-[11px] font-semibold text-[#8AA6B8]">Live streaming is not configured yet.</p>}
+          {!FEATURES.STREAMING && <p className="mt-2 text-center text-[11px] font-semibold text-[#aab2ba]">Live streaming is not configured yet.</p>}
         </div>
       )}
       {invite && <InviteDialog code={code} title={meta?.title || "OneSpace Live"} onClose={() => setInvite(false)} />}

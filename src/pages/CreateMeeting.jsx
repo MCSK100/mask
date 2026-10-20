@@ -73,10 +73,10 @@ export default function CreateMeeting() {
       />
       <div style={{ maxWidth: "880px", margin: "0 auto", padding: "30px 0 20px" }}>
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-          <WannaBadge prefix="No signup" strong="ready in seconds" />
+          <WannaBadge prefix="OneSpace Live" strong="your next session starts here" />
         </motion.div>
-        <h1 className="wz-title">Create a meeting.</h1>
-        <p className="wz-sub">One link for meetings, classes, and watch parties. Fast, modern, instant.</p>
+          <h1 className="wz-title">Create your space.</h1>
+          <p className="wz-sub">Set up your next meeting, class, or collaborative session.</p>
 
         {!result ? (
           <div style={{ marginTop: "24px" }}>
@@ -95,7 +95,7 @@ export default function CreateMeeting() {
               </div>
               {err && <p role="alert" className="wz-alert">{err}</p>}
               <div style={{ display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap" }}>
-                <motion.button disabled={busy} onClick={() => create(true)} whileTap={{ scale: 0.97 }} className="wz-btn big"><Video size={18} color="#fff" /> {busy ? "Creating…" : "Meet Now"}</motion.button>
+                <motion.button disabled={busy} onClick={() => create(true)} whileTap={{ scale: 0.97 }} className="wz-btn big"><Video size={18} color="var(--os-accent-ink)" /> {busy ? "Creating…" : "Meet Now"}</motion.button>
                 <button disabled={busy} onClick={() => create(false)} className="wz-link">Create without starting <ArrowRight size={14} /></button>
               </div>
             </div>
@@ -106,9 +106,9 @@ export default function CreateMeeting() {
               <WannaBadge prefix="Your meeting" strong="is ready" />
               <h2 style={{ marginTop: "14px", fontSize: "26px", fontWeight: 500, letterSpacing: "-1px" }}>{result.title}</h2>
               <p style={{ marginTop: "12px", fontSize: "36px", fontWeight: 500, letterSpacing: "0.25em" }}>{result.code}</p>
-              <p style={{ marginTop: "8px", fontSize: "13px", color: "rgba(0,0,0,.55)", wordBreak: "break-all" }}>{link}</p>
+              <p style={{ marginTop: "8px", fontSize: "13px", color: "var(--os-muted)", wordBreak: "break-all" }}>{link}</p>
               <div style={{ marginTop: "20px", display: "flex", gap: "10px", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
-                <button onClick={() => navigate(`/meet/${result.code}?name=${encodeURIComponent(result.hostName)}&host=1`)} className="wz-btn big"><Video size={18} color="#fff" /> Meet Now</button>
+                <button onClick={() => navigate(`/meet/${result.code}?name=${encodeURIComponent(result.hostName)}&host=1`)} className="wz-btn big"><Video size={18} color="var(--os-accent-ink)" /> Meet Now</button>
                 <button onClick={() => copy(link)} className="wz-chip" aria-label="Copy link"><Copy size={14} /> Copy link</button>
                 <button onClick={() => copy(result.code)} className="wz-chip">Copy code</button>
               </div>
@@ -117,8 +117,8 @@ export default function CreateMeeting() {
               </div>
               {result.scheduledAt && (
                 <div style={{ marginTop: "10px", display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
-                  <a href={googleCalendarUrl({ title: result.title, details: `Join: ${link} Code: ${result.code}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000) })} target="_blank" rel="noreferrer" className="wz-link" style={{ color: "#724aee" }}><CalendarPlus size={14} /> Add to Calendar</a>
-                  <button onClick={() => downloadIcs(`onespace-live-${result.code}.ics`, icsContent({ title: result.title, description: `Join: ${link}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000), code: result.code }))} className="wz-link" style={{ color: "#724aee" }}>Download .ics</button>
+                  <a href={googleCalendarUrl({ title: result.title, details: `Join: ${link} Code: ${result.code}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000) })} target="_blank" rel="noreferrer" className="wz-link" style={{ color: "var(--os-accent)" }}><CalendarPlus size={14} /> Add to Calendar</a>
+                  <button onClick={() => downloadIcs(`onespace-live-${result.code}.ics`, icsContent({ title: result.title, description: `Join: ${link}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000), code: result.code }))} className="wz-link" style={{ color: "var(--os-accent)" }}>Download .ics</button>
                 </div>
               )}
               <button onClick={() => setResult(null)} className="wz-link" style={{ marginTop: "14px" }}><RotateCcw size={13} /> Create another</button>

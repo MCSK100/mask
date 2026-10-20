@@ -43,15 +43,15 @@ export default function Schedule() {
               <WannaBadge prefix={room.roomType} strong={room.status} />
               <h2 style={{ marginTop: "14px", fontSize: "24px", fontWeight: 500, letterSpacing: "-1px" }}>{room.title}</h2>
               <p style={{ marginTop: "12px", fontSize: "34px", fontWeight: 500, letterSpacing: "0.25em" }}>{room.code}</p>
-              <p style={{ marginTop: "8px", fontSize: "13px", color: "rgba(0,0,0,.55)", wordBreak: "break-all" }}>{link}</p>
+              <p style={{ marginTop: "8px", fontSize: "13px", color: "var(--os-muted)", wordBreak: "break-all" }}>{link}</p>
               <div style={{ marginTop: "20px", display: "flex", gap: "10px", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
                 <button onClick={() => navigate(`/meet/${room.code}`)} className="wz-btn big"><Video size={18} color="#fff" /> Meet Now</button>
                 <button onClick={() => copy(link)} className="wz-chip" aria-label="Copy link"><Copy size={14} /> Copy link</button>
               </div>
               <div style={{ marginTop: "14px", display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
                 <button onClick={() => copy(room.code)} className="wz-link"><Copy size={13} /> Copy code</button>
-                {room.scheduledAt && <button onClick={() => downloadIcs(`onespace-live-${room.code}.ics`, icsContent({ title: room.title, description: `Join: ${link}`, start: room.scheduledAt, end: new Date(new Date(room.scheduledAt).getTime() + (room.durationMin || 60) * 60000), code: room.code }))} className="wz-link" style={{ color: "#724aee" }}><Download size={13} /> .ics</button>}
-                {room.scheduledAt && <a style={{ color: "#724aee", display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "14px", fontWeight: 500 }} target="_blank" rel="noreferrer" href={googleCalendarUrl({ title: room.title, details: `Join: ${link}`, start: room.scheduledAt, end: new Date(new Date(room.scheduledAt).getTime() + (room.durationMin || 60) * 60000) })}><CalendarPlus size={13} /> Google Calendar</a>}
+                {room.scheduledAt && <button onClick={() => downloadIcs(`onespace-live-${room.code}.ics`, icsContent({ title: room.title, description: `Join: ${link}`, start: room.scheduledAt, end: new Date(new Date(room.scheduledAt).getTime() + (room.durationMin || 60) * 60000), code: room.code }))} className="wz-link" style={{ color: "var(--os-accent)" }}><Download size={13} /> .ics</button>}
+                {room.scheduledAt && <a style={{ color: "var(--os-accent)", display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "14px", fontWeight: 500 }} target="_blank" rel="noreferrer" href={googleCalendarUrl({ title: room.title, details: `Join: ${link}`, start: room.scheduledAt, end: new Date(new Date(room.scheduledAt).getTime() + (room.durationMin || 60) * 60000) })}><CalendarPlus size={13} /> Google Calendar</a>}
               </div>
             </div>
           </div>

@@ -19,7 +19,7 @@ export function PollsPanel({ poll, isHost, onCreate, onVote, onClose, preview })
   }
 
   return (
-    <div className="flex h-full flex-col bg-white p-3">
+    <div className="os-room-panel flex h-full flex-col p-3">
       <p className="flex items-center gap-2 text-[14px] font-bold text-[#16283A]">
         <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#f5f2ff] text-[#724aee]">
           <BarChart3 size={16} />
@@ -46,20 +46,20 @@ export function PollsPanel({ poll, isHost, onCreate, onVote, onClose, preview })
                   key={i} disabled={!poll.open} onClick={() => onVote(i)}
                   className="w-full rounded-xl border p-2 text-left text-[13px] disabled:cursor-default"
                   style={{
-                    borderColor: lead ? "#724aee55" : "#E3ECF7",
-                    background: lead ? "#f5f2ff" : "#F7FAFF",
-                    color: "#16283A",
+                    borderColor: lead ? "rgba(185,220,235,.35)" : "rgba(226,235,242,.16)",
+                    background: lead ? "rgba(185,220,235,.1)" : "#0d1319",
+                    color: "var(--os-text)",
                   }}
                 >
                   <span className="flex items-center justify-between gap-2">
                     <span className="flex items-center gap-1.5">
-                      {lead ? <Check size={13} color="#724aee" /> : <span className="h-3 w-3 rounded-full border border-[#C4D3E6]" />}
+                      {lead ? <Check size={13} color="var(--os-accent)" /> : <span className="h-3 w-3 rounded-full border border-white/20" />}
                       {o}
                     </span>
-                    <span className="font-bold text-[#5B7290]">{pct}%</span>
+                    <span className="font-bold text-[#aab2ba]">{pct}%</span>
                   </span>
-                  <span className="mt-1.5 block h-1.5 overflow-hidden rounded bg-white">
-                    <span className="block h-full rounded" style={{ width: `${pct}%`, background: "#724aee" }} />
+                  <span className="mt-1.5 block h-1.5 overflow-hidden rounded bg-[#25323c]">
+                    <span className="block h-full rounded" style={{ width: `${pct}%`, background: "var(--os-accent)" }} />
                   </span>
                 </button>
               )

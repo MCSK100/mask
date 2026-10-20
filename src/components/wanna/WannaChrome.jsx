@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Video } from "lucide-react"
 import "./wanna.css"
 
@@ -7,18 +7,16 @@ import "./wanna.css"
 export function WannaNavbar() {
   const navigate = useNavigate()
   return (
-    <div className="wz-main">
-      <header className="wz-header">
+    <header className="wz-header wz-container">
         <button className="wz-brand" onClick={() => navigate("/")} aria-label="OneSpace Live home">
           <span className="wz-logo">OneSpace Live</span>
-          <span className="wz-by">by</span>
           <span className="wz-mark"><Video size={18} /></span>
         </button>
-        <button className="wz-btn" onClick={() => navigate("/create")}>
-          Meet Now <Video size={18} color="#fff" />
-        </button>
-      </header>
-    </div>
+        <div className="wz-header-actions">
+          <Link className="wz-header-join" to="/join">Join a room</Link>
+          <Link className="wz-btn" to="/create">Start a room <Video size={17} /></Link>
+        </div>
+    </header>
   )
 }
 
@@ -27,22 +25,20 @@ export function WannaFooter() {
     <footer className="wz-footer">
       <div className="wz-fo">
         <div className="col">
-          <a className="wz-logo fl" style={{ color: "#fff" }} href="/">OneSpace Live</a>
-          <span style={{ color: "rgba(255,255,255,.7)" }}>Live meetings for modern teams.</span>
+          <Link className="wz-logo fl" to="/">OneSpace Live</Link>
+          <span>One simple space for meetings, classes, and collaboration.</span>
         </div>
         <div className="col">
           <span className="t">Product</span>
-          <a className="fl" href="/create">Meetings</a>
-          <a className="fl" href="/create">Classroom</a>
-          <a className="fl" href="/create">Watch Party</a>
-          <a className="fl" href="/blog">Blog</a>
+          <Link className="fl" to="/create">Create a room</Link>
+          <Link className="fl" to="/join">Join a room</Link>
+          <Link className="fl" to="/about">About</Link>
         </div>
         <div className="col">
           <span className="t">Info</span>
-          <a className="fl" href="/privacy">Privacy</a>
-          <a className="fl" href="/terms">Terms</a>
-          <a className="fl" href="/about">About</a>
-          <a href="mailto:hello@onespace.live">Contact</a>
+          <Link className="fl" to="/privacy">Privacy</Link>
+          <Link className="fl" to="/terms">Terms</Link>
+          <Link className="fl" to="/about">Contact</Link>
         </div>
       </div>
       <p className="wz-copy">© 2026 OneSpace Live · All Rights Reserved</p>
@@ -52,7 +48,7 @@ export function WannaFooter() {
 
 export function WannaShell({ children }) {
   return (
-    <div className="wz-">
+    <div className="wz-shell">
       <WannaNavbar />
       <main className="wz-main" style={{ paddingBottom: "20px" }}>{children}</main>
       <WannaFooter />

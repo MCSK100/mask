@@ -17,18 +17,18 @@ export function TopBar({
     { id: "breakout", label: "Breakout", Icon: Users },
   ]
   return (
-    <header className="flex items-center gap-3 px-3 py-2.5 sm:px-4" style={{ background: "#fff", borderBottom: "1px solid rgba(30,70,140,.1)" }}>
+    <header className="flex items-center gap-3 px-3 py-2.5 sm:px-4" style={{ background: "var(--os-surface)", borderBottom: "1px solid var(--os-border)" }}>
       <div className="flex min-w-0 items-center gap-2.5">
-        <div className="grid h-8 w-8 flex-none place-items-center rounded-[10px] bg-[#724aee] text-white">
+        <div className="grid h-8 w-8 flex-none place-items-center rounded-[8px] bg-[var(--os-accent)] text-[#0c171e]">
           <Video size={16} />
         </div>
-        <h1 className="truncate text-[14px] font-bold text-[#16283A]">{title || "Algebra 101"}</h1>
-        <span className="hidden font-mono text-[11px] tracking-widest text-[#8AA6B8] sm:block">{code}</span>
-        <span className="flex flex-none items-center gap-1 rounded-md bg-[#E8382F] px-2 py-0.5 text-[10px] font-bold tracking-wide text-white">
+        <h1 className="truncate text-[14px] font-semibold text-[#f3f1ed]">{title || "Meeting room"}</h1>
+        <span className="hidden font-mono text-[11px] tracking-widest text-[#8c9aa3] sm:block">{code}</span>
+        <span className="flex flex-none items-center gap-1 rounded-sm border border-[var(--os-border-strong)] px-2 py-0.5 text-[10px] font-bold tracking-wide text-[#b9dceb]">
           <Radio size={10} /> LIVE
         </span>
         {recording && (
-          <span className="flex flex-none items-center gap-1 rounded-md bg-[#16283A] px-2 py-0.5 text-[10px] font-bold text-white">
+          <span className="flex flex-none items-center gap-1 rounded-sm border border-[var(--os-border-strong)] px-2 py-0.5 text-[10px] font-bold text-[#f3f1ed]">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-red-500" /> REC
           </span>
         )}
@@ -47,11 +47,11 @@ export function TopBar({
         ))}
       </nav>
 
-      <div className="flex flex-none items-center gap-2 text-[12px] font-semibold text-[#5B7290]">
+      <div className="flex flex-none items-center gap-2 text-[12px] font-semibold text-[#aab2ba]">
         <span className="hidden items-center gap-1.5 tabular-nums md:flex">
           <Clock size={13} /> {timer}
         </span>
-        <span className="hidden items-center gap-1 rounded-full bg-[#F1F6FA] px-2.5 py-1 lg:flex">
+        <span className="hidden items-center gap-1 rounded-md border border-[var(--os-border)] bg-[#18222c] px-2.5 py-1 lg:flex">
           <Users size={12} /> {count}
         </span>
         <button onClick={() => onTab("chat")} aria-label="Chat" className="classroom-rail-btn" style={{ width: "32px", height: "32px" }}>

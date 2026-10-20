@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react"
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion, MotionConfig } from "framer-motion"
 
 const Home = lazy(() => import("./pages/Home"))
 const CreateMeeting = lazy(() => import("./pages/CreateMeeting"))
@@ -17,7 +17,7 @@ function AnimatedRoutes() {
   const location = useLocation()
   return (
     <AnimatePresence mode="wait">
-      <Suspense fallback={<div className="grid min-h-screen place-items-center font-display font-bold text-[#14202B]">Loading OneSpace Live…</div>}>
+      <Suspense fallback={<div className="grid min-h-screen place-items-center font-display font-medium text-[#f3f1ed]">Loading OneSpace Live…</div>}>
         <motion.div
           key={location.pathname}
           initial={{ opacity: 0, y: 12 }}
@@ -48,8 +48,10 @@ function AnimatedRoutes() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AnimatedRoutes />
-    </BrowserRouter>
+    <MotionConfig reducedMotion="user">
+      <BrowserRouter>
+        <AnimatedRoutes />
+      </BrowserRouter>
+    </MotionConfig>
   )
 }

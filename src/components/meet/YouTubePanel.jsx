@@ -93,7 +93,7 @@ export function YouTubePanel({ yt, isHost, onSet, onPlay, onPause, onSeek }) {
   }
 
   return (
-    <div className="flex h-full flex-col bg-white p-3">
+    <div className="os-room-panel flex h-full flex-col p-3">
       {isHost && (
         <form onSubmit={submit} className="mb-2 flex gap-2">
           <input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Paste YouTube URL…" aria-label="YouTube URL" className="meet-input min-w-0 flex-1" />
