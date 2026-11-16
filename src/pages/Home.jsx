@@ -90,7 +90,7 @@ export default function Home() {
     <div className="os-home">
       <Seo path="/" />
       <section className="os-hero" id="top">
-        <video className="os-hero-video" src="/hero.mp4" autoPlay muted loop playsInline aria-hidden="true" />
+        <video className="os-hero-video" src="/hero.mp4" autoPlay={!reduceMotion} muted loop playsInline aria-hidden="true" />
         <div className="os-hero-shade" />
         <header className="os-nav-wrap">
           <nav className="os-nav" aria-label="Main navigation">
