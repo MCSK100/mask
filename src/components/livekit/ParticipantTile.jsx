@@ -71,15 +71,15 @@ export function ParticipantTile({ info, large, onPin, pinned }) {
       style={{
         height: "100%",
         borderRadius: large ? "14px" : "12px",
-        background: "#0d1319",
-        border: info?.isSpeaking ? "2px solid var(--os-accent)" : "1px solid rgba(255,255,255,.14)",
+        background: "#e9eef5",
+        border: info?.isSpeaking ? "2px solid var(--os-accent)" : "1px solid #dce4ee",
         boxShadow: info?.isSpeaking ? "0 0 0 3px rgba(185,220,235,.18)" : "none",
       }}
     >
       {hasVideo ? (
         <video ref={videoRef} autoPlay playsInline muted={info?.isLocal} className={`h-full w-full ${screenPub ? "object-contain" : "object-cover"}`} />
       ) : (
-        <div className="flex h-full min-h-[90px] w-full items-center justify-center" style={{ background: "linear-gradient(135deg,#263945,#111820)" }}>
+        <div className="flex h-full min-h-[90px] w-full items-center justify-center" style={{ background: "linear-gradient(135deg,#eaf2fe,#dbe6f3)" }}>
           <div
             className="flex items-center justify-center rounded-[18px] font-semibold text-[#0c171e]"
             style={{ width: large ? "72px" : "44px", height: large ? "72px" : "44px", fontSize: large ? "28px" : "18px", background: "linear-gradient(135deg,#d8eff8,#9fcde0)" }}

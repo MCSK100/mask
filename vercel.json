@@ -8,7 +8,7 @@
       ]
     },
     {
-      "source": "/(sitemap.xml|robots.txt|manifest.webmanifest|sw.js|og-cover.jpg|onespace-live-logo.png|onespace-live-favicon.jpg)",
+      "source": "/(sitemap.xml|robots.txt|manifest.webmanifest|sw.js|og-cover.jpg|onespace-live-logo.png|onespace-live-favicon.jpg|onespace-logo-ClipSnap.png)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
     },
     {

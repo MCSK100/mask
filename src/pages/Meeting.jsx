@@ -591,7 +591,7 @@ export default function Meeting() {
               <div className="wz-stage">
                 <div className="wz-stage-top">
                   <span className="wz-live">PREVIEW</span>
-                  <span style={{ color: "rgba(255,255,255,.65)" }}>16 : 9 · live preview</span>
+                  <span style={{ color: "var(--os-muted)" }}>Camera preview</span>
                 </div>
                 {media.stream ? (
                   <video ref={previewRef} autoPlay playsInline muted />
@@ -738,9 +738,9 @@ export default function Meeting() {
       <div className="pointer-events-none absolute -left-24 top-1/3 h-96 w-96 rounded-full bg-white/50 blur-3xl" />
       <div className="pointer-events-none absolute -right-24 top-10 h-80 w-80 rounded-full bg-white/60 blur-3xl" />
 
-      {toast && <div className="relative z-30 bg-[#16283A] px-4 py-1.5 text-center text-xs font-bold text-white">{toast}</div>}
+      {toast && <div className="relative z-30 bg-[#1a73e8] px-4 py-1.5 text-center text-xs font-bold text-white">{toast}</div>}
       {lk.connectionState === "reconnecting" && <div className="relative z-30 border-b border-[#b9dceb33] bg-[#18222c] px-4 py-1.5 text-center text-xs font-semibold text-[#d7eaf2]">Reconnecting… LiveKit is restoring your media automatically.</div>}
-      {locked && <div className="relative z-30 flex items-center justify-center gap-1.5 bg-[#16283A] px-4 py-1 text-center text-[11px] font-semibold text-white"><Lock size={11} /> Room Locked</div>}
+      {locked && <div className="relative z-30 flex items-center justify-center gap-1.5 bg-[#1a73e8] px-4 py-1 text-center text-[11px] font-semibold text-white"><Lock size={11} /> Room Locked</div>}
 
       <div className="relative z-10 mx-auto flex min-h-0 w-full max-w-[1440px] flex-1 gap-3 p-2 sm:p-3">
         {/* CENTER */}

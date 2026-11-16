@@ -26,16 +26,16 @@ export function BottomBar({
           {cameraOff ? <VideoOff size={19} color="var(--os-danger)" /> : <Video size={19} color="var(--os-success)" />}
         </DockBtn>
         <DockBtn onClick={onShare} label="Share" active={sharing}>
-          <MonitorUp size={19} color={sharing ? "var(--os-accent)" : "#d6dfe3"} />
+          <MonitorUp size={19} color={sharing ? "var(--os-accent)" : "#526174"} />
         </DockBtn>
         <DockBtn onClick={onRecord} label="Record" active={recording}>
-          <Disc size={19} color={recording ? "var(--os-danger)" : "#d6dfe3"} />
+          <Disc size={19} color={recording ? "var(--os-danger)" : "#526174"} />
         </DockBtn>
         <DockBtn onClick={onReact || onHand} label="React" active={handRaised}>
-          {handRaised ? <Hand size={19} color="var(--os-accent)" /> : <Smile size={19} color="#d6dfe3" />}
+          {handRaised ? <Hand size={19} color="var(--os-accent)" /> : <Smile size={19} color="#526174" />}
         </DockBtn>
         <DockBtn onClick={onMore} label="More">
-          <MoreHorizontal size={19} color="#d6dfe3" />
+          <MoreHorizontal size={19} color="#526174" />
         </DockBtn>
         <button
           onClick={onLeave} aria-label="Leave meeting"

@@ -17,7 +17,7 @@ function AnimatedRoutes() {
   const location = useLocation()
   return (
     <AnimatePresence mode="wait">
-      <Suspense fallback={<div className="grid min-h-screen place-items-center font-display font-medium text-[#f3f1ed]">Loading OneSpace Live…</div>}>
+      <Suspense fallback={<div className="grid min-h-screen place-items-center bg-[#f7f9fc] font-medium text-[#526174]">Loading OneSpace Live…</div>}>
         <motion.div
           key={location.pathname}
           initial={{ opacity: 0, y: 12 }}

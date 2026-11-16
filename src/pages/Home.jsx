@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom"
 import { motion, useReducedMotion } from "framer-motion"
 import {
-  ArrowDownRight,
   ArrowRight,
   BookOpen,
-  Check,
   MessageCircle,
   MonitorUp,
   PenTool,
@@ -112,38 +110,27 @@ export default function Home() {
 
         <div className="os-hero-content">
           <motion.p className="os-eyebrow" initial={reduceMotion ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduceMotion ? 0 : 0.6 }}>
-            Your space. Your people. Your moment.
+            Live classes and meetings
           </motion.p>
           <motion.h1 initial={reduceMotion ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduceMotion ? 0 : 0.75, delay: reduceMotion ? 0 : 0.08 }}>
-            One space.<br /><em>Every conversation.</em>
+            Bring everyone<br />into one room.
           </motion.h1>
           <motion.p className="os-hero-copy" initial={reduceMotion ? false : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduceMotion ? 0 : 0.65, delay: reduceMotion ? 0 : 0.2 }}>
-            Bring your classes, meetings, and ideas together. Meet face to face, share your screen, and work things out on a live whiteboard.
+            Teach a class, lead a meeting, or share ideas face to face. No app download required.
           </motion.p>
           <motion.div className="os-hero-actions" initial={reduceMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.3 }}>
-            <Link className="os-button" to="/create">Start a free room <ArrowRight size={17} /></Link>
-            <Link className="os-button os-button-glass" to="/join"><Play size={15} /> Join a room</Link>
+            <Link className="os-button" to="/create">Start a room <ArrowRight size={17} /></Link>
+            <Link className="os-button os-button-secondary" to="/join"><Play size={15} /> Join a room</Link>
           </motion.div>
-          <p className="os-microcopy"><Check size={14} /> No complicated setup. Join with a room link or code.</p>
-          <div className="os-room-tools-preview" aria-label="Tools available in a OneSpace Live room">
-            <span className="os-room-tools-label">In your room</span>
-            <span><Video size={14} /> Video</span>
-            <span><MonitorUp size={14} /> Share screen</span>
-            <span><PenTool size={14} /> Whiteboard</span>
-            <span><MessageCircle size={14} /> Chat</span>
-          </div>
         </div>
 
-        <a className="os-scroll" href="#features"><span>Explore the space</span><ArrowDownRight size={16} /></a>
-        <span className="os-hero-index" aria-hidden="true">01 / 04</span>
       </section>
 
       <main>
       <section className="os-section os-features" id="features">
         <div className="os-section-heading">
-          <p className="os-eyebrow os-eyebrow-dark">One room, more ways to connect</p>
-          <h2>Everything you need<br /><em>to work together.</em></h2>
-          <p>From live teaching to team collaboration, keep the conversation and the work in one shared space.</p>
+          <h2>Everything your session needs.</h2>
+          <p>Keep video, teaching tools, and conversation together in one browser-based room.</p>
         </div>
         <div className="os-feature-grid">
           {features.map(({ number, title, description, Icon }) => (
@@ -158,27 +145,25 @@ export default function Home() {
 
       <section className="os-how" id="how-it-works">
         <div className="os-how-intro">
-          <p className="os-eyebrow">A simpler way to get together</p>
-          <h2>From link<br />to <em>live.</em></h2>
-          <p>Skip the long setup. Make a space, invite your people, and get started.</p>
-          <Link className="os-text-link" to="/create">Start your first session <ArrowRight size={16} /></Link>
+          <h2>Ready in a few steps.</h2>
+          <p>Create a room, invite your group, and get on with the lesson or conversation.</p>
+          <Link className="os-text-link" to="/create">Create a room <ArrowRight size={16} /></Link>
         </div>
         <ol className="os-steps">
-          <li><span>01</span><div><h3>Create your room</h3><p>Give your meeting or class a name and start a new room.</p></div></li>
-          <li><span>02</span><div><h3>Invite your people</h3><p>Copy the room link or share its code with participants.</p></div></li>
-          <li><span>03</span><div><h3>Connect and collaborate</h3><p>Meet, chat, share a screen, and use the tools available in your room.</p></div></li>
+          <li><span><Video size={18} /></span><div><h3>Create your room</h3><p>Name your class or meeting and open a new room.</p></div></li>
+          <li><span><Users size={18} /></span><div><h3>Invite your group</h3><p>Share the room link or code with participants.</p></div></li>
+          <li><span><MonitorUp size={18} /></span><div><h3>Start the session</h3><p>Meet, chat, share your screen, and use the room tools.</p></div></li>
         </ol>
       </section>
 
       <section className="os-section os-use-cases" id="use-cases">
         <div className="os-section-heading os-section-heading-left">
-          <p className="os-eyebrow os-eyebrow-dark">Made for showing up</p>
-          <h2>One space.<br /><em>Many reasons.</em></h2>
+          <h2>Made for people learning and working together.</h2>
+          <p>Host a focused session, wherever your group happens to be.</p>
         </div>
         <div className="os-use-grid">
-          {useCases.map(([title, description, Icon], index) => (
+          {useCases.map(([title, description, Icon]) => (
             <article className="os-use-item" key={title}>
-              <span className="os-use-number">0{index + 1}</span>
               <Icon size={20} strokeWidth={1.6} />
               <div><h3>{title}</h3><p>{description}</p></div>
             </article>
@@ -189,17 +174,15 @@ export default function Home() {
       <section className="os-privacy">
         <div className="os-privacy-mark"><span /><span /><span /></div>
         <div>
-          <p className="os-eyebrow">Clear by design</p>
-          <h2>Your space should feel<br /><em>simple and secure.</em></h2>
-          <p>Join with a room link or code, then use the controls available in your session. Hosts can manage participant access with the room tools currently enabled.</p>
+          <h2>Clear controls for hosts and guests.</h2>
+          <p>Join with a room link or code. Hosts can manage access and participant settings from the room.</p>
         </div>
-        <Link className="os-button os-button-glass" to="/privacy">Read our privacy policy <ArrowRight size={16} /></Link>
+        <Link className="os-text-link" to="/privacy">Read our privacy policy <ArrowRight size={16} /></Link>
       </section>
 
       <section className="os-section os-faq" id="faq">
         <div className="os-section-heading os-section-heading-left">
-          <p className="os-eyebrow os-eyebrow-dark">Good to know</p>
-          <h2>A few things<br /><em>you might ask.</em></h2>
+          <h2>Common questions.</h2>
         </div>
         <div className="os-faq-list">
           {faqs.map(({ question, answer }) => (
@@ -212,12 +195,11 @@ export default function Home() {
       </section>
 
       <section className="os-final-cta">
-        <p className="os-eyebrow">Make room for a good conversation</p>
-        <h2>Your next session<br /><em>starts here.</em></h2>
-        <p>Bring everyone together and turn your next idea into a shared experience.</p>
+        <h2>Bring your next class together.</h2>
+        <p>Create a room and invite your group to join.</p>
         <div className="os-hero-actions">
           <Link className="os-button" to="/create">Create a room <ArrowRight size={17} /></Link>
-          <Link className="os-button os-button-glass" to="/join">Join an existing room</Link>
+          <Link className="os-button os-button-secondary" to="/join">Join a room</Link>
         </div>
       </section>
       </main>

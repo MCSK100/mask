@@ -40,13 +40,16 @@ export default function Navbar() {
       <nav className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 sm:px-6 sm:gap-3">
         <Link to="/" className="flex min-w-0 items-center gap-2">
           <img
-            src="/onespace-live-logo.png"
-            alt="OneSpace Live — no-signup video meetings"
-            className="h-9 w-auto drop-shadow-[0_0_18px_rgba(168,85,247,0.35)]"
-            width={120}
-            height={44}
+            src="/onespace-logo-ClipSnap.png"
+            alt=""
+            className="h-10 w-auto object-contain"
+            width={1024}
+            height={902}
             loading="eager"
           />
+          <span className="text-base font-semibold tracking-tight text-slate-900 sm:text-lg">
+            OneSpace Live
+          </span>
         </Link>
 
         <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">

@@ -2,7 +2,7 @@ import { useEffect } from "react"
 
 const SITE_URL = "https://onespace-live.vercel.app"
 const DEFAULT_IMAGE = `${SITE_URL}/og-cover.jpg`
-const DEFAULT_TITLE = "OneSpace Live — No-Signup Video Meetings & Live Classes"
+const DEFAULT_TITLE = "OneSpace Live | Video meetings and live classes"
 
 function upsertMeta(attr, key, value, content) {
   if (!content) return
@@ -33,7 +33,7 @@ function upsertLink(rel, href) {
  */
 export default function Seo({
   title = DEFAULT_TITLE,
-  description = "OneSpace Live — no-signup video meetings, live classrooms, whiteboard, screen share, YouTube watch parties and polls. Meet. Teach. Share. Play. Together.",
+  description = "Bring classes and teams together with live video, screen sharing, chat, a collaborative whiteboard, and polls.",
   path = "/",
   image = DEFAULT_IMAGE,
   noindex = false,

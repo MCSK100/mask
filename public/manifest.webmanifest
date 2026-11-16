@@ -1,37 +1,31 @@
 {
   "id": "/",
-  "name": "OneSpace Live — Meet. Teach. Share. Play. Together.",
+  "name": "OneSpace Live video meetings and classes",
   "short_name": "OneSpace",
-  "description": "No-signup video meetings, classrooms, whiteboard, watch parties and polls — right in the browser.",
+  "description": "Online classes and meetings with video, screen sharing, whiteboard, and chat.",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui", "browser"],
   "orientation": "any",
-  "background_color": "#020617",
-  "theme_color": "#020617",
+  "background_color": "#f7f9fc",
+  "theme_color": "#f7f9fc",
   "lang": "en-US",
   "dir": "ltr",
   "categories": ["productivity", "education", "communication"],
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/onespace-live-logo.png",
-      "sizes": "192x192",
+      "src": "/onespace-logo-ClipSnap.png",
+      "sizes": "1024x902",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/onespace-live-logo.png",
-      "sizes": "512x512",
+      "src": "/onespace-logo-ClipSnap.png",
+      "sizes": "1024x902",
       "type": "image/png",
       "purpose": "any"
-    },
-    {
-      "src": "/onespace-live-logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
     }
   ],
   "shortcuts": [
@@ -40,14 +34,14 @@
       "short_name": "Create",
       "description": "Create a OneSpace Live room instantly",
       "url": "/create?source=shortcut",
-      "icons": [{ "src": "/onespace-live-logo.png", "sizes": "96x96", "type": "image/png" }]
+      "icons": [{ "src": "/onespace-logo-ClipSnap.png", "sizes": "1024x902", "type": "image/png" }]
     },
     {
       "name": "Join Meeting",
       "short_name": "Join",
       "description": "Join with a meeting code",
       "url": "/join?source=shortcut",
-      "icons": [{ "src": "/onespace-live-logo.png", "sizes": "96x96", "type": "image/png" }]
+      "icons": [{ "src": "/onespace-logo-ClipSnap.png", "sizes": "1024x902", "type": "image/png" }]
     }
   ]
 }

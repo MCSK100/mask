@@ -19,7 +19,7 @@ export function TopBar({
   return (
     <header className="flex items-center gap-3 px-3 py-2.5 sm:px-4" style={{ background: "var(--os-surface)", borderBottom: "1px solid var(--os-border)" }}>
       <div className="flex min-w-0 items-center gap-2.5">
-        <div className="grid h-8 w-8 flex-none place-items-center rounded-[8px] bg-[var(--os-accent)] text-[#0c171e]">
+        <div className="grid h-8 w-8 flex-none place-items-center rounded-[8px] bg-[var(--os-accent)] text-white">
           <Video size={16} />
         </div>
         <h1 className="truncate text-[14px] font-semibold text-[#f3f1ed]">{title || "Meeting room"}</h1>

@@ -44,15 +44,15 @@ export default function JoinMeeting() {
     <WannaShell>
       <Seo
         title="Join a Meeting | OneSpace Live"
-        description="Join a OneSpace Live video meeting with just a code — no signup, no download. Enter the code and you're in within seconds."
+        description="Join a OneSpace Live class or meeting with a room code. Enter your name and connect in your browser."
         path="/join"
       />
       <div style={{ maxWidth: "600px", margin: "0 auto", padding: "30px 0 20px" }}>
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
           <WannaBadge prefix="OneSpace Live" strong="join with a room code" />
         </motion.div>
-          <h1 className="wz-title">Ready to join?</h1>
-          <p className="wz-sub">Enter your room code or use the invitation link to connect with your session.</p>
+          <h1 className="wz-title">Join your class or meeting.</h1>
+          <p className="wz-sub">Enter the room code from your host. You can also open the invitation link they shared with you.</p>
         <form onSubmit={join} style={{ marginTop: "24px" }}>
           <div className="wz-card" style={{ display: "grid", gap: "14px" }}>
             <div>

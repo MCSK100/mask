@@ -3,7 +3,7 @@
  * Enables PWA install + lightweight offline caching.
  */
 
-const CACHE_VERSION = "onespace-live-v3"
+const CACHE_VERSION = "onespace-live-v5"
 const STATIC_CACHE = `${CACHE_VERSION}-static`
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`
 
@@ -11,8 +11,7 @@ const PRECACHE_URLS = [
   "/",
   "/index.html",
   "/manifest.webmanifest",
-  "/onespace-live-favicon.jpg",
-  "/onespace-live-logo.png",
+  "/onespace-logo-ClipSnap.png",
   "/og-cover.jpg",
   "/favicon.png",
   "/favicon.svg"

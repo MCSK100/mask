@@ -14,6 +14,7 @@ export default function CreateMeeting() {
   const [busy, setBusy] = useState(false)
   const [result, setResult] = useState(null)
   const [err, setErr] = useState(null)
+  const [copyState, setCopyState] = useState("")
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }))
 
   const create = async (startNow) => {
@@ -61,75 +62,96 @@ export default function CreateMeeting() {
     } finally { setBusy(false) }
   }
 
-  const copy = async (t) => { try { await navigator.clipboard.writeText(t) } catch { /* best-effort only */ } }
+  const copy = async (t, label) => {
+    try {
+      await navigator.clipboard.writeText(t)
+      setCopyState(`${label} copied`)
+    } catch {
+      setCopyState(`Couldn't copy the ${label.toLowerCase()}. Select and copy it instead.`)
+    }
+  }
   const link = result ? `${window.location.origin}/meet/${result.code}` : ""
 
   return (
     <WannaShell>
       <Seo
-        title="Create a Meeting | OneSpace Live"
-        description="Create a no-signup video meeting room in seconds — with whiteboard, screen share, polls and classroom mode. Free in the browser."
+        title="Create a room | OneSpace Live"
+        description="Set up a live class or meeting room, then invite your group with a shareable link or room code."
         path="/create"
       />
-      <div style={{ maxWidth: "880px", margin: "0 auto", padding: "30px 0 20px" }}>
-        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-          <WannaBadge prefix="OneSpace Live" strong="your next session starts here" />
-        </motion.div>
-          <h1 className="wz-title">Create your space.</h1>
-          <p className="wz-sub">Set up your next meeting, class, or collaborative session.</p>
-
+      <div className="wz-create-layout wz-main">
+        <section className="wz-create-heading">
+          <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+            <WannaBadge prefix="OneSpace Live" strong="live classes and meetings" />
+          </motion.div>
+          <h1 className="wz-title">Start a session with everyone.</h1>
+          <p className="wz-sub">Create a room for your class or team. Share one link, then meet face to face.</p>
+          <div className="wz-create-benefits">
+            <div className="wz-create-benefit"><Video size={18} /><span>Live video, screen sharing, and a collaborative whiteboard.</span></div>
+            <div className="wz-create-benefit"><Users size={18} /><span>Invite learners or teammates with a room link or code.</span></div>
+            <div className="wz-create-benefit"><Clock size={18} /><span>No account or app download required to get started.</span></div>
+          </div>
+        </section>
         {!result ? (
-          <div style={{ marginTop: "24px" }}>
-            <div className="wz-card" style={{ display: "grid", gap: "16px" }}>
+          <form className="wz-create-form" onSubmit={(e) => { e.preventDefault(); create(true) }}>
+            <div className="wz-card wz-create-card">
               <div>
-                <label className="wz-label" htmlFor="mtitle">Meeting title</label>
-                <input id="mtitle" value={form.title} onChange={(e) => set("title", e.target.value)} placeholder="e.g. React Beginners Class" className="wz-input" maxLength={80} />
+                <h2 style={{ margin: 0, fontSize: "20px", fontWeight: 600, letterSpacing: "-.03em" }}>Room details</h2>
+                <p style={{ margin: "6px 0 0", color: "var(--os-muted)", fontSize: "13px" }}>You can share the room as soon as it is created.</p>
               </div>
               <div>
-                <label className="wz-label" htmlFor="hname">Your name (host)</label>
-                <input id="hname" value={form.hostName} onChange={(e) => set("hostName", e.target.value)} placeholder="e.g. Santhosh" className="wz-input" maxLength={40} />
+                <label className="wz-label" htmlFor="mtitle">Class or meeting name</label>
+                <input id="mtitle" value={form.title} onChange={(e) => set("title", e.target.value)} placeholder="e.g. Biology: cell structure" className="wz-input" maxLength={80} required />
+                <p className="wz-field-help">Give participants a clear idea of what this session is about.</p>
               </div>
               <div>
-                <label className="wz-label" htmlFor="mpass">Password (optional)</label>
-                <input id="mpass" type="password" value={form.password} onChange={(e) => set("password", e.target.value)} placeholder="Leave empty for open room" className="wz-input" maxLength={64} />
+                <label className="wz-label" htmlFor="hname">Your display name</label>
+                <input id="hname" value={form.hostName} onChange={(e) => set("hostName", e.target.value)} placeholder="e.g. Maya" className="wz-input" maxLength={40} autoComplete="name" required />
+              </div>
+              <div>
+                <label className="wz-label" htmlFor="mpass">Room password <span style={{ fontWeight: 400, color: "var(--os-muted)" }}>(optional)</span></label>
+                <input id="mpass" type="password" value={form.password} onChange={(e) => set("password", e.target.value)} placeholder="Leave blank for an open room" className="wz-input" maxLength={64} autoComplete="new-password" />
               </div>
               {err && <p role="alert" className="wz-alert">{err}</p>}
-              <div style={{ display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap" }}>
-                <motion.button disabled={busy} onClick={() => create(true)} whileTap={{ scale: 0.97 }} className="wz-btn big"><Video size={18} color="var(--os-accent-ink)" /> {busy ? "Creating…" : "Meet Now"}</motion.button>
-                <button disabled={busy} onClick={() => create(false)} className="wz-link">Create without starting <ArrowRight size={14} /></button>
+              <div className="wz-create-actions">
+                <motion.button type="submit" disabled={busy} whileTap={{ scale: 0.97 }} className="wz-btn big"><Video size={18} /> {busy ? "Creating room…" : "Create room and join"}</motion.button>
+                <button type="button" disabled={busy} onClick={() => create(false)} className="wz-link">Create without joining <ArrowRight size={14} /></button>
               </div>
             </div>
-          </div>
+            <div className="wz-create-meta">
+              <span><Users size={15} /> Built for classes and teams</span>
+              <span><MonitorUp size={15} /> Share screen and whiteboard</span>
+            </div>
+          </form>
         ) : (
-          <div style={{ marginTop: "24px" }}>
-            <div className="wz-card" style={{ padding: "34px", textAlign: "center" }}>
-              <WannaBadge prefix="Your meeting" strong="is ready" />
-              <h2 style={{ marginTop: "14px", fontSize: "26px", fontWeight: 500, letterSpacing: "-1px" }}>{result.title}</h2>
-              <p style={{ marginTop: "12px", fontSize: "36px", fontWeight: 500, letterSpacing: "0.25em" }}>{result.code}</p>
-              <p style={{ marginTop: "8px", fontSize: "13px", color: "var(--os-muted)", wordBreak: "break-all" }}>{link}</p>
-              <div style={{ marginTop: "20px", display: "flex", gap: "10px", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
-                <button onClick={() => navigate(`/meet/${result.code}?name=${encodeURIComponent(result.hostName)}&host=1`)} className="wz-btn big"><Video size={18} color="var(--os-accent-ink)" /> Meet Now</button>
-                <button onClick={() => copy(link)} className="wz-chip" aria-label="Copy link"><Copy size={14} /> Copy link</button>
-                <button onClick={() => copy(result.code)} className="wz-chip">Copy code</button>
+          <div className="wz-create-form">
+            <div className="wz-card wz-create-card wz-result-card">
+              <WannaBadge prefix="Room created" strong="ready to share" />
+              <div>
+                <h2 style={{ margin: "16px 0 0", fontSize: "24px", fontWeight: 600, letterSpacing: "-.03em" }}>{result.title}</h2>
+                <p style={{ margin: "18px 0 4px", color: "var(--os-muted)", fontSize: "13px" }}>Room code</p>
+                <p className="wz-result-code" style={{ margin: 0, fontSize: "34px", fontWeight: 600, letterSpacing: ".18em" }}>{result.code}</p>
               </div>
-              <div style={{ marginTop: "12px", display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-                <button onClick={() => navigate(`/schedule/${result.code}`)} className="wz-link">Meeting Card <ArrowRight size={13} /></button>
+              <div className="wz-share-link">
+                <span>{link}</span>
+                <button type="button" onClick={() => copy(link, "Link")} className="wz-chip"><Copy size={14} /> Copy link</button>
               </div>
+              <div className="wz-create-actions">
+                <button type="button" onClick={() => navigate(`/meet/${result.code}?name=${encodeURIComponent(result.hostName)}&host=1`)} className="wz-btn big"><Video size={18} /> Join room</button>
+                <button type="button" onClick={() => copy(result.code, "Code")} className="wz-chip"><Copy size={14} /> Copy code</button>
+              </div>
+              {copyState && <p role={copyState.startsWith("Couldn't") ? "alert" : "status"} className={copyState.startsWith("Couldn't") ? "wz-alert" : "wz-copy-state"}>{copyState}</p>}
+              <button type="button" onClick={() => navigate(`/schedule/${result.code}`)} className="wz-link">View room details <ArrowRight size={13} /></button>
               {result.scheduledAt && (
                 <div style={{ marginTop: "10px", display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
                   <a href={googleCalendarUrl({ title: result.title, details: `Join: ${link} Code: ${result.code}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000) })} target="_blank" rel="noreferrer" className="wz-link" style={{ color: "var(--os-accent)" }}><CalendarPlus size={14} /> Add to Calendar</a>
-                  <button onClick={() => downloadIcs(`onespace-live-${result.code}.ics`, icsContent({ title: result.title, description: `Join: ${link}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000), code: result.code }))} className="wz-link" style={{ color: "var(--os-accent)" }}>Download .ics</button>
+                  <button type="button" onClick={() => downloadIcs(`onespace-live-${result.code}.ics`, icsContent({ title: result.title, description: `Join: ${link}`, start: result.scheduledAt, end: new Date(new Date(result.scheduledAt).getTime() + result.duration * 60000), code: result.code }))} className="wz-link" style={{ color: "var(--os-accent)" }}>Download .ics</button>
                 </div>
               )}
-              <button onClick={() => setResult(null)} className="wz-link" style={{ marginTop: "14px" }}><RotateCcw size={13} /> Create another</button>
+              <button type="button" onClick={() => { setResult(null); setCopyState(""); setErr(null) }} className="wz-link"><RotateCcw size={13} /> Create another room</button>
             </div>
           </div>
         )}
-        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", fontSize: "14px", fontWeight: 500, marginTop: "28px" }}>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}><Users size={15} /> Works for teams &amp; classes</span>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}><MonitorUp size={15} /> Screen + whiteboard built in</span>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}><Clock size={15} /> Ready in seconds</span>
-        </div>
       </div>
     </WannaShell>
   )
